@@ -2,7 +2,7 @@ import cron from 'node-cron';
 import { exec } from 'child_process';
 
 // Run your automation script at 11:20, 11:24, and 11:28 AM
-cron.schedule('26,28,30 12 * * *', () => {
+cron.schedule('40,44,48 12 * * *', () => {
     console.log('⏰ Triggering automation at', new Date().toLocaleTimeString());
 
     exec('node --no-warnings -r dotenv/config src/scripts/dailyLogin.ts', (error, stdout, stderr) => {
