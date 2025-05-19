@@ -1,7 +1,9 @@
 import { Builder, By, until, Key, WebDriver } from 'selenium-webdriver';
 import * as chrome from 'selenium-webdriver/chrome.js'; // Updated import
-import dotenv from 'dotenv';
-import fs from 'fs';
+//import dotenv from 'dotenv';
+//import fs from 'fs';
+import * as dotenv from 'dotenv';
+import * as fs from 'fs';
 
 
 // Load environment variables
