@@ -1,11 +1,11 @@
 import cron from 'node-cron';
 import { exec } from 'child_process';
 
-// Run your automation script at 11:20, 11:24, and 11:28 AM
+// ESM-compatible approach: use exec directly with the correct command
 cron.schedule('26,28,30 12 * * *', () => {
     console.log('⏰ Triggering automation at', new Date().toLocaleTimeString());
 
-    exec('node --no-warnings -r dotenv/config src/scripts/dailyLogin.ts', (error, stdout, stderr) => {
+    exec('npm run daily-login', (error, stdout, stderr) => {
         if (error) {
             console.error(`❌ Error: ${error.message}`);
             return;

@@ -64,8 +64,8 @@
   }
   
   .menu-item {
-    background-color: #fff;
-    border: 1px solid #e0e0e0;
+    background-color: #ffffff;
+    border: 1px solid #d21c1c;
     border-radius: 12px;
     padding: 10px 16px;
     text-align: left;
@@ -75,7 +75,7 @@
   }
   
   .menu-item:hover {
-    background-color: #f5f5f5;
+    background-color: #055c1a;
   }
   
   /* Main content styles */
@@ -97,9 +97,9 @@
     top: 100%; /* just below the header */
     right: 16px; /* align near the dropdown arrow */
     width: 200px;
-    background-color: white;
-    border: 1px solid #ddd;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    background-color: rgb(249 249 249);
+    border: 1px solid #31d429;
+    box-shadow: 0 4px 8px rgba(203, 34, 34, 0.1);
     border-radius: 8px;
     padding: 12px;
     z-index: 1100;
@@ -118,7 +118,7 @@
     width: 100%;
     padding: 8px;
     background-color: #dc3545;
-    color: white;
+    color: rgb(196, 40, 40);
     border: none;
     border-radius: 6px;
     cursor: pointer;
@@ -127,7 +127,7 @@
   }
   
   .profile-logout-btn:hover {
-    background-color: #c82333;
+    background-color: #03560d;
   }
 
   .profile-menu-option {
@@ -146,11 +146,66 @@
   
   .profile-menu-option:hover,
   .profile-menu-option:focus {
-    background-color: #f0f0f0;
+    background-color: #0f6e30;
     outline: none;
   }
     
   .option-icon {
     font-size: 18px;
     line-height: 1;
+  }
+
+  button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #28a745;
+    color: rgb(0, 0, 0);
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.menu-item.active {
+  background-color: #28a745; /* Bootstrap green */
+  color: white;
+  border-color: #28a745;
+}
+
+
+
+
+  /* Example @font-face for Panton Bold - replace URL with your font file location */
+  @font-face {
+    font-family: 'Panton Bold';
+    src: url('fonts/Panton-Bold.woff2') format('woff2'),
+         url('fonts/Panton-Bold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+
+
+
+
+  /* Styling the brand name */
+  .brand-name-uniq {
+    font-family: 'Panton Bold', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    color: #F49F1C; /* yellow */
+    background-color: #121212; /* dark background */
+    padding: 0.5em 1em;
+    border-radius: 6px;
+    user-select: none;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    box-shadow: 0 0 8px #F49F1C88;
+    transition: color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .brand-name-uniq:hover {
+    color: #fff;
+    box-shadow: 0 0 15px #F49F1C;
+    cursor: pointer;
   }

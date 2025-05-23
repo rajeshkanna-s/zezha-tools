@@ -1,5 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min";
+import "../assets/CSS/commonstyle.css";
 import "./Sidebar.css";
 
 interface SidebarProps {
@@ -10,23 +13,24 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
   const [showProfilePopup, setShowProfilePopup] = useState(false);
   const popupRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const menuItems = [
-    "EMI Calculator",
-    "FD Calculator",
-    "RD Calculator",
-    "SIP Calculator",
-    "TDS Calculator",
-    "Old Regime Tax Calc",
-    "New Regime Tax Calc",
-    "Tax Comparison Calculator",
-    "Persontage Calculator",
-    "Value Of Persontage",
-    "DOB Calculator",
-    "Loan Calculator",
+    { label: "EMI Calculator", path: "/emi-calculator" },
+    { label: "FD Calculator", path: "/fd-calculator" },
+    { label: "RD Calculator", path: "/rd-calculator" },
+    { label: "SIP Calculator", path: "/sip-calculator" },
+    { label: "TDS Calculator", path: "/tds-calculator" },
+    { label: "Old Regime Tax Calc", path: "/old-regime-tax" },
+    { label: "New Regime Tax Calc", path: "/new-regime-tax" },
+    { label: "Tax Comparison Calculator", path: "/taxcompare-calculator" },
+    { label: "Persontage Calculator", path: "/percentage-calculator" },
+    { label: "Value Of Persontage", path: "/value-of-percentage" },
+    { label: "DOB Calculator", path: "/dob-calculator" },
+    { label: "Loan Calculator", path: "/loan-calculator" },
   ];
 
-  // Close popup if clicked outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -61,7 +65,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
         >
           ☰
         </span>
-        <span className="brand-name">ZEZHA TOOLS</span>
+        <span className="brand-name-uniq">ZEZHA TOOLS</span>
         <span
           className="dropdown-arrow"
           onClick={toggleProfilePopup}
@@ -93,7 +97,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
               <span className="option-icon" aria-hidden="true">
                 🌐
               </span>
-
               <span className="option-text">TAX Calc</span>
             </div>
 
@@ -120,9 +123,15 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
 
       <aside className={`sidebar ${isOpen ? "open" : "closed"}`}>
         <nav className="menu-list">
-          {menuItems.map((item) => (
-            <button key={item} className="menu-item">
-              {item}
+          {menuItems.map(({ label, path }) => (
+            <button
+              key={label}
+              className={`menu-item ${
+                location.pathname === path ? "active" : ""
+              }`}
+              onClick={() => navigate(path)}
+            >
+              {label}
             </button>
           ))}
         </nav>

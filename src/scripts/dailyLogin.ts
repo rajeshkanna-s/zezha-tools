@@ -3,24 +3,39 @@ import * as chrome from 'selenium-webdriver/chrome.js'; // Updated import
 import dotenv from 'dotenv';
 import fs from 'fs';
 
-
 // Load environment variables
 dotenv.config();
+
+console.log("🚀 Starting dailyLoginAutomation...");
+console.log("Username from .env:", process.env.REACT_APP_GREYTHR_USERNAME);
+
+
 
 // Custom type for enhanced Chrome options
 type EnhancedChromeOptions = chrome.Options & {
     addArguments(...args: string[]): EnhancedChromeOptions;
 };
 
+
 async function dailyLoginAutomation(): Promise<void> {
     const chromeOptions: EnhancedChromeOptions = new chrome.Options()
-        .addArguments('--start-maximized');
+    .addArguments('--start-maximized')
+
+        console.log("🛠️ Building WebDriver...");
+
+
+       
+      
 
     const driver: WebDriver = await new Builder()
         .forBrowser('chrome')
-        .setChromeOptions(chromeOptions)
+       // .setChromeOptions(chromeOptions)
         .build();
+   
+console.log("✅ WebDriver created.");
 
+
+  
     try {
         // Validate environment variables
         const username = process.env.REACT_APP_GREYTHR_USERNAME;
@@ -126,6 +141,8 @@ await driver.quit();
 
     
 }
+
+
 
 // Execution with error propagation
 dailyLoginAutomation()

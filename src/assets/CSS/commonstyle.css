@@ -1,0 +1,114 @@
+
+
+     body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        text-align: center;
+        margin: 0;
+        background-color: #dce1e7;
+    } 
+   
+
+    h2 {
+        color: #343a40;
+        margin-bottom: 7px;
+    }
+
+    .container {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+    } 
+
+    .card {
+        width: 450px;
+        padding: 10px 12px; 
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        background-color: #f0f8ff;
+        transition: transform 0.2s;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+    }
+
+    .emi-calc {
+        border: 2px solid #007bff;
+        background-color: #f0f8ff;
+    }
+
+    .new-regime {
+        border: 2px solid #28a745;
+        background-color: #f8f9fa;
+    }
+
+    label {
+        display: block;
+        font-size: 14px;
+        margin: 6px 0 4px;
+        color: #000000;
+    }
+
+    input {
+        width: calc(100% - 20px);
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        font-size: 14px;
+        padding: 8px;
+        margin-bottom: 10px;
+    }
+
+    input:focus {
+        border-color: #007bff;
+        outline: none;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+    button {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: #28a745;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    .results {
+        margin-top: 5px;
+        padding: 5px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+    }
+
+    .results h3 {
+        margin-bottom: 2px;
+        font-size: 18px;
+        color: #2c3e50;
+        text-align: center;
+    }
+
+    .result-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        background-color: #fff;
+        border-radius: 6px;
+        border: 1px solid #eee;
+        margin-bottom: 10px;
+        font-size: 16px;
+    }
+
+    .result-item span {
+        font-weight: bold;
+        color: #28a745;
+    }
