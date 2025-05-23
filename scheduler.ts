@@ -1,8 +1,9 @@
 import cron from 'node-cron';
 import { exec } from 'child_process';
 
-// ESM-compatible approach: use exec directly with the correct command
-cron.schedule('26,28,30 12 * * *', () => {
+
+// Schedule task at 12:40, 12:44, and 12:48 PM
+cron.schedule('40,44,48 12 * * *', () => {
     console.log('⏰ Triggering automation at', new Date().toLocaleTimeString());
 
     exec('npm run daily-login', (error, stdout, stderr) => {
