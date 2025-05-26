@@ -7,6 +7,7 @@ import RDCalculator from "./Calculators/rdcalc";
 import TDSCalculator from "./Calculators/tdscalc";
 import SIPCalculator from "./Calculators/sipcalc";
 import TAXCOMPARECalculator from "./Calculators/taxcomparecalc";
+import DOBCalculator from "./Calculators/dobcalc";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
           path="/taxcompare-calculator"
           element={<TAXCOMPARECalculator />}
         />
+        <Route path="/dob-calculator" element={<DOBCalculator />} />
         {/* You can add more routes here */}
       </Routes>
     </Router>
