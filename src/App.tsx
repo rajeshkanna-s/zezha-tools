@@ -8,6 +8,10 @@ import TDSCalculator from "./Calculators/tdscalc";
 import SIPCalculator from "./Calculators/sipcalc";
 import TAXCOMPARECalculator from "./Calculators/taxcomparecalc";
 import DOBCalculator from "./Calculators/dobcalc";
+import PERCENTAGECalculator from "./Calculators/percalc";
+import VALUEOFPERCalculator from "./Calculators/valueofpercalc";
+import OLDREGIMECalculator from "./Calculators/oldregimecalc";
+import NEWREGIMECalculator from "./Calculators/newregimecalc";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
@@ -25,6 +29,14 @@ function App() {
           element={<TAXCOMPARECalculator />}
         />
         <Route path="/dob-calculator" element={<DOBCalculator />} />
+        <Route
+          path="/percentage-calculator"
+          element={<PERCENTAGECalculator />}
+        />
+        <Route path="/value-of-percentage" element={<VALUEOFPERCalculator />} />
+        <Route path="/old-regime-tax" element={<OLDREGIMECalculator />} />
+        <Route path="/new-regime-tax" element={<NEWREGIMECalculator />} />
+
         {/* You can add more routes here */}
       </Routes>
     </Router>

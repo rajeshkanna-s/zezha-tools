@@ -372,19 +372,19 @@ const IncomeTaxCalculator: React.FC = () => {
               <div className="mt-4 p-3 bg-light border rounded">
                 <h5 className="text-center mb-3">Tax Details</h5>
                 <ul className="list-group">
-                  <li className="list-group-item d-flex justify-content-between">
+                  <li className="list-group-item d-flex justify-content-between fw-bold text-success">
                     <span>Tax after relief 87A Payable</span>
                     <strong>{formatCurrency(oldResult.taxAfter87A)}</strong>
                   </li>
-                  <li className="list-group-item d-flex justify-content-between">
+                  <li className="list-group-item d-flex justify-content-between fw-bold text-success">
                     <span>Surcharge Payable</span>
                     <strong>{formatCurrency(oldResult.surcharge)}</strong>
                   </li>
-                  <li className="list-group-item d-flex justify-content-between">
+                  <li className="list-group-item d-flex justify-content-between fw-bold text-success">
                     <span>Cess Payable</span>
                     <strong>{formatCurrency(oldResult.cess)}</strong>
                   </li>
-                  <li className="list-group-item d-flex justify-content-between">
+                  <li className="list-group-item d-flex justify-content-between fw-bold text-success">
                     <span>Total Tax Payable</span>
                     {/* <strong>{formatCurrency(oldResult.totalTax)}</strong> */}
 
@@ -447,19 +447,19 @@ const IncomeTaxCalculator: React.FC = () => {
               <div className="mt-4 p-3 bg-light border rounded">
                 <h5 className="text-center mb-3">Tax Details</h5>
                 <ul className="list-group">
-                  <li className="list-group-item d-flex justify-content-between">
+                  <li className="list-group-item d-flex justify-content-between fw-bold text-success">
                     <span>Tax after relief 87A Payable</span>
                     <strong>{formatCurrency(newResult.taxAfter87A)}</strong>
                   </li>
-                  <li className="list-group-item d-flex justify-content-between">
+                  <li className="list-group-item d-flex justify-content-between fw-bold text-success">
                     <span>Surcharge Payable</span>
                     <strong>{formatCurrency(newResult.surcharge)}</strong>
                   </li>
-                  <li className="list-group-item d-flex justify-content-between">
+                  <li className="list-group-item d-flex justify-content-between fw-bold text-success">
                     <span>Cess Payable</span>
                     <strong>{formatCurrency(newResult.cess)}</strong>
                   </li>
-                  <li className="list-group-item d-flex justify-content-between">
+                  <li className="list-group-item d-flex justify-content-between fw-bold text-success">
                     <span>Total Tax Payable</span>
                     {/* <strong>{formatCurrency(newResult.totalTax)}</strong> */}
                     <strong

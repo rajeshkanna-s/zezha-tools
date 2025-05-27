@@ -4,9 +4,9 @@ import "../dashboard/Dashboard.css";
 
 const EMICalculator: React.FC = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
-  const [loanAmount, setLoanAmount] = useState<number>(500000);
-  const [rate, setRate] = useState<number>(8.5);
-  const [loanTenure, setLoanTenure] = useState<number>(1);
+  const [loanAmount, setLoanAmount] = useState<string>("5,00,000");
+  const [rate, setRate] = useState<string | number>(8.5);
+  const [loanTenure, setLoanTenure] = useState<string>("1");
   const [timeUnit, setTimeUnit] = useState<string>("years");
 
   const [emi, setEmi] = useState<number>(0);
@@ -23,6 +23,9 @@ const EMICalculator: React.FC = () => {
     setSidebarOpen(!isSidebarOpen);
   };
 
+  const formatNumber = (num: number) => num.toLocaleString("en-IN");
+  const unformatNumber = (str: string) => parseFloat(str.replace(/,/g, ""));
+
   const calculateEMI = () => {
     let hasError = false;
     const newErrors = {
@@ -31,31 +34,37 @@ const EMICalculator: React.FC = () => {
       loanTenure: "",
     };
 
-    if (!loanAmount || loanAmount <= 0) {
+    const principal = unformatNumber(loanAmount);
+    const interestRate = typeof rate === "string" ? parseFloat(rate) : rate;
+    const tenure = parseInt(loanTenure);
+
+    if (!principal || principal <= 0) {
       newErrors.loanAmount = "Enter a valid loan amount.";
       hasError = true;
     }
-    if (!rate || rate <= 0) {
+
+    if (!interestRate || interestRate <= 0) {
       newErrors.rate = "Enter a valid interest rate.";
       hasError = true;
     }
-    if (!loanTenure || loanTenure <= 0) {
-      newErrors.loanTenure = "Enter a valid loan tenure.";
+
+    if (!tenure || tenure <= 0 || tenure > 1000) {
+      newErrors.loanTenure = "Enter a valid loan tenure (1 - 1000).";
       hasError = true;
     }
 
     setErrors(newErrors);
     if (hasError) return;
 
-    const months = timeUnit === "years" ? loanTenure * 12 : loanTenure;
-    const monthlyRate = rate / 12 / 100;
+    const months = timeUnit === "years" ? tenure * 12 : tenure;
+    const monthlyRate = interestRate / 12 / 100;
 
     const emiCalc =
-      (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, months)) /
+      (principal * monthlyRate * Math.pow(1 + monthlyRate, months)) /
       (Math.pow(1 + monthlyRate, months) - 1);
 
     const totalPay = emiCalc * months;
-    const totalInt = totalPay - loanAmount;
+    const totalInt = totalPay - principal;
 
     setEmi(Math.round(emiCalc));
     setTotalPayment(Math.round(totalPay));
@@ -73,10 +82,22 @@ const EMICalculator: React.FC = () => {
             <div className="mb-3">
               <label className="form-label">Loan Amount (₹):</label>
               <input
-                type="number"
+                type="text"
                 className="form-control"
                 value={loanAmount}
-                onChange={(e) => setLoanAmount(Number(e.target.value))}
+                onChange={(e) => {
+                  const raw = e.target.value.replace(/,/g, "");
+                  if (/^\d*$/.test(raw)) {
+                    if (raw === "") {
+                      setLoanAmount("");
+                    } else {
+                      const num = parseFloat(raw);
+                      if (!isNaN(num)) {
+                        setLoanAmount(formatNumber(num));
+                      }
+                    }
+                  }
+                }}
               />
               {errors.loanAmount && (
                 <div className="text-danger small">{errors.loanAmount}</div>
@@ -88,8 +109,20 @@ const EMICalculator: React.FC = () => {
               <input
                 type="number"
                 className="form-control"
-                value={rate}
-                onChange={(e) => setRate(Number(e.target.value))}
+                min={0}
+                max={100}
+                value={rate === "" ? "" : rate}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  if (val === "") {
+                    setRate("");
+                    return;
+                  }
+                  const num = Number(val);
+                  if (!isNaN(num) && num >= 0 && num <= 100) {
+                    setRate(num);
+                  }
+                }}
               />
               {errors.rate && (
                 <div className="text-danger small">{errors.rate}</div>
@@ -108,10 +141,17 @@ const EMICalculator: React.FC = () => {
                   <option value="months">Months</option>
                 </select>
                 <input
-                  type="number"
+                  type="text"
                   className="form-control"
                   value={loanTenure}
-                  onChange={(e) => setLoanTenure(Number(e.target.value))}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    if (/^\d*$/.test(val)) {
+                      if (val === "" || parseInt(val) <= 1000) {
+                        setLoanTenure(val);
+                      }
+                    }
+                  }}
                 />
               </div>
               {errors.loanTenure && (
@@ -126,15 +166,15 @@ const EMICalculator: React.FC = () => {
             <div className="mt-4 p-3 bg-light border rounded">
               <h5 className="text-center mb-3">EMI Calculation Result</h5>
               <ul className="list-group">
-                <li className="list-group-item d-flex justify-content-between">
+                <li className="list-group-item d-flex justify-content-between fw-bold text-success">
                   <span>Monthly EMI</span>
                   <strong>₹{emi.toLocaleString("en-IN")}</strong>
                 </li>
-                <li className="list-group-item d-flex justify-content-between">
+                <li className="list-group-item d-flex justify-content-between fw-bold text-success">
                   <span>Total Interest</span>
                   <strong>₹{totalInterest.toLocaleString("en-IN")}</strong>
                 </li>
-                <li className="list-group-item d-flex justify-content-between">
+                <li className="list-group-item d-flex justify-content-between fw-bold text-success">
                   <span>Total Payment</span>
                   <strong>₹{totalPayment.toLocaleString("en-IN")}</strong>
                 </li>

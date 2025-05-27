@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Sidebar from "../dashboard/Sidebar"; // Adjust path as needed
+import Sidebar from "../dashboard/Sidebar";
 import "../dashboard/Dashboard.css";
 
 interface TDSSection {
@@ -68,7 +68,6 @@ const TDSCalculator: React.FC = () => {
   const [amount, setAmount] = useState("");
   const [result, setResult] = useState<string | null>(null);
   const [error, setError] = useState("");
-
   const [isSidebarOpen, setSidebarOpen] = useState(true);
 
   const toggleSidebar = () => {
@@ -92,7 +91,12 @@ const TDSCalculator: React.FC = () => {
     if (amt > threshold) {
       let tds = amt * rate;
       if (pan === "no") tds *= 2;
-      setResult(`₹${tds.toFixed(2)}`);
+      const formattedTds = tds.toLocaleString("en-IN", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+
+      setResult(` ₹${formattedTds}`);
     } else {
       setResult("No TDS applicable");
     }
@@ -101,10 +105,7 @@ const TDSCalculator: React.FC = () => {
   return (
     <div className="container-fluid">
       <div className="row">
-        {/* Sidebar */}
         <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-
-        {/* Main content */}
         <main className={`col ${isSidebarOpen ? "ms-3" : ""}`}>
           <div className="card shadow p-4 mt-4 max-w-xl mx-auto">
             <h2 className="text-center mb-4">TDS Calculator</h2>
@@ -134,7 +135,7 @@ const TDSCalculator: React.FC = () => {
 
             <label className="form-label">Enter Amount</label>
             <input
-              type="number"
+              type="text"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               className="form-control mb-2"
@@ -147,8 +148,14 @@ const TDSCalculator: React.FC = () => {
             </button>
 
             {result && (
-              <div className="mt-4 p-3 bg-light border rounded text-center">
-                <strong>Result:</strong> {result}
+              <div className="mt-4 p-3 bg-light border rounded text-center fw-bold">
+                <h5 className="text-center mb-3">TDS Calculation Result</h5>
+                <ul className="list-group">
+                  <li className="list-group-item d-flex justify-content-between text-success">
+                    <span>Result:</span>
+                    <strong>{result}</strong>
+                  </li>
+                </ul>
               </div>
             )}
           </div>

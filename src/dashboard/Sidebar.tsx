@@ -24,7 +24,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
     { label: "TDS Calculator", path: "/tds-calculator" },
     { label: "Old Regime Tax Calc", path: "/old-regime-tax" },
     { label: "New Regime Tax Calc", path: "/new-regime-tax" },
-    { label: "Tax Comparison Calculator", path: "/taxcompare-calculator" },
+    { label: "Tax Compare Calculator", path: "/taxcompare-calculator" },
     { label: "Persontage Calculator", path: "/percentage-calculator" },
     { label: "Value Of Persontage", path: "/value-of-percentage" },
     { label: "DOB Calculator", path: "/dob-calculator" },

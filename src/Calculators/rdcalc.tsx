@@ -4,14 +4,17 @@ import "../dashboard/Dashboard.css";
 
 const RDCalculator: React.FC = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
-  const [monthlyInvestment, setMonthlyInvestment] = useState<number>(1000);
-  const [rate, setRate] = useState<number>(5);
-  const [timePeriod, setTimePeriod] = useState<number>(1);
-  const [timeUnit, setTimeUnit] = useState<string>("years");
 
-  const [totalInvestment, setTotalInvestment] = useState<number>(0);
-  const [returns, setReturns] = useState<number>(0);
-  const [maturity, setMaturity] = useState<number>(0);
+  // Use string states to allow full input control
+  const [monthlyInvestmentStr, setMonthlyInvestmentStr] = useState("1000");
+  const [rateStr, setRateStr] = useState("5");
+  const [timePeriodStr, setTimePeriodStr] = useState("1");
+  const [timeUnit, setTimeUnit] = useState<"years" | "months">("years");
+
+  const [totalInvestment, setTotalInvestment] = useState(0);
+  const [returns, setReturns] = useState(0);
+  const [maturity, setMaturity] = useState(0);
+  const [showResult, setShowResult] = useState(false);
 
   const [errors, setErrors] = useState({
     monthlyInvestment: "",
@@ -24,6 +27,10 @@ const RDCalculator: React.FC = () => {
   };
 
   const calculateRD = () => {
+    const monthlyInvestment = Number(monthlyInvestmentStr);
+    const rate = Number(rateStr);
+    const timePeriod = Number(timePeriodStr);
+
     let hasError = false;
     const newErrors = {
       monthlyInvestment: "",
@@ -36,8 +43,8 @@ const RDCalculator: React.FC = () => {
         "Enter a valid monthly investment (≥ ₹500).";
       hasError = true;
     }
-    if (!rate || rate <= 0) {
-      newErrors.rate = "Enter a valid interest rate.";
+    if (!rate || rate <= 0 || rate > 100) {
+      newErrors.rate = "Enter a valid interest rate (0–100%).";
       hasError = true;
     }
     if (!timePeriod || timePeriod <= 0) {
@@ -46,10 +53,13 @@ const RDCalculator: React.FC = () => {
     }
 
     setErrors(newErrors);
-    if (hasError) return;
+    if (hasError) {
+      setShowResult(false);
+      return;
+    }
 
     const n = 4; // Quarterly compounding
-    let months = timeUnit === "years" ? timePeriod * 12 : timePeriod;
+    const months = timeUnit === "years" ? timePeriod * 12 : timePeriod;
     let maturityAmount = 0;
 
     for (let i = 1; i <= months; i++) {
@@ -64,6 +74,7 @@ const RDCalculator: React.FC = () => {
     setTotalInvestment(invested);
     setReturns(Math.round(earned));
     setMaturity(maturityAmount);
+    setShowResult(true);
   };
 
   return (
@@ -77,10 +88,11 @@ const RDCalculator: React.FC = () => {
             <div className="mb-3">
               <label className="form-label">Monthly Investment (₹):</label>
               <input
-                type="number"
+                type="text"
                 className="form-control"
-                value={monthlyInvestment}
-                onChange={(e) => setMonthlyInvestment(Number(e.target.value))}
+                value={monthlyInvestmentStr}
+                onChange={(e) => setMonthlyInvestmentStr(e.target.value)}
+                placeholder="Enter monthly investment"
               />
               {errors.monthlyInvestment && (
                 <div className="text-danger small">
@@ -94,8 +106,20 @@ const RDCalculator: React.FC = () => {
               <input
                 type="number"
                 className="form-control"
-                value={rate}
-                onChange={(e) => setRate(Number(e.target.value))}
+                value={rateStr}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  // Allow empty value to let user clear the field
+                  if (value === "") {
+                    setRateStr("");
+                    return;
+                  }
+                  const numeric = parseFloat(value);
+                  if (!isNaN(numeric) && numeric >= 0 && numeric <= 100) {
+                    setRateStr(value);
+                  }
+                }}
+                placeholder="Enter interest rate"
               />
               {errors.rate && (
                 <div className="text-danger small">{errors.rate}</div>
@@ -108,16 +132,19 @@ const RDCalculator: React.FC = () => {
                 <select
                   className="form-select"
                   value={timeUnit}
-                  onChange={(e) => setTimeUnit(e.target.value)}
+                  onChange={(e) =>
+                    setTimeUnit(e.target.value as "years" | "months")
+                  }
                 >
                   <option value="years">Years</option>
                   <option value="months">Months</option>
                 </select>
                 <input
-                  type="number"
+                  type="text"
                   className="form-control"
-                  value={timePeriod}
-                  onChange={(e) => setTimePeriod(Number(e.target.value))}
+                  value={timePeriodStr}
+                  onChange={(e) => setTimePeriodStr(e.target.value)}
+                  placeholder="Enter duration"
                 />
               </div>
               {errors.timePeriod && (
@@ -129,23 +156,25 @@ const RDCalculator: React.FC = () => {
               Calculate RD
             </button>
 
-            <div className="mt-4 p-3 bg-light border rounded">
-              <h5 className="text-center mb-3">RD Calculation Result</h5>
-              <ul className="list-group">
-                <li className="list-group-item d-flex justify-content-between">
-                  <span>Total Investment</span>
-                  <strong>₹{totalInvestment.toLocaleString("en-IN")}</strong>
-                </li>
-                <li className="list-group-item d-flex justify-content-between">
-                  <span>Return Earned</span>
-                  <strong>₹{returns.toLocaleString("en-IN")}</strong>
-                </li>
-                <li className="list-group-item d-flex justify-content-between">
-                  <span>Maturity Amount</span>
-                  <strong>₹{maturity.toLocaleString("en-IN")}</strong>
-                </li>
-              </ul>
-            </div>
+            {showResult && (
+              <div className="mt-4 p-3 bg-light border rounded">
+                <h5 className="text-center mb-3">RD Calculation Result</h5>
+                <ul className="list-group">
+                  <li className="list-group-item d-flex justify-content-between fw-bold text-success">
+                    <span>Total Investment</span>
+                    <strong>₹{totalInvestment.toLocaleString("en-IN")}</strong>
+                  </li>
+                  <li className="list-group-item d-flex justify-content-between fw-bold text-success">
+                    <span>Return Earned</span>
+                    <strong>₹{returns.toLocaleString("en-IN")}</strong>
+                  </li>
+                  <li className="list-group-item d-flex justify-content-between fw-bold text-success">
+                    <span>Maturity Amount</span>
+                    <strong>₹{maturity.toLocaleString("en-IN")}</strong>
+                  </li>
+                </ul>
+              </div>
+            )}
           </div>
         </main>
       </div>
