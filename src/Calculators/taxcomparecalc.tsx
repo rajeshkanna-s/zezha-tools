@@ -325,7 +325,7 @@ const IncomeTaxCalculator: React.FC = () => {
     <div className="container-fluid">
       <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       <main className={`col ${isSidebarOpen ? "ms-3" : ""}`}>
-        <h2 className="text-center mb-4">Income Tax Calculator</h2>
+        {/* <h2 className="text-center mb-4">Income Tax Calculator</h2> */}
 
         <div className="row">
           {/* Old Regime Card */}
