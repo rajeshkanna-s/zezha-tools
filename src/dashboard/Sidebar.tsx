@@ -131,7 +131,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
           role="button"
           aria-label="Toggle sidebar"
         >
-          ☰
+          {isOpen ? "◀" : "☰"}
         </span>
         <span className="brand-name-uniq">ZEZHA TOOLS</span>
         <span
