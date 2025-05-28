@@ -185,9 +185,6 @@
     font-display: swap;
   }
 
-
-
-
   /* Styling the brand name */
   .brand-name-uniq {
     font-family: 'Panton Bold', sans-serif;
@@ -209,3 +206,36 @@
     box-shadow: 0 0 15px #F49F1C;
     cursor: pointer;
   }
+
+  
+  .submenu-item {
+    background-color: #ffffff;
+    border: 1px solid #d21c1c;
+    border-radius: 12px;
+    padding: 7px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    text-align: center;
+    display: inline-block;     /* Shrinks to fit content */
+    width: fit-content;        /* Ensures compact button */
+    margin: 4px 0;             /* Vertical spacing */
+    min-width: 170px;          /* Optional: set a baseline width */
+  }
+  
+  .submenu-item:hover {
+    color: #fff;
+    background-color: #444;
+  }
+  
+  .submenu-item.active {
+    color: #00bfff;
+    font-weight: bold;
+  }
+  
+
+
+
+  
+
+  

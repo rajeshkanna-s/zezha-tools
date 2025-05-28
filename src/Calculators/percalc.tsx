@@ -4,8 +4,9 @@ import "../dashboard/Dashboard.css";
 
 const PercentageCalculator: React.FC = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
-  const [part, setPart] = useState<number>(0);
-  const [total, setTotal] = useState<number>(100);
+
+  const [partStr, setPartStr] = useState("0");
+  const [totalStr, setTotalStr] = useState("100");
   const [percentage, setPercentage] = useState<number | null>(null);
 
   const [errors, setErrors] = useState({
@@ -17,18 +18,44 @@ const PercentageCalculator: React.FC = () => {
     setSidebarOpen(!isSidebarOpen);
   };
 
+  const formatNumberWithCommas = (value: string) => {
+    const num = value.replace(/,/g, "");
+    if (!isNaN(Number(num))) {
+      return Number(num).toLocaleString("en-IN");
+    }
+    return value;
+  };
+
+  const handlePartChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rawValue = e.target.value.replace(/,/g, "");
+    if (/^\d*$/.test(rawValue)) {
+      setPartStr(formatNumberWithCommas(rawValue));
+    }
+  };
+
+  const handleTotalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rawValue = e.target.value.replace(/,/g, "");
+    if (/^\d*$/.test(rawValue)) {
+      setTotalStr(formatNumberWithCommas(rawValue));
+    }
+  };
+
   const calculatePercentage = () => {
+    const part = Number(partStr.replace(/,/g, ""));
+    const total = Number(totalStr.replace(/,/g, ""));
+
     let hasError = false;
     const newErrors = {
       part: "",
       total: "",
     };
 
-    if (part < 0) {
+    if (isNaN(part) || part < 0) {
       newErrors.part = "Enter a valid number.";
       hasError = true;
     }
-    if (total <= 0) {
+
+    if (isNaN(total) || total <= 0) {
       newErrors.total = "Total must be greater than zero.";
       hasError = true;
     }
@@ -51,17 +78,11 @@ const PercentageCalculator: React.FC = () => {
             <div className="mb-3">
               <label className="form-label">Part:</label>
               <input
-                type="number"
+                type="text"
                 className="form-control"
-                value={isNaN(part) ? "" : part}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  if (value === "") {
-                    setPart(NaN);
-                  } else {
-                    setPart(Number(value.replace(/^0+(?=\d)/, "")));
-                  }
-                }}
+                value={partStr}
+                onChange={handlePartChange}
+                placeholder="Enter part value"
               />
               {errors.part && (
                 <div className="text-danger small">{errors.part}</div>
@@ -71,17 +92,11 @@ const PercentageCalculator: React.FC = () => {
             <div className="mb-3">
               <label className="form-label">Total:</label>
               <input
-                type="number"
+                type="text"
                 className="form-control"
-                value={isNaN(total) ? "" : total}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  if (value === "") {
-                    setTotal(NaN);
-                  } else {
-                    setTotal(Number(value.replace(/^0+(?=\d)/, "")));
-                  }
-                }}
+                value={totalStr}
+                onChange={handleTotalChange}
+                placeholder="Enter total value"
               />
               {errors.total && (
                 <div className="text-danger small">{errors.total}</div>

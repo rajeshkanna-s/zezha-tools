@@ -5,8 +5,7 @@ import "../dashboard/Dashboard.css";
 const RDCalculator: React.FC = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
 
-  // Use string states to allow full input control
-  const [monthlyInvestmentStr, setMonthlyInvestmentStr] = useState("1000");
+  const [monthlyInvestmentStr, setMonthlyInvestmentStr] = useState("1,000");
   const [rateStr, setRateStr] = useState("5");
   const [timePeriodStr, setTimePeriodStr] = useState("1");
   const [timeUnit, setTimeUnit] = useState<"years" | "months">("years");
@@ -26,10 +25,13 @@ const RDCalculator: React.FC = () => {
     setSidebarOpen(!isSidebarOpen);
   };
 
+  const formatNumber = (num: number) => num.toLocaleString("en-IN");
+  const unformatNumber = (str: string) => parseFloat(str.replace(/,/g, ""));
+
   const calculateRD = () => {
-    const monthlyInvestment = Number(monthlyInvestmentStr);
-    const rate = Number(rateStr);
-    const timePeriod = Number(timePeriodStr);
+    const monthlyInvestment = unformatNumber(monthlyInvestmentStr);
+    const rate = parseFloat(rateStr);
+    const timePeriod = parseFloat(timePeriodStr);
 
     let hasError = false;
     const newErrors = {
@@ -91,7 +93,19 @@ const RDCalculator: React.FC = () => {
                 type="text"
                 className="form-control"
                 value={monthlyInvestmentStr}
-                onChange={(e) => setMonthlyInvestmentStr(e.target.value)}
+                onChange={(e) => {
+                  const raw = e.target.value.replace(/,/g, "");
+                  if (/^\d*$/.test(raw)) {
+                    if (raw === "") {
+                      setMonthlyInvestmentStr("");
+                    } else {
+                      const num = parseFloat(raw);
+                      if (!isNaN(num)) {
+                        setMonthlyInvestmentStr(formatNumber(num));
+                      }
+                    }
+                  }
+                }}
                 placeholder="Enter monthly investment"
               />
               {errors.monthlyInvestment && (
@@ -109,7 +123,6 @@ const RDCalculator: React.FC = () => {
                 value={rateStr}
                 onChange={(e) => {
                   const value = e.target.value;
-                  // Allow empty value to let user clear the field
                   if (value === "") {
                     setRateStr("");
                     return;

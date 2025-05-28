@@ -12,24 +12,87 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
   const [showProfilePopup, setShowProfilePopup] = useState(false);
+  const [openMenus, setOpenMenus] = useState<{ [key: string]: boolean }>({});
   const popupRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const location = useLocation();
 
-  const menuItems = [
-    { label: "EMI Calculator", path: "/emi-calculator" },
-    { label: "FD Calculator", path: "/fd-calculator" },
-    { label: "RD Calculator", path: "/rd-calculator" },
-    { label: "SIP Calculator", path: "/sip-calculator" },
-    { label: "TDS Calculator", path: "/tds-calculator" },
-    { label: "Old Regime Tax Calc", path: "/old-regime-tax" },
-    { label: "New Regime Tax Calc", path: "/new-regime-tax" },
-    { label: "Tax Compare Calculator", path: "/taxcompare-calculator" },
-    { label: "Persontage Calculator", path: "/percentage-calculator" },
-    { label: "Value Of Persontage", path: "/value-of-percentage" },
-    { label: "DOB Calculator", path: "/dob-calculator" },
-    { label: "Loan Calculator", path: "/loan-calculator" },
+  // Submenu items for menu groups
+  const menuGroups = [
+    {
+      label: "Dashboard",
+      path: "/dashboard",
+    },
+
+    {
+      label: "Calculators",
+      submenu: [
+        { label: "EMI Calculator", path: "/emi-calculator" },
+        { label: "FD Calculator", path: "/fd-calculator" },
+        { label: "RD Calculator", path: "/rd-calculator" },
+        { label: "SIP Calculator", path: "/sip-calculator" },
+        { label: "TDS Calculator", path: "/tds-calculator" },
+      ],
+    },
+    {
+      label: "Tax Tools",
+      submenu: [
+        { label: "Old Regime Tax", path: "/old-regime-tax" },
+        { label: "New Regime Tax", path: "/new-regime-tax" },
+        { label: "Tax Compare", path: "/taxcompare-calculator" },
+      ],
+    },
+    {
+      label: "Loan Tools",
+      submenu: [
+        { label: "Loan Calculator", path: "/loan-calculator" },
+        { label: "Interest Breakdown", path: "/interest-breakdown" },
+      ],
+    },
+    {
+      label: "Conversions",
+      submenu: [
+        { label: "Percentage Calculator", path: "/percentage-calculator" },
+        { label: "Value Of Percentage", path: "/value-of-percentage" },
+      ],
+    },
+    {
+      label: "Date Tools",
+      submenu: [
+        { label: "DOB Calculator", path: "/dob-calculator" },
+        { label: "Age Calculator", path: "/age-calculator" },
+      ],
+    },
+    {
+      label: "Reports",
+      path: "/reports",
+    },
+    {
+      label: "Notifications",
+      path: "/notifications",
+    },
+    {
+      label: "Settings",
+      path: "/settings",
+    },
+    {
+      label: "Help",
+      path: "/help",
+    },
   ];
+
+  useEffect(() => {
+    // Auto-expand submenu if route matches any submenu path
+    const newOpenMenus: { [key: string]: boolean } = {};
+    menuGroups.forEach((group) => {
+      if (group.submenu) {
+        newOpenMenus[group.label] = group.submenu.some(
+          (item) => item.path === location.pathname
+        );
+      }
+    });
+    setOpenMenus(newOpenMenus);
+  }, [location.pathname]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -50,9 +113,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
     };
   }, [showProfilePopup]);
 
-  const toggleProfilePopup = () => {
-    setShowProfilePopup((prev) => !prev);
+  const toggleMenu = (label: string) => {
+    setOpenMenus((prev) => ({
+      ...prev,
+      [label]: !prev[label],
+    }));
   };
+
+  const toggleProfilePopup = () => setShowProfilePopup((prev) => !prev);
 
   return (
     <>
@@ -75,47 +143,26 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
           ▾
         </span>
 
-        {/* Profile popup */}
         {showProfilePopup && (
           <div className="profile-popup" ref={popupRef}>
             <div className="profile-info">
               <strong>Zezha Technology</strong>
             </div>
-
             <div
               className="profile-menu-option"
               onClick={() =>
                 window.open("https://rajeshkanna.in/taxcalc", "_blank")
               }
-              role="button"
-              tabIndex={0}
-              onKeyPress={(e) => {
-                if (e.key === "Enter")
-                  window.open("https://rajeshkanna.in/taxcalc", "_blank");
-              }}
             >
-              <span className="option-icon" aria-hidden="true">
-                🌐
-              </span>
-              <span className="option-text">TAX Calc</span>
+              🌐 <span>TAX Calc</span>
             </div>
-
             <div
               className="profile-menu-option"
               onClick={() =>
                 window.open("https://rajeshkanna.in/emicalc", "_blank")
               }
-              role="button"
-              tabIndex={0}
-              onKeyPress={(e) => {
-                if (e.key === "Enter")
-                  window.open("https://rajeshkanna.in/emicalc", "_blank");
-              }}
             >
-              <span className="option-icon" aria-hidden="true">
-                🔗
-              </span>
-              <span className="option-text">EMI calc</span>
+              🔗 <span>EMI calc</span>
             </div>
           </div>
         )}
@@ -123,17 +170,45 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
 
       <aside className={`sidebar ${isOpen ? "open" : "closed"}`}>
         <nav className="menu-list">
-          {menuItems.map(({ label, path }) => (
-            <button
-              key={label}
-              className={`menu-item ${
-                location.pathname === path ? "active" : ""
-              }`}
-              onClick={() => navigate(path)}
-            >
-              {label}
-            </button>
-          ))}
+          {menuGroups.map((group) =>
+            group.submenu ? (
+              <div key={group.label}>
+                <button
+                  className={`menu-item ${
+                    openMenus[group.label] ? "active" : ""
+                  }`}
+                  onClick={() => toggleMenu(group.label)}
+                >
+                  {group.label} {openMenus[group.label] ? "▾" : "▸"}
+                </button>
+                {openMenus[group.label] && (
+                  <div className="submenu">
+                    {group.submenu.map(({ label, path }) => (
+                      <button
+                        key={label}
+                        className={`submenu-item ${
+                          location.pathname === path ? "active" : ""
+                        }`}
+                        onClick={() => navigate(path)}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <button
+                key={group.label}
+                className={`menu-item ${
+                  location.pathname === group.path ? "active" : ""
+                }`}
+                onClick={() => navigate(group.path!)}
+              >
+                {group.label}
+              </button>
+            )
+          )}
         </nav>
       </aside>
     </>

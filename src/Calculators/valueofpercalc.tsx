@@ -4,7 +4,8 @@ import "../dashboard/Dashboard.css";
 
 const PercentageCalculator: React.FC = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
-  const [total, setTotal] = useState<number | null>(0);
+
+  const [totalStr, setTotalStr] = useState("0");
   const [percentage, setPercentage] = useState<number | null>(0);
   const [result, setResult] = useState<number | null>(null);
 
@@ -17,14 +18,31 @@ const PercentageCalculator: React.FC = () => {
     setSidebarOpen(!isSidebarOpen);
   };
 
+  const formatNumberWithCommas = (value: string) => {
+    const num = value.replace(/,/g, "");
+    if (!isNaN(Number(num))) {
+      return Number(num).toLocaleString("en-IN");
+    }
+    return value;
+  };
+
+  const handleTotalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rawValue = e.target.value.replace(/,/g, "");
+    if (/^\d*$/.test(rawValue)) {
+      setTotalStr(formatNumberWithCommas(rawValue));
+    }
+  };
+
   const calculateValue = () => {
+    const total = Number(totalStr.replace(/,/g, ""));
+
     let hasError = false;
     const newErrors = {
       total: "",
       percentage: "",
     };
 
-    if (total === null || isNaN(total) || total <= 0) {
+    if (isNaN(total) || total <= 0) {
       newErrors.total = "Enter a valid total value.";
       hasError = true;
     }
@@ -41,7 +59,7 @@ const PercentageCalculator: React.FC = () => {
       return;
     }
 
-    const value = (total! * percentage!) / 100;
+    const value = (total * percentage!) / 100;
     setResult(Number(value.toFixed(2)));
   };
 
@@ -63,9 +81,8 @@ const PercentageCalculator: React.FC = () => {
                 value={percentage ?? ""}
                 onChange={(e) => {
                   const value = e.target.value;
-
                   if (value === "") {
-                    setPercentage(null); // Allow empty value
+                    setPercentage(null);
                   } else {
                     const numericValue = Number(value);
                     if (numericValue >= 0 && numericValue <= 100) {
@@ -74,7 +91,6 @@ const PercentageCalculator: React.FC = () => {
                   }
                 }}
               />
-
               {errors.percentage && (
                 <div className="text-danger small">{errors.percentage}</div>
               )}
@@ -83,19 +99,11 @@ const PercentageCalculator: React.FC = () => {
             <div className="mb-3">
               <label className="form-label">Total Value:</label>
               <input
-                type="number"
+                type="text"
                 className="form-control"
-                min={1}
-                max={100}
-                value={total === null || isNaN(total) ? "" : total}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  if (value === "") {
-                    setTotal(null);
-                  } else {
-                    setTotal(Number(value.replace(/^0+(?=\d)/, "")));
-                  }
-                }}
+                value={totalStr}
+                onChange={handleTotalChange}
+                placeholder="Enter total value"
               />
               {errors.total && (
                 <div className="text-danger small">{errors.total}</div>
@@ -111,7 +119,8 @@ const PercentageCalculator: React.FC = () => {
                 <h5 className="text-center mb-3">Result</h5>
                 <p className="text-center fs-4 fw-bold text-success">
                   <strong>
-                    {percentage}% of {total} is {result}
+                    {percentage}% of ₹{totalStr} is ₹
+                    {result.toLocaleString("en-IN")}
                   </strong>
                 </p>
               </div>
