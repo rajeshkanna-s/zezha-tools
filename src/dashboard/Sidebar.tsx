@@ -21,7 +21,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
   const menuGroups = [
     {
       label: "Dashboard",
-      path: "/dashboard",
+      path: "/Dashboard",
     },
 
     {
@@ -78,6 +78,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
     {
       label: "Help",
       path: "/help",
+    },
+    {
+      label: "Resume Tools",
+      path: "/resume-builder",
     },
   ];
 

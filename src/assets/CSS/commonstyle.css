@@ -81,9 +81,12 @@
     button:hover {
         background-color: #0056b3;
     }
+    .mt-4 {
+        margin-top: 0.5rem 8px !important;
+    }
 
     .results {
-        margin-top: 5px;
+        margin-top: 0px;
         padding: 5px;
         background-color: #f8f9fa;
         border-radius: 8px;
@@ -219,4 +222,46 @@
     padding: 0rem;
     text-align: center;
 
+}
+
+
+.dashboard-wrapper {
+  display: flex;
+  height: 100vh;
+  background-color: #f4f6f8;
+}
+
+.main-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  transition: margin-left 0.3s ease;
+}
+
+
+.dashboard-content {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.welcome-section {
+  margin-bottom: 2rem;
+}
+
+.welcome-section h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.intro-text {
+  font-size: 1rem;
+  color: #555;
+}
+
+.tool-content {
+  background: #fff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }

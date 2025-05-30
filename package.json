@@ -16,9 +16,11 @@
     "bootstrap": "^5.3.6",
     "chromedriver": "^136.0.2",
     "dotenv": "^16.5.0",
+    "html2pdf.js": "^0.10.3",
     "node-cron": "^4.0.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-hook-form": "^7.56.4",
     "react-router-dom": "^7.6.0",
     "selenium-webdriver": "^4.32.0",
     "themify-icons": "^1.0.0"
