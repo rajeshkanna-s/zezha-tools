@@ -5,6 +5,7 @@ import "../dashboard/Dashboard.css";
 const DOBCalculator: React.FC = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
   const [dob, setDob] = useState<string>("");
+  const [currentDate, setCurrentDate] = useState<string>("");
 
   const [ageYears, setAgeYears] = useState<number | null>(null);
   const [ageMonths, setAgeMonths] = useState<number | null>(null);
@@ -15,7 +16,6 @@ const DOBCalculator: React.FC = () => {
   const [ageSeconds, setAgeSeconds] = useState<number | null>(null);
 
   const [error, setError] = useState<string>("");
-  const [currentDate, setCurrentDate] = useState<string>("");
 
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
@@ -39,7 +39,7 @@ const DOBCalculator: React.FC = () => {
     const today = new Date(currentDate);
 
     if (birthDate > today) {
-      setError("DOB cannot be after today's date.");
+      setError("DOB cannot be after current date.");
       return;
     }
 
@@ -64,7 +64,6 @@ const DOBCalculator: React.FC = () => {
     setAgeMonths(months);
     setAgeDays(days);
 
-    // Extended calculation
     const diffInMs = today.getTime() - birthDate.getTime();
 
     const totalSeconds = Math.floor(diffInMs / 1000);
@@ -97,16 +96,18 @@ const DOBCalculator: React.FC = () => {
                 className="form-control"
                 value={dob}
                 onChange={(e) => setDob(e.target.value)}
+                max={currentDate}
               />
             </div>
 
             <div className="mb-3">
-              <label className="form-label">Current Date (Today):</label>
+              <label className="form-label">Current Date:</label>
               <input
                 type="date"
                 className="form-control"
                 value={currentDate}
-                readOnly
+                onChange={(e) => setCurrentDate(e.target.value)}
+                min={dob || "1900-01-01"}
               />
             </div>
 
@@ -129,7 +130,6 @@ const DOBCalculator: React.FC = () => {
                       <span>Months:</span>
                       <strong>{formatNumber(ageMonths)}</strong>
                     </li>
-
                     <li className="list-group-item d-flex justify-content-between fw-bold text-success">
                       <span>Days:</span>
                       <strong>{formatNumber(ageDays)}</strong>

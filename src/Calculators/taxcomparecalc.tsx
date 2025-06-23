@@ -11,6 +11,7 @@ interface TaxResult {
 const IncomeTaxCalculator: React.FC = () => {
   // State for Old Regime inputs and results
   const [isSidebarOpen, setSidebarOpen] = useState(true);
+  const [isCalculated, setIsCalculated] = useState(false);
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
@@ -122,50 +123,74 @@ const IncomeTaxCalculator: React.FC = () => {
     tax: number,
     surcharge: number
   ): number {
-    const thresholds = [
-      { limit: 5000000 },
-      { limit: 10000000 },
-      { limit: 20000000 },
-      { limit: 50000000 },
-    ];
+    let marginalRelief = 0;
 
-    for (let i = 0; i < thresholds.length; i++) {
-      const { limit } = thresholds[i];
-      if (income <= limit) {
-        const taxAtLimit = calculateIncomeTaxThresholdOld(limit);
-        const surchargeAtLimit = calculateSurchargeOld(limit, taxAtLimit);
-        const excessIncome = income - limit;
-        return taxAtLimit + surchargeAtLimit + excessIncome;
-      }
+    const threshold1 = 5000000; // 50 lakh
+    const threshold2 = 10000000; // 1 crore
+    const threshold3 = 20000000; // 2 crore
+    const threshold4 = 50000000; // 5 crore
+
+    if (income > threshold1 && income <= threshold2) {
+      const taxAtThreshold = calculateIncomeTaxThreshold(threshold1);
+      const surchargeAtThreshold = calculateSurcharge(
+        threshold1,
+        taxAtThreshold
+      );
+      const excessIncome = income - threshold1;
+      marginalRelief = taxAtThreshold + surchargeAtThreshold + excessIncome;
+    } else if (income > threshold2 && income <= threshold3) {
+      const taxAtThreshold = calculateIncomeTaxThreshold(threshold2);
+      const surchargeAtThreshold = calculateSurcharge(
+        threshold2,
+        taxAtThreshold
+      );
+      const excessIncome = income - threshold2;
+      marginalRelief = taxAtThreshold + surchargeAtThreshold + excessIncome;
+    } else if (income > threshold3 && income <= threshold4) {
+      const taxAtThreshold = calculateIncomeTaxThreshold(threshold3);
+      const surchargeAtThreshold = calculateSurcharge(
+        threshold3,
+        taxAtThreshold
+      );
+      const excessIncome = income - threshold3;
+      marginalRelief = taxAtThreshold + surchargeAtThreshold + excessIncome;
+    } else if (income > threshold4) {
+      const taxAtThreshold = calculateIncomeTaxThreshold(threshold4);
+      const surchargeAtThreshold = calculateSurcharge(
+        threshold4,
+        taxAtThreshold
+      );
+      const excessIncome = income - threshold4;
+      marginalRelief = taxAtThreshold + surchargeAtThreshold + excessIncome;
     }
-    const lastLimit = 50000000;
-    const taxAtLimit = calculateIncomeTaxThresholdOld(lastLimit);
-    const surchargeAtLimit = calculateSurchargeOld(lastLimit, taxAtLimit);
-    return taxAtLimit + surchargeAtLimit + (income - lastLimit);
+
+    return Math.round(marginalRelief);
   }
 
-  function calculateIncomeTaxThresholdOld(income: number): number {
+  function calculateIncomeTaxThreshold(income: number): number {
+    let tax = 0;
     if (income > 250000 && income <= 500000) {
-      return (income - 250000) * 0.05;
+      tax = (income - 250000) * 0.05;
     } else if (income > 500000 && income <= 1000000) {
-      return 12500 + (income - 500000) * 0.2;
+      tax = 12500 + (income - 500000) * 0.2;
     } else if (income > 1000000) {
-      return 112500 + (income - 1000000) * 0.3;
+      tax = 112500 + (income - 1000000) * 0.3;
     }
-    return 0;
+    return Math.round(tax);
   }
 
-  function calculateSurchargeOld(income: number, tax: number): number {
+  function calculateSurcharge(income: number, tax: number): number {
+    let surcharge = 0;
     if (income > 5000000 && income <= 10000000) {
-      return tax * 0.1;
+      surcharge = tax * 0.1;
     } else if (income > 10000000 && income <= 20000000) {
-      return tax * 0.15;
+      surcharge = tax * 0.15;
     } else if (income > 20000000 && income <= 50000000) {
-      return tax * 0.25;
+      surcharge = tax * 0.25;
     } else if (income > 50000000) {
-      return tax * 0.37;
+      surcharge = tax * 0.37;
     }
-    return 0;
+    return Math.round(surcharge);
   }
 
   // New Regime (2025-2026) Tax Calculation
@@ -222,60 +247,84 @@ const IncomeTaxCalculator: React.FC = () => {
     return { taxAfter87A: tax, surcharge, cess, totalTax };
   }
 
-  function calculateMarginalReliefNew(
+  const calculateMarginalReliefNew = (
     income: number,
     tax: number,
     surcharge: number
-  ): number {
-    const thresholds = [
-      { limit: 5000000 },
-      { limit: 10000000 },
-      { limit: 20000000 },
-    ];
+  ): number => {
+    let marginalRelief = 0;
 
-    for (let i = 0; i < thresholds.length; i++) {
-      const { limit } = thresholds[i];
-      if (income <= limit) {
-        const taxAtLimit = calculateIncomeTaxThresholdNew(limit);
-        const surchargeAtLimit = calculateSurchargeNew(limit, taxAtLimit);
-        const excessIncome = income - limit;
-        return taxAtLimit + surchargeAtLimit + excessIncome;
-      }
+    const threshold1 = 5000000; // ₹50 lakh
+    const threshold2 = 10000000; // ₹1 crore
+    const threshold3 = 20000000; // ₹2 crore
+
+    if (income > threshold1 && income <= threshold2) {
+      const taxAtThreshold =
+        calculateIncomeTaxThresholdNewRegimeUpdated(threshold1);
+      const surchargeAtThreshold = calculateSurchargeNewRegime(
+        threshold1,
+        taxAtThreshold
+      );
+      const excessIncome = income - threshold1;
+      marginalRelief = taxAtThreshold + surchargeAtThreshold + excessIncome;
+    } else if (income > threshold2 && income <= threshold3) {
+      const taxAtThreshold =
+        calculateIncomeTaxThresholdNewRegimeUpdated(threshold2);
+      const surchargeAtThreshold = calculateSurchargeNewRegime(
+        threshold2,
+        taxAtThreshold
+      );
+      const excessIncome = income - threshold2;
+      marginalRelief = taxAtThreshold + surchargeAtThreshold + excessIncome;
+    } else if (income > threshold3) {
+      const taxAtThreshold =
+        calculateIncomeTaxThresholdNewRegimeUpdated(threshold3);
+      const surchargeAtThreshold = calculateSurchargeNewRegime(
+        threshold3,
+        taxAtThreshold
+      );
+      const excessIncome = income - threshold3;
+      marginalRelief = taxAtThreshold + surchargeAtThreshold + excessIncome;
     }
 
-    const lastLimit = 20000000;
-    const taxAtLimit = calculateIncomeTaxThresholdNew(lastLimit);
-    const surchargeAtLimit = calculateSurchargeNew(lastLimit, taxAtLimit);
-    return taxAtLimit + surchargeAtLimit + (income - lastLimit);
-  }
+    return Math.round(marginalRelief);
+  };
 
-  function calculateIncomeTaxThresholdNew(income: number): number {
+  const calculateIncomeTaxThresholdNewRegimeUpdated = (
+    income: number
+  ): number => {
+    let tax = 0;
+
     if (income > 400000 && income <= 800000) {
-      return (income - 400000) * 0.05;
+      tax = (income - 400000) * 0.05;
+      tax = 0; // as per 87A benefit applied up to ₹7L
     } else if (income > 800000 && income <= 1200000) {
-      return 20000 + (income - 800000) * 0.1;
+      tax = 20000 + (income - 800000) * 0.1;
+      tax = 0; // assumed further 87A or rebate
     } else if (income > 1200000 && income <= 1600000) {
-      return 60000 + (income - 1200000) * 0.15;
+      tax = 60000 + (income - 1200000) * 0.15;
     } else if (income > 1600000 && income <= 2000000) {
-      return 120000 + (income - 1600000) * 0.2;
+      tax = 120000 + (income - 1600000) * 0.2;
     } else if (income > 2000000 && income <= 2400000) {
-      return 200000 + (income - 2000000) * 0.25;
+      tax = 200000 + (income - 2000000) * 0.25;
     } else if (income > 2400000) {
-      return 300000 + (income - 2400000) * 0.3;
+      tax = 300000 + (income - 2400000) * 0.3;
     }
-    return 0;
-  }
 
-  function calculateSurchargeNew(income: number, tax: number): number {
+    return Math.round(tax);
+  };
+
+  const calculateSurchargeNewRegime = (income: number, tax: number): number => {
+    let surcharge = 0;
     if (income > 5000000 && income <= 10000000) {
-      return tax * 0.1;
+      surcharge = tax * 0.1;
     } else if (income > 10000000 && income <= 20000000) {
-      return tax * 0.15;
+      surcharge = tax * 0.15;
     } else if (income > 20000000) {
-      return tax * 0.25;
+      surcharge = tax * 0.25;
     }
-    return 0;
-  }
+    return Math.round(surcharge);
+  };
 
   const handleOldCalculation = () => {
     const salaryNum = parseInput(oldSalary);
@@ -297,6 +346,7 @@ const IncomeTaxCalculator: React.FC = () => {
 
     const result = calculateOldRegimeTax(salaryNum, deductionNum);
     setOldResult(result);
+    setIsCalculated(true);
   };
 
   const handleNewCalculation = () => {
@@ -319,6 +369,7 @@ const IncomeTaxCalculator: React.FC = () => {
 
     const result = calculateNewRegimeTax(salaryNum, deductionNum);
     setNewResult(result);
+    setIsCalculated(true);
   };
 
   return (
@@ -390,10 +441,13 @@ const IncomeTaxCalculator: React.FC = () => {
 
                     <strong
                       style={{
-                        color: oldResult.totalTax === 0 ? "red" : "inherit",
+                        color:
+                          isCalculated && oldResult.totalTax === 0
+                            ? "red"
+                            : "inherit",
                       }}
                     >
-                      {oldResult.totalTax === 0
+                      {isCalculated && oldResult.totalTax === 0
                         ? "NO TAX (0)"
                         : formatCurrency(oldResult.totalTax)}
                     </strong>
@@ -462,12 +516,16 @@ const IncomeTaxCalculator: React.FC = () => {
                   <li className="list-group-item d-flex justify-content-between fw-bold text-success">
                     <span>Total Tax Payable</span>
                     {/* <strong>{formatCurrency(newResult.totalTax)}</strong> */}
+
                     <strong
                       style={{
-                        color: newResult.totalTax === 0 ? "red" : "inherit",
+                        color:
+                          isCalculated && newResult.totalTax === 0
+                            ? "red"
+                            : "inherit",
                       }}
                     >
-                      {newResult.totalTax === 0
+                      {isCalculated && newResult.totalTax === 0
                         ? "NO TAX (0)"
                         : formatCurrency(newResult.totalTax)}
                     </strong>
