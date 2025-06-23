@@ -12,6 +12,7 @@ import PERCENTAGECalculator from "./Calculators/percalc";
 import VALUEOFPERCalculator from "./Calculators/valueofpercalc";
 import OLDREGIMECalculator from "./Calculators/oldregimecalc";
 import NEWREGIMECalculator from "./Calculators/newregimecalc";
+import LOANCalculator from "./Calculators/loancalc";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ResumeBuilder from "./resume-builder/pages/ResumeBuilder";
 
@@ -39,6 +40,7 @@ function App() {
         <Route path="/old-regime-tax" element={<OLDREGIMECalculator />} />
         <Route path="/new-regime-tax" element={<NEWREGIMECalculator />} />
         <Route path="/resume-builder" element={<ResumeBuilder />} />
+        <Route path="/loan-calculator" element={<LOANCalculator />} />
 
         {/* You can add more routes here */}
       </Routes>
