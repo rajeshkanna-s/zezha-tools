@@ -79,11 +79,11 @@
   }
   
   /* Main content styles */
-  .main-content {
+  /* .main-content {
     margin-left: 240px;
     padding: 20px;
     transition: margin-left 0.3s ease;
-  }
+  } */
   
   .main-content.sidebar-closed {
     margin-left: 0;

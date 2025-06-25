@@ -139,11 +139,7 @@
     .sidebar.closed {
       transform: translateX(-100%);
     }
-  
-    .main-content {
-      margin-left: 0 !important;
-      padding: 12px;
-    }
+
   
     .container {
       flex-direction: column;
@@ -231,13 +227,17 @@
   background-color: #f4f6f8;
 }
 
+/* .main-content {
+  margin-left: 0 !important;
+  padding: 12px;
+}
+
 .main-area {
   flex: 1;
   display: flex;
   flex-direction: column;
   transition: margin-left 0.3s ease;
-}
-
+} */
 
 .dashboard-content {
   flex: 1;

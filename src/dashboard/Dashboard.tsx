@@ -1,52 +1,68 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import "./Dashboard.css";
 import "../assets/CSS/commonstyle.css";
 
+const toolCategories = [
+  {
+    items: [
+      { label: "EMI Calculator", path: "/emi-calculator", icon: "📈" },
+      { label: "FD Calculator", path: "/fd-calculator", icon: "🏦" },
+      { label: "RD Calculator", path: "/rd-calculator", icon: "💰" },
+      { label: "SIP Calculator", path: "/sip-calculator", icon: "📊" },
+      { label: "TDS Calculator", path: "/tds-calculator", icon: "🧾" },
+      { label: "Old Regime Tax", path: "/old-regime-tax", icon: "📜" },
+      { label: "New Regime Tax", path: "/new-regime-tax", icon: "🧮" },
+      { label: "Tax Compare", path: "/taxcompare-calculator", icon: "🔍" },
+      { label: "Loan Calculator", path: "/loan-calculator", icon: "🏠" },
+      {
+        label: "Percentage Calculator",
+        path: "/percentage-calculator",
+        icon: "📐",
+      },
+      {
+        label: "Value Of Percentage",
+        path: "/value-of-percentage",
+        icon: "🔢",
+      },
+      { label: "DOB Calculator", path: "/dob-calculator", icon: "🎂" },
+      { label: "Interest Breakdown", path: "/interest-breakdown", icon: "💹" },
+      { label: "Find Day Calculator", path: "/dayfind-calculator", icon: "⏳" },
+      { label: "Loan Calculator", path: "/loan-calculator", icon: "🏠" },
+    ],
+  },
+];
+
 const Dashboard: React.FC = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
-
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
 
   return (
     <div className="dashboard-wrapper">
       <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-
       <div
         className={`main-area ${
           isSidebarOpen ? "sidebar-open" : "sidebar-closed"
         }`}
       >
-        <div className="dashboard">
-          <div className="dashboard-header">
-            <h1>Zezha Tools</h1>
-            <p>Your all-in-one platform for tax, finance, and utility tools</p>
-          </div>
+        <div className="main-content">
+          <h3 className="prompt">What would you like to use?</h3>
 
-          <div className="dashboard-grid">
-            <div className="dashboard-card">
-              <h3>Tax Tools</h3>
-              <ul>
-                <li>Old vs New Regime Calculator</li>
-                <li>TDS Calculator</li>
-                <li>Tax Comparison Tool</li>
-              </ul>
+          {toolCategories.map((category, catIdx) => (
+            <div key={catIdx} className="tool-category">
+              <div className="tool-grid">
+                {category.items.map((item, itemIdx) => (
+                  <Link to={item.path} key={itemIdx} className="tool-card-link">
+                    <div className="tool-card">
+                      <div className="tool-icon">{item.icon}</div>
+                      <div className="tool-label">{item.label}</div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
             </div>
-
-            <div className="dashboard-card">
-              <h3>Finance Tools</h3>
-              <ul>
-                <li>EMI Calculator</li>
-                <li>FD Calculator</li>
-                <li>RD Calculator</li>
-                <li>SIP Calculator</li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="dashboard-summary">
-            <p>More tools coming soon. Stay tuned!</p>
-          </div>
+          ))}
         </div>
       </div>
     </div>

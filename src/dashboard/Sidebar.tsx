@@ -27,11 +27,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
     {
       label: "Calculators",
       submenu: [
+        { label: "Calculator", path: "/basiccalc-calculator" },
         { label: "EMI Calculator", path: "/emi-calculator" },
         { label: "FD Calculator", path: "/fd-calculator" },
         { label: "RD Calculator", path: "/rd-calculator" },
         { label: "SIP Calculator", path: "/sip-calculator" },
         { label: "TDS Calculator", path: "/tds-calculator" },
+        { label: "Currency Calculator", path: "/currency-calculator" },
       ],
     },
     {
@@ -60,7 +62,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
       label: "Date Tools",
       submenu: [
         { label: "DOB Calculator", path: "/dob-calculator" },
-        { label: "Age Calculator", path: "/age-calculator" },
+        { label: "FIND DAY Calculator", path: "/dayfind-calculator" },
       ],
     },
     {
