@@ -59,6 +59,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
       ],
     },
     {
+      label: "Get Img/Video",
+      submenu: [
+        { label: "Image Download", path: "/image-downloader" },
+        { label: "Video Download", path: "/video-downloader" },
+      ],
+    },
+    {
       label: "Date Tools",
       submenu: [
         { label: "DOB Calculator", path: "/dob-calculator" },
