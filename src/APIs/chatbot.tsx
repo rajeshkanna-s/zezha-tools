@@ -22,14 +22,14 @@ const ChatBot: React.FC = () => {
     setLoading(true);
 
     try {
+      const apiKey = import.meta.env.VITE_DEEPSEEKV3_API;
+
       const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
         method: "POST",
         headers: {
-          Authorization:
-            "Bearer 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",
+          Authorization: "Bearer " + apiKey,
           "Content-Type": "application/json",
-          "HTTP-Referer": "http://localhost:3000",
-          "X-Title": "FD Chat Assistant",
+          "X-Title": "Chat Assistant",
         },
         body: JSON.stringify({
           //   model: "deepseek/deepseek-r1-0528:free",
@@ -41,6 +41,7 @@ const ChatBot: React.FC = () => {
       });
 
       const data = await res.json();
+      console.log("Full API response:", data);
       const botReply = data.choices?.[0]?.message?.content || "No response.";
       setMessages([
         ...updatedMessages,
