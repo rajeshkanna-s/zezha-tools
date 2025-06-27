@@ -23,6 +23,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
       label: "Dashboard",
       path: "/Dashboard",
     },
+    {
+      label: "ChatBot",
+      path: "/chat-bot",
+    },
 
     {
       label: "Calculators",

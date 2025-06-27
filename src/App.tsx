@@ -18,6 +18,7 @@ import LOANCalculator from "./Calculators/loancalc";
 import FindDayCalculator from "./Calculators/finddaycalc";
 import ImageSearchDownloader from "./APIs/getImages";
 import VideoSearchDownloader from "./APIs/getVideo";
+import ChatBot from "./APIs/chatbot";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ResumeBuilder from "./resume-builder/pages/ResumeBuilder";
 
@@ -51,6 +52,7 @@ function App() {
         <Route path="/dayfind-calculator" element={<FindDayCalculator />} />
         <Route path="/image-downloader" element={<ImageSearchDownloader />} />
         <Route path="/video-downloader" element={<VideoSearchDownloader />} />
+        <Route path="/chat-bot" element={<ChatBot />} />
 
         {/* You can add more routes here */}
       </Routes>
