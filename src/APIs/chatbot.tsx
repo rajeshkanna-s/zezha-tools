@@ -22,9 +22,10 @@ const ChatBot: React.FC = () => {
     setLoading(true);
 
     try {
-      const apiKey = import.meta.env.VITE_DEEPSEEKV3_API;
+      const apiKey = import.meta.env.VITE_DEEPSEEKV3_APIKEY;
+      const aiUrl = import.meta.env.VITE_DEEPSEEKV3_APIURL;
 
-      const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      const res = await fetch(aiUrl, {
         method: "POST",
         headers: {
           Authorization: "Bearer " + apiKey,
