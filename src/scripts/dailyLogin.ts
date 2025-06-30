@@ -1,4 +1,4 @@
-import { Builder, By, until, WebDriver } from 'selenium-webdriver';
+import { Builder, By, until } from 'selenium-webdriver';
 import * as chrome from 'selenium-webdriver/chrome.js';
 import chromedriver from 'chromedriver';
 import dotenv from 'dotenv';
@@ -9,14 +9,13 @@ dotenv.config();
 console.log("🚀 Starting dailyLoginAutomation...");
 console.log("Username from .env:", process.env.VITE_GREYTHR_USERNAME);
 
-async function dailyLoginAutomation(): Promise<void> {
+async function dailyLoginAutomation() {
     const chromeOptions = new chrome.Options().addArguments('--start-maximized');
-
     const serviceBuilder = new chrome.ServiceBuilder(chromedriver.path);
 
     console.log("🛠️ Building WebDriver...");
 
-    const driver: WebDriver = await new Builder()
+    const driver = await new Builder()
         .forBrowser('chrome')
         .setChromeService(serviceBuilder)
         .setChromeOptions(chromeOptions)
