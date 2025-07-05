@@ -94,7 +94,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
     },
     {
       label: "Resume Tools",
-      path: "/resume-builder",
+      path: "https://zezhatools.lovable.app/",
     },
   ];
 
@@ -220,7 +220,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                 className={`menu-item ${
                   location.pathname === group.path ? "active" : ""
                 }`}
-                onClick={() => navigate(group.path!)}
+                onClick={() => {
+                  if (group.path?.startsWith("http")) {
+                    window.open(group.path, "_blank");
+                  } else {
+                    navigate(group.path!);
+                  }
+                }}
               >
                 {group.label}
               </button>

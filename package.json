@@ -7,9 +7,8 @@
     "start": "vite",
     "build": "vite build",
     "serve": "vite preview",
-
-  "debug-login": "ts-node -r dotenv/config --files src/scripts/dailyLogin.ts",
-     "daily-login": "ts-node -r dotenv/config src/scripts/dailyLogin.ts",
+    "debug-login": "ts-node -r dotenv/config --files src/scripts/dailyLogin.ts",
+    "daily-login": "ts-node -r dotenv/config src/scripts/dailyLogin.ts",
     "testChrome-login": "ts-node --project tsconfig.cjs.json src/scripts/testChrome.ts",
     "schedule-login": "node -e \"require('child_process').exec('npm run daily-login')\""
   },
@@ -23,6 +22,7 @@
     "node-cron": "^4.0.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-helmet": "^6.1.0",
     "react-hook-form": "^7.56.4",
     "react-is": "^19.1.0",
     "react-markdown": "^10.1.0",
@@ -37,6 +37,7 @@
     "@types/node": "^22.15.19",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
+    "@types/react-helmet": "^6.1.11",
     "@types/react-router-dom": "^5.3.3",
     "@types/selenium-webdriver": "^4.1.9",
     "@vitejs/plugin-react": "^4.3.4",
