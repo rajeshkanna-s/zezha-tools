@@ -34,7 +34,7 @@ const ChatBot: React.FC = () => {
         },
         body: JSON.stringify({
           //   model: "deepseek/deepseek-r1-0528:free",
-          model: "deepseek/deepseek-chat-v3:free",
+          model: "deepseek/deepseek-chat-v3-0324:free",
           // model: "mistralai/devstral-small:free",
 
           messages: updatedMessages,
@@ -101,7 +101,7 @@ const ChatBot: React.FC = () => {
                   </div>
                 ))}
               {loading && (
-                <div className="text-start text-muted">Bot is typing...</div>
+                <div className="text-start text-muted">Bot is thinking...</div>
               )}
             </div>
 
