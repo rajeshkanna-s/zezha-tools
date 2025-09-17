@@ -27,6 +27,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
       label: "ChatBot",
       path: "/chat-bot",
     },
+    {
+      label: "Get Img/Video",
+      submenu: [
+        { label: "Image Download", path: "/image-downloader" },
+        { label: "Video Download", path: "/video-downloader" },
+      ],
+    },
 
     {
       label: "Calculators",
@@ -38,6 +45,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
         { label: "SIP Calculator", path: "/sip-calculator" },
         { label: "TDS Calculator", path: "/tds-calculator" },
         { label: "Currency Calculator", path: "/currency-calculator" },
+        { label: "Loan Calculator", path: "/loan-calculator" },
+        { label: "Percentage Calculator", path: "/percentage-calculator" },
+        { label: "Value Of Percentage", path: "/value-of-percentage" },
+        { label: "DOB Calculator", path: "/dob-calculator" },
+        { label: "FIND DAY Calculator", path: "/dayfind-calculator" },
       ],
     },
     {
@@ -49,52 +61,46 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
       ],
     },
     {
-      label: "Loan Tools",
+      label: "Products",
       submenu: [
-        { label: "Loan Calculator", path: "/loan-calculator" },
-        { label: "Interest Breakdown", path: "/interest-breakdown" },
+        {
+          label: "ParkingMate",
+          path: "https://parkingmate.netlify.app/",
+        },
+        {
+          label: "NoteIQ",
+          path: "https://noteiq.lovable.app/",
+        },
+        {
+          label: "Resume Tool",
+          path: "https://zezhatools.lovable.app/",
+        },
+        {
+          label: "Invoice-Gen",
+          path: "https://myinv.lovable.app/",
+        },
+        {
+          label: "ReportIQ",
+          path: "https://reportiq.lovable.app/",
+        },
+        {
+          label: "SecretChat",
+          path: "https://chatiq.lovable.app/",
+        },
+        {
+          label: "Portfolio",
+          path: "https://rajeshkanna.in/",
+        },
       ],
     },
-    {
-      label: "Conversions",
-      submenu: [
-        { label: "Percentage Calculator", path: "/percentage-calculator" },
-        { label: "Value Of Percentage", path: "/value-of-percentage" },
-      ],
-    },
-    {
-      label: "Get Img/Video",
-      submenu: [
-        { label: "Image Download", path: "/image-downloader" },
-        { label: "Video Download", path: "/video-downloader" },
-      ],
-    },
-    {
-      label: "Date Tools",
-      submenu: [
-        { label: "DOB Calculator", path: "/dob-calculator" },
-        { label: "FIND DAY Calculator", path: "/dayfind-calculator" },
-      ],
-    },
-    {
-      label: "Reports",
-      path: "/reports",
-    },
-    {
-      label: "Notifications",
-      path: "/notifications",
-    },
+
     {
       label: "Settings",
-      path: "/settings",
+      path: "/#",
     },
     {
       label: "Help",
-      path: "/help",
-    },
-    {
-      label: "Resume Tools",
-      path: "https://zezhatools.lovable.app/",
+      path: "/#",
     },
   ];
 
@@ -159,30 +165,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
         >
           ▾
         </span>
-
-        {showProfilePopup && (
-          <div className="profile-popup" ref={popupRef}>
-            <div className="profile-info">
-              <strong>Zezha Technology</strong>
-            </div>
-            <div
-              className="profile-menu-option"
-              onClick={() =>
-                window.open("https://rajeshkanna.in/taxcalc", "_blank")
-              }
-            >
-              🌐 <span>TAX Calc</span>
-            </div>
-            <div
-              className="profile-menu-option"
-              onClick={() =>
-                window.open("https://rajeshkanna.in/emicalc", "_blank")
-              }
-            >
-              🔗 <span>EMI calc</span>
-            </div>
-          </div>
-        )}
       </div>
 
       <aside className={`sidebar ${isOpen ? "open" : "closed"}`}>
@@ -206,7 +188,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                         className={`submenu-item ${
                           location.pathname === path ? "active" : ""
                         }`}
-                        onClick={() => navigate(path)}
+                        onClick={() => {
+                          if (path?.startsWith("http")) {
+                            window.open(path, "_blank");
+                          } else {
+                            navigate(path!);
+                          }
+                        }}
                       >
                         {label}
                       </button>
