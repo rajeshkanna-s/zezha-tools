@@ -30,11 +30,11 @@ const ChatBot: React.FC = () => {
         headers: {
           Authorization: "Bearer " + apiKey,
           "Content-Type": "application/json",
-          "X-Title": "Chat Assistant",
+          //"X-Title": "Chat Assistant",
         },
         body: JSON.stringify({
           //   model: "deepseek/deepseek-r1-0528:free",
-          model: "deepseek/deepseek-chat-v3-0324:free",
+          model: "deepseek/deepseek-chat-v3-0324",
           // model: "mistralai/devstral-small:free",
 
           messages: updatedMessages,
