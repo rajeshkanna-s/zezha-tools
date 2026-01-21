@@ -62,74 +62,65 @@ const ChatBot: React.FC = () => {
     if (e.key === "Enter") sendMessage();
   };
 
-    return (
+   return (
     <div className="container-fluid">
       <div className="row">
         <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
 
         <main className={`col ${isSidebarOpen ? "ms-3" : ""}`}>
-          <div className="chat-page">
-            <div className="chat-shell">
-              <div className="chat-stream">
-                {messages.filter((msg) => msg.role !== "system").length ===
-                  0 && (
-                  <div className="chat-hero">
-                    <div className="chat-hero-icon" aria-hidden="true">
-                      <span />
-                      <span />
-                      <span />
+          <div className="chatcard shadow p-4 mt-4">
+            <h2 className="text-center mb-4">Chat Assistant</h2>
+
+            <div
+              className="chat-box bg-light border rounded p-3 mb-3"
+              style={{ height: "400px", overflowY: "auto" }}
+            >
+              {messages
+                .filter((msg) => msg.role !== "system")
+                .map((msg, index) => (
+                  <div
+                    key={index}
+                    className={`mb-2 ${
+                      msg.role === "user" ? "text-end" : "text-start"
+                    }`}
+                  >
+                    <div
+                      className={`d-inline-block p-2 rounded ${
+                        msg.role === "user"
+                          ? "bg-success text-white"
+                          : "bg-secondary text-white"
+                      }`}
+                      style={{
+                        whiteSpace: "pre-wrap",
+                        textAlign: "left",
+                        maxWidth: "100%",
+                      }}
+                    >
+                      <ReactMarkdown>{msg.content}</ReactMarkdown>
                     </div>
-                    <h2>How can I help, RAJESHKANNA?</h2>
-                    <p>Write a prompt, @someone, or use / for actions</p>
                   </div>
-                )}
+                ))}
+              {loading && (
+                <div className="text-start text-muted">Bot is thinking...</div>
+              )}
+            </div>
 
-                <div className="chat-content">
-                  {messages
-                    .filter((msg) => msg.role !== "system")
-                    .map((msg, index) => (
-                      <div key={index} className={`chat-message ${msg.role}`}>
-                        <div className="chat-bubble">
-                          <ReactMarkdown>{msg.content}</ReactMarkdown>
-                        </div>
-                      </div>
-                    ))}
-                  {loading && (
-                    <div className="chat-message assistant">
-                      <div className="chat-bubble chat-loading">
-                        Bot is thinking...
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <div className="chat-input">
-                <div className="chat-input-actions">
-                  <button className="chat-input-icon" type="button">
-                    +
-                  </button>
-                  <button className="chat-input-icon" type="button">
-                    ≡
-                  </button>
-                </div>
-                <input
-                  type="text"
-                  className="chat-input-field"
-                  placeholder="Message Chat Assistant..."
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                />
-                <button
-                  className="chat-send"
-                  onClick={sendMessage}
-                  disabled={loading || !input.trim()}
-                  aria-label="Send message"
-                >
-                  ↑
-                </button>
-              </div>
+            <div className="input-group">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Ask me anything..."
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+              />
+              <button
+                className="btn btn-success"
+                onClick={sendMessage}
+                disabled={loading || !input.trim()}
+              >
+                {loading ? "Sending..." : "Send"}
+              </button>
             </div>
           </div>
         </main>
@@ -139,4 +130,5 @@ const ChatBot: React.FC = () => {
 };
 
 export default ChatBot;
+
 
