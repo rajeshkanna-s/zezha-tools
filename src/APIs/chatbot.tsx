@@ -70,6 +70,7 @@ const ChatBot: React.FC = () => {
         <main className={`col ${isSidebarOpen ? "ms-3" : ""}`}>
           <div className="chat-page">
             <div className="chat-shell">
+
               <div className="chat-stream">
                 {messages.filter((msg) => msg.role !== "system").length ===
                   0 && (
@@ -113,6 +114,39 @@ const ChatBot: React.FC = () => {
                     ≡
                   </button>
                 </div>
+
+              <header className="chat-header">
+                <div>
+                  <h2>Chat Assistant</h2>
+                  <p>Your GPT-style chat experience.</p>
+                </div>
+              </header>
+
+              <div className="chat-content">
+                {messages
+                  .filter((msg) => msg.role !== "system")
+                  .map((msg, index) => (
+                    <div key={index} className={`chat-message ${msg.role}`}>
+                      <span className="chat-role">
+                        {msg.role === "user" ? "You" : "Assistant"}
+                      </span>
+                      <div className="chat-bubble">
+                        <ReactMarkdown>{msg.content}</ReactMarkdown>
+                      </div>
+                    </div>
+                  ))}
+                {loading && (
+                  <div className="chat-message assistant">
+                    <span className="chat-role">Assistant</span>
+                    <div className="chat-bubble chat-loading">
+                      Bot is thinking...
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="chat-input">
+
                 <input
                   type="text"
                   className="chat-input-field"
@@ -125,9 +159,14 @@ const ChatBot: React.FC = () => {
                   className="chat-send"
                   onClick={sendMessage}
                   disabled={loading || !input.trim()}
+
                   aria-label="Send message"
                 >
                   ↑
+
+                >
+                  {loading ? "Sending..." : "Send"}
+
                 </button>
               </div>
             </div>
