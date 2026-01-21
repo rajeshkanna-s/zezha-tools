@@ -70,6 +70,51 @@ const ChatBot: React.FC = () => {
         <main className={`col ${isSidebarOpen ? "ms-3" : ""}`}>
           <div className="chat-page">
             <div className="chat-shell">
+
+              <div className="chat-stream">
+                {messages.filter((msg) => msg.role !== "system").length ===
+                  0 && (
+                  <div className="chat-hero">
+                    <div className="chat-hero-icon" aria-hidden="true">
+                      <span />
+                      <span />
+                      <span />
+                    </div>
+                    <h2>How can I help, RAJESHKANNA?</h2>
+                    <p>Write a prompt, @someone, or use / for actions</p>
+                  </div>
+                )}
+
+                <div className="chat-content">
+                  {messages
+                    .filter((msg) => msg.role !== "system")
+                    .map((msg, index) => (
+                      <div key={index} className={`chat-message ${msg.role}`}>
+                        <div className="chat-bubble">
+                          <ReactMarkdown>{msg.content}</ReactMarkdown>
+                        </div>
+                      </div>
+                    ))}
+                  {loading && (
+                    <div className="chat-message assistant">
+                      <div className="chat-bubble chat-loading">
+                        Bot is thinking...
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="chat-input">
+                <div className="chat-input-actions">
+                  <button className="chat-input-icon" type="button">
+                    +
+                  </button>
+                  <button className="chat-input-icon" type="button">
+                    ≡
+                  </button>
+                </div>
+
               <header className="chat-header">
                 <div>
                   <h2>Chat Assistant</h2>
@@ -101,6 +146,7 @@ const ChatBot: React.FC = () => {
               </div>
 
               <div className="chat-input">
+
                 <input
                   type="text"
                   className="chat-input-field"
@@ -113,8 +159,14 @@ const ChatBot: React.FC = () => {
                   className="chat-send"
                   onClick={sendMessage}
                   disabled={loading || !input.trim()}
+
+                  aria-label="Send message"
+                >
+                  ↑
+
                 >
                   {loading ? "Sending..." : "Send"}
+
                 </button>
               </div>
             </div>
