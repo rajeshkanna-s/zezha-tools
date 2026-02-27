@@ -81,15 +81,27 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
         },
         {
           label: "ReportIQ",
-          path: "https://reportiq.lovable.app/",
+          path: "https://reportsiq.in/",
         },
         {
           label: "SecretChat",
           path: "https://chatiq.lovable.app/",
         },
         {
-          label: "Portfolio",
+          label: "My Portfolio",
           path: "https://rajeshkanna.in/",
+        },
+         {
+          label: "Zezha Portfolio",
+          path: "https://zezha.in/",
+        },
+        {
+          label: "Healthyplates",
+          path: "https://healthyplates.in/",
+        },
+         {
+          label: "ZezhaTalent",
+          path: "https://zezhatalent.in/",
         },
       ],
     },
