@@ -1,0 +1,21 @@
+Order_ID,Sale_Date,Sales_Rep,Region,Category,Price,Quantity,Commission,Amount,Customer_Rating
+ORD001,2023-01-15,Alice,North,Electronics,1200.50,2,120.05,2401.00,4.5
+ORD002,2023-01-16,Bob,South,Furniture,450.00,4,90.00,1800.00,4.0
+ORD003,2023-01-17,Charlie,East,Office Supplies,15.75,50,39.37,787.50,3.8
+ORD004,2023-01-18,Alice,North,Furniture,850.25,1,42.51,850.25,4.8
+ORD005,2023-01-19,David,West,Electronics,2100.00,1,210.00,2100.00,4.9
+ORD006,2023-01-20,Bob,South,Office Supplies,12.50,100,62.50,1250.00,4.2
+ORD007,2023-01-21,Charlie,East,Electronics,950.00,3,142.50,2850.00,4.1
+ORD008,2023-01-22,David,West,Furniture,320.00,6,96.00,1920.00,3.5
+ORD009,2023-01-23,Alice,North,Office Supplies,8.99,200,89.90,1798.00,4.7
+ORD010,2023-01-24,Bob,South,Electronics,150.00,10,75.00,1500.00,4.6
+ORD011,2023-01-25,Charlie,East,Furniture,600.00,2,60.00,1200.00,3.9
+ORD012,2023-01-26,David,West,Office Supplies,25.00,40,50.00,1000.00,4.3
+ORD013,2023-01-27,Alice,North,Electronics,899.99,2,89.99,1799.98,4.8
+ORD014,2023-01-28,Bob,South,Furniture,1200.00,1,60.00,1200.00,4.4
+ORD015,2023-01-29,Charlie,East,Office Supplies,5.50,300,82.50,1650.00,4.0
+ORD016,2023-01-30,David,West,Electronics,1800.50,1,180.05,1800.50,5.0
+ORD017,2023-01-31,Alice,North,Furniture,450.75,3,67.61,1352.25,4.5
+ORD018,2023-02-01,Bob,South,Office Supplies,18.25,80,73.00,1460.00,4.1
+ORD019,2023-02-02,Charlie,East,Electronics,1150.00,2,115.00,2300.00,4.7
+ORD020,2023-02-03,David,West,Furniture,780.00,2,78.00,1560.00,3.6
