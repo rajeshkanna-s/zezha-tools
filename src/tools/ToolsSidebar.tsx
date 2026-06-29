@@ -37,6 +37,9 @@ export interface MenuSection {
 
 export const MENU_SECTIONS: MenuSection[] = [
     {
+        id: 'home', label: 'Home', icon: Home, items: [],
+    },
+    {
         id: 'convertors', label: 'Convertors', icon: Wrench,
         items: [
             { id: 'image-to-pdf', label: 'Image to PDF', icon: Image },
@@ -197,6 +200,7 @@ export const MENU_SECTIONS: MenuSection[] = [
 
 /* ── Per-section icon colors (bg + text) ── */
 const SECTION_COLORS: Record<string, { bg: string; text: string }> = {
+    'home':                   { bg: 'bg-indigo-50',  text: 'text-indigo-600' },
     'get-img-video':          { bg: 'bg-pink-50',    text: 'text-pink-600' },
     'products':               { bg: 'bg-emerald-50', text: 'text-emerald-600' },
     'convertors':             { bg: 'bg-blue-50',    text: 'text-blue-600' },

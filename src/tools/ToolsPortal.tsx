@@ -293,8 +293,8 @@ const GET_IMG_VIDEO_TOOLS = [
 ];
 
 export const ToolsPortal: React.FC<ToolsPortalProps> = ({ onHome, onInvoice, onBankStatement, onPayInPayOut, onSubscribe, onInvitation, onEventPage, onLogoCreator, onAtsAnalyser, onEbookCreator, pendingToolSelect, onPendingToolConsumed, defaultDomain: defaultDomainProp, onDefaultDomainConsumed }) => {
-  const [activeTool, setActiveTool] = useState<string | null>('image-to-pdf');
-  const [activeSection, setActiveSection] = useState<string>('convertors');
+  const [activeTool, setActiveTool] = useState<string | null>(null);
+  const [activeSection, setActiveSection] = useState<string>('home');
   const [showExpiredToast, setShowExpiredToast] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { canUpload } = useAuth();
@@ -320,7 +320,7 @@ export const ToolsPortal: React.FC<ToolsPortalProps> = ({ onHome, onInvoice, onB
 
   const handleSelectTool = (toolId: string) => {
     // Intercept certain tools that are actually standalone sections
-    if (['startup-name-checker', 'festival-gift-planner', 'rent-vs-buy-calculator', 'marriage-budget-planner', 'unit-converter', 'products'].includes(toolId)) {
+    if (['startup-name-checker', 'festival-gift-planner', 'rent-vs-buy-calculator', 'marriage-budget-planner', 'unit-converter', 'products', 'home'].includes(toolId)) {
       handleSelectSection(toolId);
       return;
     }
@@ -366,7 +366,7 @@ export const ToolsPortal: React.FC<ToolsPortalProps> = ({ onHome, onInvoice, onB
       onLogoCreator();
       return;
     }
-    if (['get-img-video', 'products', 'life-decision-simulator', 'startup-name-checker', 'festival-gift-planner', 'rent-vs-buy-calculator', 'marriage-budget-planner', 'unit-converter', 'govt-scheme-finder'].includes(sectionId)) {
+    if (['home', 'get-img-video', 'products', 'life-decision-simulator', 'startup-name-checker', 'festival-gift-planner', 'rent-vs-buy-calculator', 'marriage-budget-planner', 'unit-converter', 'govt-scheme-finder'].includes(sectionId)) {
       if (!isSubscribed) {
         setShowExpiredToast(true);
         setTimeout(() => { setShowExpiredToast(false); onSubscribe(); }, 1500);
@@ -397,6 +397,8 @@ export const ToolsPortal: React.FC<ToolsPortalProps> = ({ onHome, onInvoice, onB
     }
 
     switch (activeSection) {
+      case 'home':
+        return <ToolsHome onSelectTool={handleSelectTool} onSelectSection={handleSelectSection} />;
       case 'get-img-video':
         return (
           <Suspense fallback={<div className="flex items-center justify-center h-full text-slate-400 text-sm">Loading Image Downloader...</div>}>

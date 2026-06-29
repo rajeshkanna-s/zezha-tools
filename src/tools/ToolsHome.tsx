@@ -1,60 +1,251 @@
-import React from 'react';
-import { Image, FileDown, Minimize2, Merge, Trash2, FileImage, FileText, ScanText, Scissors, ArrowUpDown, Code2, Crop, FileSignature } from 'lucide-react';
+import React, { useState, useMemo } from 'react';
+import { Search, Sparkles, ArrowRight, Star } from 'lucide-react';
+import { MENU_SECTIONS } from './ToolsSidebar';
 import { useCustomTools } from '@/hooks/useCustomTools';
+import { useFavouriteTools } from '@/hooks/useFavouriteTools';
 
 interface ToolsHomeProps {
   onSelectTool: (tool: string) => void;
+  onSelectSection: (section: string) => void;
 }
 
-const tools = [
-  { id: 'image-to-pdf', icon: Image, title: 'Image to PDF', desc: 'Convert multiple images into a single PDF document', color: 'bg-blue-500' },
-  { id: 'compress-pdf', icon: FileDown, title: 'Compress PDF', desc: 'Reduce PDF file size while maintaining quality', color: 'bg-purple-500' },
-  { id: 'edit-pdf', icon: FileSignature, title: 'Edit PDF', desc: 'Visually edit PDFs, add text, watermarks & signatures', color: 'bg-indigo-600' },
-  { id: 'compress-image', icon: Minimize2, title: 'Compress Image', desc: 'Reduce image file sizes with quality control', color: 'bg-teal-500' },
-  { id: 'merge-pdf', icon: Merge, title: 'Merge PDF', desc: 'Combine multiple PDF files into one', color: 'bg-orange-500' },
-  { id: 'pdf-to-image', icon: FileImage, title: 'PDF to Image', desc: 'Convert PDF pages to PNG or JPG images', color: 'bg-rose-500' },
-  { id: 'word-to-pdf', icon: FileText, title: 'Word to PDF', desc: 'Convert DOCX documents to PDF format', color: 'bg-indigo-500' },
-  { id: 'image-to-text', icon: ScanText, title: 'Image to Text', desc: 'Extract text from images using Tesseract OCR', color: 'bg-cyan-500' },
-  { id: 'split-pdf', icon: Scissors, title: 'Split PDF', desc: 'Split a PDF into individual pages or ranges', color: 'bg-violet-500' },
-  { id: 'organize-pdf', icon: ArrowUpDown, title: 'Organize PDF', desc: 'Rearrange pages in your PDF by drag and drop', color: 'bg-amber-500' },
-  { id: 'html-to-pdf', icon: Code2, title: 'HTML to PDF', desc: 'Convert HTML content to a downloadable PDF', color: 'bg-sky-500' },
-  { id: 'crop-pdf', icon: Crop, title: 'Crop PDF', desc: 'Trim margins and crop pages in your PDF', color: 'bg-lime-500' },
-  { id: 'delete-pdf-pages', icon: Trash2, title: 'Delete PDF Pages', desc: 'Remove specific pages from a PDF file', color: 'bg-red-500' },
-];
-
-export const ToolsHome: React.FC<ToolsHomeProps> = ({ onSelectTool }) => {
+export const ToolsHome: React.FC<ToolsHomeProps> = ({ onSelectTool, onSelectSection }) => {
+  const [searchQuery, setSearchQuery] = useState('');
   const { hiddenIds } = useCustomTools();
-  const visibleTools = tools.filter(t => !hiddenIds.includes(t.id));
+  const { favouriteIds, toggleFavourite } = useFavouriteTools();
 
-  if (visibleTools.length === 0) return null;
+  // Filter out hidden sections/items
+  const visibleSections = useMemo(() => {
+    return MENU_SECTIONS.map(section => {
+      if (section.id === 'home') return null; // skip Home itself
+      if (hiddenIds.includes(section.id)) return null;
+      const visibleItems = section.items.filter(item => !hiddenIds.includes(item.id));
+      return { ...section, items: visibleItems };
+    }).filter(Boolean) as typeof MENU_SECTIONS;
+  }, [hiddenIds]);
+
+  // Flattened list of all visible tools for searching
+  const allVisibleTools = useMemo(() => {
+    const list: { id: string; label: string; icon: React.FC<any>; sectionId: string; sectionLabel: string }[] = [];
+    visibleSections.forEach(section => {
+      if (section.items.length > 0) {
+        section.items.forEach(item => {
+          list.push({
+            id: item.id,
+            label: item.label,
+            icon: item.icon,
+            sectionId: section.id,
+            sectionLabel: section.label
+          });
+        });
+      } else {
+        // Standalone section
+        list.push({
+          id: section.id,
+          label: section.label,
+          icon: section.icon,
+          sectionId: section.id,
+          sectionLabel: section.label
+        });
+      }
+    });
+    return list;
+  }, [visibleSections]);
+
+  // Search results
+  const searchResults = useMemo(() => {
+    if (!searchQuery.trim()) return [];
+    const q = searchQuery.toLowerCase();
+    return allVisibleTools.filter(t => t.label.toLowerCase().includes(q));
+  }, [searchQuery, allVisibleTools]);
+
+  const handleNavigate = (sectionId: string, toolId: string) => {
+    onSelectSection(sectionId);
+    onSelectTool(toolId);
+  };
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-4">
-      <div className="text-center mb-4">
-        <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight mb-1">
-          File Conversion & PDF Tools
-        </h1>
-        <p className="text-emerald-600 text-xs max-w-lg mx-auto font-semibold animate-pulse">
-          🔒 All tools run 100% in your browser. No files are uploaded to any server.
-        </p>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-8 animate-fade-in">
+      {/* Premium Hero Banner */}
+      <div className="bg-gradient-to-r from-primary via-indigo-600 to-violet-600 rounded-3xl p-6 md:p-10 shadow-xl shadow-indigo-100/50 text-white relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:24px_24px]" />
+        <div className="relative z-10 space-y-4 max-w-3xl">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-xs font-semibold tracking-wider">
+            <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+            <span>100% BROWSER-BASED UTILITIES</span>
+          </div>
+          <h1 className="text-3xl md:text-5xl font-black font-display tracking-tight leading-none">
+            Zezha Tools & <span className="text-indigo-200">Utilities Hub</span>
+          </h1>
+          <p className="text-sm md:text-base text-slate-100 leading-relaxed max-w-xl">
+            A comprehensive suite of privacy-first file converters, calculators, generators & reference datasets. No files or data ever leave your device.
+          </p>
+
+          {/* Search Box in Hero */}
+          <div className="relative max-w-md pt-2">
+            <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+            <input
+              type="text"
+              placeholder="Search across all tools and utilities..."
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              className="w-full pl-11 pr-4 py-3 bg-white text-slate-900 border border-transparent rounded-2xl text-sm shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-white transition-all placeholder:text-slate-400 font-medium"
+            />
+          </div>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-        {visibleTools.map(tool => (
-          <button
-            key={tool.id}
-            onClick={() => onSelectTool(tool.id)}
-            className="bg-white rounded-xl border border-slate-200 p-4 text-left hover:shadow-lg hover:border-primary/20 hover:-translate-y-1 transition-all group"
-          >
-            <div className={`w-9 h-9 ${tool.color} text-white rounded-lg flex items-center justify-center mb-3 group-hover:scale-110 transition-transform`}>
-              <tool.icon size={18} />
+      {/* Conditional Rendering: Search Results vs Standard Sections Grid */}
+      {searchQuery.trim() ? (
+        <div className="space-y-4">
+          <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+            <h2 className="text-slate-800 font-bold text-lg">Search Results ({searchResults.length})</h2>
+            <button onClick={() => setSearchQuery('')} className="text-xs text-primary font-semibold hover:underline">Clear Search</button>
+          </div>
+
+          {searchResults.length === 0 ? (
+            <div className="text-center py-16 bg-white rounded-2xl border border-slate-100 shadow-sm">
+              <Search size={40} className="mx-auto text-slate-300 mb-3" />
+              <p className="text-slate-500 font-medium text-sm">No tools found matching "{searchQuery}"</p>
             </div>
-            <h3 className="font-bold text-slate-900 text-sm mb-0.5">{tool.title}</h3>
-            <p className="text-[11px] text-slate-500 leading-snug">{tool.desc}</p>
-          </button>
-        ))}
-      </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {searchResults.map(tool => {
+                const Icon = tool.icon;
+                const isFav = favouriteIds.includes(tool.id);
+                return (
+                  <div
+                    key={tool.id}
+                    className="group bg-white rounded-2xl border border-slate-200/60 p-4 shadow-sm hover:shadow-md hover:border-primary/20 hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between"
+                  >
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div className="w-10 h-10 bg-primary/8 rounded-xl flex items-center justify-center text-primary group-hover:scale-105 transition-transform shrink-0">
+                          <Icon size={20} />
+                        </div>
+                        <button
+                          onClick={() => toggleFavourite(tool.id)}
+                          className="text-slate-300 hover:text-amber-400 transition-colors p-1"
+                          title={isFav ? "Remove from Favourites" : "Add to Favourites"}
+                        >
+                          <Star size={16} className={isFav ? "fill-amber-400 text-amber-400" : ""} />
+                        </button>
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-slate-800 text-sm group-hover:text-primary transition-colors">{tool.label}</h3>
+                        <p className="text-[10px] text-slate-400 font-medium uppercase tracking-wider">{tool.sectionLabel}</p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => handleNavigate(tool.sectionId, tool.id)}
+                      className="mt-4 flex items-center justify-between w-full text-xs font-semibold text-primary hover:text-primary-dark pt-2 border-t border-slate-50"
+                    >
+                      <span>Open Tool</span>
+                      <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="space-y-10">
+          {/* Main Grid: Grouped Sections */}
+          {visibleSections.map(section => {
+            const SectionIcon = section.icon;
+            return (
+              <div key={section.id} className="space-y-4">
+                <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                  <div className="flex items-center gap-2 text-slate-800 font-extrabold text-lg">
+                    <div className="w-8 h-8 rounded-lg bg-slate-50 border border-slate-200/50 flex items-center justify-center text-slate-600">
+                      <SectionIcon size={16} />
+                    </div>
+                    <h2>{section.label}</h2>
+                  </div>
+                  {section.items.length > 0 && (
+                    <span className="text-xs text-slate-400 font-medium bg-slate-50 px-2 py-0.5 rounded-full border border-slate-100">
+                      {section.items.length} {section.items.length === 1 ? 'tool' : 'tools'}
+                    </span>
+                  )}
+                </div>
+
+                {section.items.length > 0 ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    {section.items.map(item => {
+                      const ToolIcon = item.icon;
+                      const isFav = favouriteIds.includes(item.id);
+                      return (
+                        <div
+                          key={item.id}
+                          className="group bg-white rounded-2xl border border-slate-200/60 p-4 shadow-sm hover:shadow-md hover:border-primary/20 hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between"
+                        >
+                          <div className="space-y-3">
+                            <div className="flex items-center justify-between">
+                              <div className="w-10 h-10 bg-primary/8 rounded-xl flex items-center justify-center text-primary group-hover:scale-105 transition-transform shrink-0">
+                                <ToolIcon size={20} />
+                              </div>
+                              <button
+                                onClick={() => toggleFavourite(item.id)}
+                                className="text-slate-300 hover:text-amber-400 transition-colors p-1"
+                                title={isFav ? "Remove from Favourites" : "Add to Favourites"}
+                              >
+                                <Star size={16} className={isFav ? "fill-amber-400 text-amber-400" : ""} />
+                              </button>
+                            </div>
+                            <h3 className="font-bold text-slate-800 text-sm group-hover:text-primary transition-colors leading-tight">
+                              {item.label}
+                            </h3>
+                          </div>
+                          <button
+                            onClick={() => handleNavigate(section.id, item.id)}
+                            className="mt-4 flex items-center justify-between w-full text-xs font-semibold text-primary hover:text-primary-dark pt-2 border-t border-slate-50"
+                          >
+                            <span>Open Tool</span>
+                            <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
+                          </button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  /* Standalone tool card e.g. govt-scheme-finder */
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <div
+                      className="group bg-white rounded-2xl border border-slate-200/60 p-4 shadow-sm hover:shadow-md hover:border-primary/20 hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between"
+                    >
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between">
+                          <div className="w-10 h-10 bg-primary/8 rounded-xl flex items-center justify-center text-primary group-hover:scale-105 transition-transform shrink-0">
+                            <SectionIcon size={20} />
+                          </div>
+                          <button
+                            onClick={() => toggleFavourite(section.id)}
+                            className="text-slate-300 hover:text-amber-400 transition-colors p-1"
+                            title={favouriteIds.includes(section.id) ? "Remove from Favourites" : "Add to Favourites"}
+                          >
+                            <Star size={16} className={favouriteIds.includes(section.id) ? "fill-amber-400 text-amber-400" : ""} />
+                          </button>
+                        </div>
+                        <h3 className="font-bold text-slate-800 text-sm group-hover:text-primary transition-colors leading-tight">
+                          Launch {section.label}
+                        </h3>
+                      </div>
+                      <button
+                        onClick={() => handleNavigate(section.id, section.id)}
+                        className="mt-4 flex items-center justify-between w-full text-xs font-semibold text-primary hover:text-primary-dark pt-2 border-t border-slate-50"
+                      >
+                        <span>Open Page</span>
+                        <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };
-
