@@ -640,3 +640,34 @@
 :root[data-theme="dark"] .mf-weight-high {
   color: #f87171 !important;
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE LAYOUT OVERRIDES (COLLAPSE INLINE GRIDS)
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Enable table scrolling inside all tools */
+.calc-breakdown-table-wrap {
+  overflow-x: auto !important;
+}
+
+@media (max-width: 640px) {
+  /* Override inline 2-column or 3-column input grids to collapse into single column */
+  .tool-container-wrap div[style*="grid-template-columns: 1fr 1fr"],
+  .tool-container-wrap div[style*="grid-template-columns:1fr 1fr"],
+  .tool-container-wrap div[style*="grid-template-columns: 1fr 1fr 1fr"],
+  .tool-container-wrap div[style*="grid-template-columns:1fr 1fr 1fr"],
+  .tool-container-wrap div[style*="grid-template-columns: 1fr 130px"],
+  .tool-container-wrap div[style*="grid-template-columns:1fr 130px"] {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+
+  /* Handle result cards with donut charts stacking nicely */
+  .tool-container-wrap div[style*="grid-template-columns: 1fr 130px"] > div:last-child,
+  .tool-container-wrap div[style*="grid-template-columns:1fr 130px"] > div:last-child {
+    margin-top: 16px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+}

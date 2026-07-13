@@ -449,17 +449,38 @@ export const ToolsPortal: React.FC<ToolsPortalProps> = ({ onHome, onInvoice, onB
   return (
     <ToolsLayout onHome={onHome}>
       <div className="flex flex-col h-full">
-        <div className="flex flex-1 min-h-0 relative">
-          {/* Mobile hamburger button */}
+        {/* Mobile Header Bar */}
+        <header className="md:hidden flex items-center justify-between px-4 py-3 bg-white border-b border-slate-200 shrink-0 sticky top-0 z-20 mobile-header-shadow">
+          <div className="flex items-center gap-2.5">
+            {(activeTool || activeSection !== 'home') && (
+              <button
+                onClick={() => {
+                  if (activeTool) {
+                    setActiveTool(null);
+                  } else {
+                    setActiveSection('home');
+                  }
+                }}
+                className="p-1.5 hover:bg-slate-100 rounded-lg text-slate-500 transition-colors"
+                aria-label="Go back"
+              >
+                <ArrowLeft size={18} />
+              </button>
+            )}
+            <span className="font-extrabold text-sm bg-gradient-to-r from-primary via-indigo-600 to-indigo-800 bg-clip-text text-transparent">
+              {activeTool ? (MENU_SECTIONS.flatMap(s => s.items).find(i => i.id === activeTool)?.label || 'Tool') : 'Zezha Tools'}
+            </span>
+          </div>
           <button
             onClick={() => setSidebarOpen(true)}
-            className="md:hidden fixed bottom-5 left-4 z-30 flex items-center gap-2 px-4 py-2.5 bg-primary text-white rounded-full shadow-lg text-sm font-semibold"
+            className="p-1.5 hover:bg-slate-100 rounded-lg text-slate-500 transition-colors"
             aria-label="Open menu"
           >
-            <Menu size={16} />
-            Menu
+            <Menu size={18} />
           </button>
+        </header>
 
+        <div className="flex flex-1 min-h-0 relative">
           <ToolsSidebar
             activeTool={activeTool}
             activeSection={activeSection}
@@ -469,7 +490,7 @@ export const ToolsPortal: React.FC<ToolsPortalProps> = ({ onHome, onInvoice, onB
             isOpen={sidebarOpen}
             onClose={() => setSidebarOpen(false)}
           />
-          <div ref={contentRef} className="flex-1 overflow-y-auto">
+          <div ref={contentRef} className="flex-1 overflow-y-auto tool-container-wrap">
             {renderContent()}
           </div>
 
