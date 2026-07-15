@@ -6,7 +6,7 @@
   "scripts": {
     "start": "vite",
     "dev": "vite",
-    "build": "vite build",
+    "build": "node scripts/generate-sitemap.cjs && vite build",
     "serve": "vite preview",
     "debug-login": "ts-node -r dotenv/config --files src/scripts/dailyLogin.ts",
     "daily-login": "ts-node -r dotenv/config src/scripts/dailyLogin.ts",

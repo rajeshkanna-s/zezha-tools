@@ -293,14 +293,94 @@ const GET_IMG_VIDEO_TOOLS = [
 ];
 
 export const ToolsPortal: React.FC<ToolsPortalProps> = ({ onHome, onInvoice, onBankStatement, onPayInPayOut, onSubscribe, onInvitation, onEventPage, onLogoCreator, onAtsAnalyser, onEbookCreator, pendingToolSelect, onPendingToolConsumed, defaultDomain: defaultDomainProp, onDefaultDomainConsumed }) => {
-  const [activeTool, setActiveTool] = useState<string | null>(null);
-  const [activeSection, setActiveSection] = useState<string>('home');
+  const [activeTool, setActiveTool] = useState<string | null>(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('tool');
+  });
+  const [activeSection, setActiveSection] = useState<string>(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('section') || 'home';
+  });
   const [showExpiredToast, setShowExpiredToast] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { canUpload } = useAuth();
   const isSubscribed = canUpload();
   const { hiddenIds } = useCustomTools();
   const contentRef = useRef<HTMLDivElement>(null);
+
+  // ── Sync active state with browser URL search parameters ──
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (activeTool) {
+      params.set('tool', activeTool);
+      const sectionInfo = TOOL_TO_SECTION[activeTool];
+      if (sectionInfo) {
+        params.set('section', sectionInfo.sectionId);
+      } else {
+        params.delete('section');
+      }
+    } else {
+      params.delete('tool');
+      if (activeSection && activeSection !== 'home') {
+        params.set('section', activeSection);
+      } else {
+        params.delete('section');
+      }
+    }
+    const newSearch = params.toString();
+    const newUrl = `${window.location.pathname}${newSearch ? '?' + newSearch : ''}`;
+    if (window.location.search !== (newSearch ? '?' + newSearch : '')) {
+      window.history.pushState({}, '', newUrl);
+    }
+  }, [activeTool, activeSection]);
+
+  // ── Support browser Back/Forward navigation ──
+  useEffect(() => {
+    const handlePopState = () => {
+      const params = new URLSearchParams(window.location.search);
+      const tool = params.get('tool');
+      const section = params.get('section') || 'home';
+      setActiveTool(tool);
+      setActiveSection(section);
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  // ── Dynamic SEO Title & Meta Description update ──
+  useEffect(() => {
+    if (activeTool) {
+      const toolMeta = MENU_SECTIONS.flatMap(s => s.items).find(i => i.id === activeTool);
+      if (toolMeta) {
+        document.title = `${toolMeta.label} — Zezha Tools`;
+        let descMeta = document.querySelector('meta[name="description"]');
+        if (!descMeta) {
+          descMeta = document.createElement('meta');
+          descMeta.setAttribute('name', 'description');
+          document.head.appendChild(descMeta);
+        }
+        descMeta.setAttribute('content', `Use the free online ${toolMeta.label} on Zezha Tools. 100% browser-based, secure, and easy to use.`);
+      }
+    } else if (activeSection && activeSection !== 'home') {
+      const sectionMeta = MENU_SECTIONS.find(s => s.id === activeSection);
+      if (sectionMeta) {
+        document.title = `${sectionMeta.label} Utilities — Zezha Tools`;
+        let descMeta = document.querySelector('meta[name="description"]');
+        if (!descMeta) {
+          descMeta = document.createElement('meta');
+          descMeta.setAttribute('name', 'description');
+          document.head.appendChild(descMeta);
+        }
+        descMeta.setAttribute('content', `Explore free online ${sectionMeta.label} utilities on Zezha Tools. 100% secure, browser-based tools.`);
+      }
+    } else {
+      document.title = "Zezha Tools — Web Utilities & Calculators Hub";
+      const descMeta = document.querySelector('meta[name="description"]');
+      if (descMeta) {
+        descMeta.setAttribute('content', "Zezha Tools — 400+ free browser-based web utilities, calculators, PDF tools, and business solutions. No data uploaded to any server.");
+      }
+    }
+  }, [activeTool, activeSection]);
 
   // Scroll content area to top when switching tools or sections
   useEffect(() => {
