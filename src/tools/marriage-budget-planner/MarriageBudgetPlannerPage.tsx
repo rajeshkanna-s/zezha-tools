@@ -185,8 +185,7 @@ type Tab = 'expenses' | 'report';
 
 export const MarriageBudgetPlannerPage: React.FC = () => {
     useAuth();
-    const [totalBudget, setTotalBudget] = useState(2500000);
-    const [budgetInput, setBudgetInput] = useState('25,00,000');
+    const [totalBudget, setTotalBudget] = useState<number | ''>('');
     const [expenses, setExpenses] = useState<Expense[]>([]);
     const [showModal, setShowModal] = useState(false);
     const [editingId, setEditingId] = useState<string | null>(null);
@@ -226,16 +225,11 @@ export const MarriageBudgetPlannerPage: React.FC = () => {
 
     const handleDelete = (id: string) => setExpenses(expenses.filter(x => x.id !== id));
 
-    const handleBudgetChange = (v: string) => {
-        setBudgetInput(v);
-        const num = Number(v.replace(/,/g, ''));
-        if (!isNaN(num) && num >= 0) setTotalBudget(num);
-    };
-
     // Computed
+    const budgetVal = totalBudget === '' ? 0 : totalBudget;
     const totalSpent = expenses.reduce((s, e) => s + e.amount, 0);
     const totalPaid = expenses.reduce((s, e) => s + e.paid, 0);
-    const remaining = Math.max(0, totalBudget - totalSpent);
+    const remaining = Math.max(0, budgetVal - totalSpent);
     const pending = Math.max(0, totalSpent - totalPaid);
 
     const getCatLabel = (e: Expense) => {
@@ -274,7 +268,7 @@ export const MarriageBudgetPlannerPage: React.FC = () => {
         const doc = new jsPDF();
         doc.setFontSize(20); doc.text('Marriage Budget Report', 14, 22);
         doc.setFontSize(11);
-        doc.text(`Budget: Rs. ${totalBudget.toLocaleString('en-IN')}  |  Spent: Rs. ${totalSpent.toLocaleString('en-IN')}  |  Remaining: Rs. ${remaining.toLocaleString('en-IN')}`, 14, 32);
+        doc.text(`Budget: Rs. ${budgetVal.toLocaleString('en-IN')}  |  Spent: Rs. ${totalSpent.toLocaleString('en-IN')}  |  Remaining: Rs. ${remaining.toLocaleString('en-IN')}`, 14, 32);
         autoTable(doc, {
             startY: 42,
             head: [['#', 'Category', 'Item', 'Vendor', 'Amount', 'Paid', 'Balance']],
@@ -313,19 +307,22 @@ export const MarriageBudgetPlannerPage: React.FC = () => {
                     <div className="flex items-center gap-1">
                         <span className="text-slate-400 text-sm">₹</span>
                         <input
-                            type="text"
-                            value={budgetInput}
-                            onChange={e => handleBudgetChange(e.target.value)}
-                            className="w-full text-lg font-bold text-slate-900 bg-transparent border-none outline-none p-0"
-                            placeholder="25,00,000"
+                            type="number"
+                            value={totalBudget}
+                            onChange={e => {
+                                const val = e.target.value === '' ? '' : Number(e.target.value);
+                                setTotalBudget(val);
+                            }}
+                            className="w-full text-lg font-bold text-slate-900 bg-transparent border-none outline-none p-0 focus:ring-0"
+                            placeholder="Enter Budget"
                         />
                     </div>
-                    <p className="text-[10px] text-slate-400 mt-1">{fmt(totalBudget)}</p>
+                    <p className="text-[10px] text-slate-400 mt-1">{fmt(budgetVal)}</p>
                 </div>
-                <div className={`rounded-xl border p-4 ${totalSpent > totalBudget ? 'bg-rose-50 border-rose-200' : 'bg-emerald-50 border-emerald-200'}`}>
+                <div className={`rounded-xl border p-4 ${totalSpent > budgetVal ? 'bg-rose-50 border-rose-200' : 'bg-emerald-50 border-emerald-200'}`}>
                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 flex items-center gap-1"><Wallet size={10} /> Total Spent</p>
-                    <p className={`text-lg font-bold ${totalSpent > totalBudget ? 'text-rose-600' : 'text-emerald-700'}`}>{fmt(totalSpent)}</p>
-                    <p className="text-[10px] text-slate-500 mt-1">{totalBudget > 0 ? ((totalSpent / totalBudget) * 100).toFixed(1) : 0}% used</p>
+                    <p className={`text-lg font-bold ${totalSpent > budgetVal ? 'text-rose-600' : 'text-emerald-700'}`}>{fmt(totalSpent)}</p>
+                    <p className="text-[10px] text-slate-500 mt-1">{budgetVal > 0 ? ((totalSpent / budgetVal) * 100).toFixed(1) : 0}% used</p>
                 </div>
                 <div className="bg-blue-50 rounded-xl border border-blue-200 p-4">
                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 flex items-center gap-1"><CheckCircle2 size={10} /> Paid</p>
@@ -340,16 +337,16 @@ export const MarriageBudgetPlannerPage: React.FC = () => {
             </div>
 
             {/* ── Budget Progress Bar ── */}
-            {totalBudget > 0 && (
+            {budgetVal > 0 && (
             <div className="bg-white rounded-xl border border-slate-200 p-4 mb-6">
                 <div className="flex justify-between text-xs text-slate-500 mb-2">
                     <span>Budget Progress</span>
-                    <span>{fmt(totalSpent)} / {fmt(totalBudget)}</span>
+                    <span>{fmt(totalSpent)} / {fmt(budgetVal)}</span>
                 </div>
                 <div className="h-3 bg-slate-100 rounded-full overflow-hidden">
                     <div
-                        className={`h-full rounded-full transition-all duration-500 ${totalSpent > totalBudget ? 'bg-gradient-to-r from-rose-500 to-red-500' : 'bg-gradient-to-r from-pink-400 to-rose-500'}`}
-                        style={{ width: `${Math.min(100, (totalSpent / totalBudget) * 100)}%` }}
+                        className={`h-full rounded-full transition-all duration-500 ${totalSpent > budgetVal ? 'bg-gradient-to-r from-rose-500 to-red-500' : 'bg-gradient-to-r from-pink-400 to-rose-500'}`}
+                        style={{ width: `${Math.min(100, (totalSpent / budgetVal) * 100)}%` }}
                     />
                 </div>
             </div>
@@ -561,7 +558,7 @@ export const MarriageBudgetPlannerPage: React.FC = () => {
                         <div className="bg-gradient-to-br from-emerald-50 to-green-50 rounded-xl border border-emerald-100 p-5">
                             <h4 className="text-xs font-bold text-emerald-700 uppercase tracking-wider mb-3">Summary</h4>
                             <div className="space-y-2 text-sm">
-                                <div className="flex justify-between"><span className="text-slate-600">Budget Used</span><span className={`font-bold ${totalSpent > totalBudget ? 'text-rose-600' : 'text-slate-800'}`}>{totalBudget > 0 ? ((totalSpent / totalBudget) * 100).toFixed(1) : 0}%</span></div>
+                                <div className="flex justify-between"><span className="text-slate-600">Budget Used</span><span className={`font-bold ${totalSpent > budgetVal ? 'text-rose-600' : 'text-slate-800'}`}>{budgetVal > 0 ? ((totalSpent / budgetVal) * 100).toFixed(1) : 0}%</span></div>
                                 <div className="flex justify-between"><span className="text-slate-600">Payment Done</span><span className="font-bold text-emerald-700">{totalSpent > 0 ? ((totalPaid / totalSpent) * 100).toFixed(1) : 0}%</span></div>
                                 <div className="flex justify-between"><span className="text-slate-600">Total Entries</span><span className="font-bold text-slate-800">{expenses.length}</span></div>
                                 <div className="flex justify-between"><span className="text-slate-600">Categories</span><span className="font-bold text-slate-800">{groupStats.length}</span></div>
