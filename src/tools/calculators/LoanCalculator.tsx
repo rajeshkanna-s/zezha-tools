@@ -38,7 +38,14 @@ export const LoanCalculator: React.FC = () => {
 
   const parseNum = (v: string) => { const n = parseFloat(v.replace(/,/g, '')); return isNaN(n) || n < 0 ? 0 : n; };
   const fmt = (n: number) => n.toLocaleString('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 0, maximumFractionDigits: 0 });
-  const fmtInput = (v: string) => { let d = v.replace(/[^0-9]/g, ''); if (!d) return ''; d = d.replace(/^0+/, '') || '0'; return Number(d).toLocaleString('en-IN'); };
+  const fmtInput = (v: string, maxVal = 1000000000) => {
+    let d = v.replace(/[^0-9]/g, '');
+    if (!d) return '';
+    d = d.replace(/^0+/, '') || '0';
+    let val = Number(d);
+    if (val > maxVal) val = maxVal;
+    return val.toLocaleString('en-IN');
+  };
 
   const result = useMemo(() => {
     const tenure = parseFloat(tenureStr);
@@ -182,15 +189,33 @@ export const LoanCalculator: React.FC = () => {
                 <label style={labelStyle}>Loan Amount (₹) *</label>
                 <div style={{ position: 'relative' }}>
                   <span style={{ position: 'absolute', left: 11, top: '50%', transform: 'translateY(-50%)', fontSize: 13, color: '#94a3b8', fontWeight: 600 }}>₹</span>
-                  <input type="text" value={amountStr} onChange={e => setAmountStr(fmtInput(e.target.value))} placeholder="e.g. 10,00,000"
+                  <input type="text" value={amountStr} onChange={e => setAmountStr(fmtInput(e.target.value, 1000000000))} placeholder="e.g. 10,00,000"
                     style={{ ...inputStyle, paddingLeft: 26 }} />
                 </div>
+                <input
+                  type="range"
+                  min="0"
+                  max="10000000"
+                  step="50000"
+                  value={Math.min(parseNum(amountStr), 10000000)}
+                  onChange={e => setAmountStr(Number(e.target.value).toLocaleString('en-IN'))}
+                  className="w-full h-1 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600 mt-2"
+                />
               </div>
               <div>
                 <label style={labelStyle}>Interest Rate (% p.a.) *</label>
-                <input type="number" min={0} max={50} step={0.1} value={rateStr}
-                  onChange={e => { const v = e.target.value; if (v === '' || (Number(v) >= 0 && Number(v) <= 50)) setRateStr(v); }}
+                <input type="number" min={0} max={99} step={0.1} value={rateStr}
+                  onChange={e => { const v = e.target.value; if (v === '' || (Number(v) >= 0 && Number(v) <= 99)) setRateStr(v); }}
                   style={inputStyle} />
+                <input
+                  type="range"
+                  min="1"
+                  max="30"
+                  step="0.1"
+                  value={Math.min(parseFloat(rateStr) || 0, 30)}
+                  onChange={e => setRateStr(e.target.value)}
+                  className="w-full h-1 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600 mt-2"
+                />
               </div>
             </>
           ) : calcMode === 'emiToLoan' ? (
@@ -199,7 +224,7 @@ export const LoanCalculator: React.FC = () => {
                 <label style={labelStyle}>EMI Amount (₹) *</label>
                 <div style={{ position: 'relative' }}>
                   <span style={{ position: 'absolute', left: 11, top: '50%', transform: 'translateY(-50%)', fontSize: 13, color: '#94a3b8', fontWeight: 600 }}>₹</span>
-                  <input type="text" value={emiStr} onChange={e => setEmiStr(fmtInput(e.target.value))} placeholder="e.g. 20,000"
+                  <input type="text" value={emiStr} onChange={e => setEmiStr(fmtInput(e.target.value, 1000000000))} placeholder="e.g. 20,000"
                     style={{ ...inputStyle, paddingLeft: 26 }} />
                 </div>
               </div>
@@ -217,15 +242,24 @@ export const LoanCalculator: React.FC = () => {
                 <label style={labelStyle}>Loan Amount (₹) *</label>
                 <div style={{ position: 'relative' }}>
                   <span style={{ position: 'absolute', left: 11, top: '50%', transform: 'translateY(-50%)', fontSize: 13, color: '#94a3b8', fontWeight: 600 }}>₹</span>
-                  <input type="text" value={amountStr} onChange={e => setAmountStr(fmtInput(e.target.value))} placeholder="e.g. 10,00,000"
+                  <input type="text" value={amountStr} onChange={e => setAmountStr(fmtInput(e.target.value, 1000000000))} placeholder="e.g. 10,00,000"
                     style={{ ...inputStyle, paddingLeft: 26 }} />
                 </div>
+                <input
+                  type="range"
+                  min="0"
+                  max="10000000"
+                  step="50000"
+                  value={Math.min(parseNum(amountStr), 10000000)}
+                  onChange={e => setAmountStr(Number(e.target.value).toLocaleString('en-IN'))}
+                  className="w-full h-1 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600 mt-2"
+                />
               </div>
               <div>
                 <label style={labelStyle}>EMI Amount (₹) *</label>
                 <div style={{ position: 'relative' }}>
                   <span style={{ position: 'absolute', left: 11, top: '50%', transform: 'translateY(-50%)', fontSize: 13, color: '#94a3b8', fontWeight: 600 }}>₹</span>
-                  <input type="text" value={emiStr} onChange={e => setEmiStr(fmtInput(e.target.value))} placeholder="e.g. 20,000"
+                  <input type="text" value={emiStr} onChange={e => setEmiStr(fmtInput(e.target.value, 1000000000))} placeholder="e.g. 20,000"
                     style={{ ...inputStyle, paddingLeft: 26 }} />
                 </div>
               </div>
@@ -238,9 +272,18 @@ export const LoanCalculator: React.FC = () => {
             <>
               <div>
                 <label style={labelStyle}>Loan Tenure *</label>
-                <input type="number" min={1} max={timeUnit === 'years' ? 30 : 360} value={tenureStr}
-                  onChange={e => { const v = e.target.value; if (v === '' || (Number(v) >= 0 && Number(v) <= (timeUnit === 'years' ? 30 : 360))) setTenureStr(v); }}
+                <input type="number" min={1} max={timeUnit === 'years' ? 100 : 1200} value={tenureStr}
+                  onChange={e => { const v = e.target.value; const maxT = timeUnit === 'years' ? 100 : 1200; if (v === '' || (Number(v) >= 0 && Number(v) <= maxT)) setTenureStr(v); }}
                   style={inputStyle} />
+                <input
+                  type="range"
+                  min="1"
+                  max={timeUnit === 'years' ? 30 : 360}
+                  step="1"
+                  value={Math.min(parseFloat(tenureStr) || 0, timeUnit === 'years' ? 30 : 360)}
+                  onChange={e => setTenureStr(e.target.value)}
+                  className="w-full h-1 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600 mt-2"
+                />
               </div>
               <div>
                 <label style={labelStyle}>Unit</label>
@@ -253,33 +296,60 @@ export const LoanCalculator: React.FC = () => {
             <>
               <div>
                 <label style={labelStyle}>Interest Rate (% p.a.) *</label>
-                <input type="number" min={0} max={50} step={0.1} value={rateStr}
-                  onChange={e => { const v = e.target.value; if (v === '' || (Number(v) >= 0 && Number(v) <= 50)) setRateStr(v); }}
+                <input type="number" min={0} max={99} step={0.1} value={rateStr}
+                  onChange={e => { const v = e.target.value; if (v === '' || (Number(v) >= 0 && Number(v) <= 99)) setRateStr(v); }}
                   style={inputStyle} />
+                <input
+                  type="range"
+                  min="1"
+                  max="30"
+                  step="0.1"
+                  value={Math.min(parseFloat(rateStr) || 0, 30)}
+                  onChange={e => setRateStr(e.target.value)}
+                  className="w-full h-1 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600 mt-2"
+                />
               </div>
               <div>
                 <label style={labelStyle}>Loan Tenure *</label>
                 <div style={{ display: 'flex', gap: 8 }}>
-                  <input type="number" min={1} max={timeUnit === 'years' ? 30 : 360} value={tenureStr}
-                    onChange={e => { const v = e.target.value; if (v === '' || (Number(v) >= 0 && Number(v) <= (timeUnit === 'years' ? 30 : 360))) setTenureStr(v); }}
+                  <input type="number" min={1} max={timeUnit === 'years' ? 100 : 1200} value={tenureStr}
+                    onChange={e => { const v = e.target.value; const maxT = timeUnit === 'years' ? 100 : 1200; if (v === '' || (Number(v) >= 0 && Number(v) <= maxT)) setTenureStr(v); }}
                     style={{ ...inputStyle, flex: 2 }} />
                   <select style={{ ...selectStyle, flex: 1 }} value={timeUnit} onChange={e => setTimeUnit(e.target.value as any)}>
                     <option value="years">Years</option><option value="months">Months</option>
                   </select>
                 </div>
+                <input
+                  type="range"
+                  min="1"
+                  max={timeUnit === 'years' ? 30 : 360}
+                  step="1"
+                  value={Math.min(parseFloat(tenureStr) || 0, timeUnit === 'years' ? 30 : 360)}
+                  onChange={e => setTenureStr(e.target.value)}
+                  className="w-full h-1 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600 mt-2"
+                />
               </div>
             </>
           ) : (
             <div style={{ gridColumn: 'span 2' }}>
               <label style={labelStyle}>Loan Tenure *</label>
               <div style={{ display: 'flex', gap: 8 }}>
-                <input type="number" min={1} max={timeUnit === 'years' ? 30 : 360} value={tenureStr}
-                  onChange={e => { const v = e.target.value; if (v === '' || (Number(v) >= 0 && Number(v) <= (timeUnit === 'years' ? 30 : 360))) setTenureStr(v); }}
+                <input type="number" min={1} max={timeUnit === 'years' ? 100 : 1200} value={tenureStr}
+                  onChange={e => { const v = e.target.value; const maxT = timeUnit === 'years' ? 100 : 1200; if (v === '' || (Number(v) >= 0 && Number(v) <= maxT)) setTenureStr(v); }}
                   style={{ ...inputStyle, flex: 2 }} />
                 <select style={{ ...selectStyle, flex: 1 }} value={timeUnit} onChange={e => setTimeUnit(e.target.value as any)}>
                   <option value="years">Years</option><option value="months">Months</option>
                 </select>
               </div>
+              <input
+                type="range"
+                min="1"
+                max={timeUnit === 'years' ? 30 : 360}
+                step="1"
+                value={Math.min(parseFloat(tenureStr) || 0, timeUnit === 'years' ? 30 : 360)}
+                onChange={e => setTenureStr(e.target.value)}
+                className="w-full h-1 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600 mt-2"
+              />
             </div>
           )}
         </div>
