@@ -448,19 +448,21 @@ export const LoanCalculator: React.FC = () => {
                     ))}
                   </div>
                 </div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr 1fr 1fr 1fr', fontSize: 10, fontWeight: 600, color: '#94a3b8', padding: '6px 12px', borderBottom: '1px solid #e2e8f0' }}>
-                  <span>{view === 'yearly' ? 'Yr' : 'Mo'}</span><span style={{ textAlign: 'right' }}>EMI</span><span style={{ textAlign: 'right' }}>Interest</span><span style={{ textAlign: 'right' }}>Principal</span><span style={{ textAlign: 'right' }}>Balance</span>
-                </div>
-                <div style={{ maxHeight: 300, overflowY: 'auto' }}>
-                  {rows.map((r, i) => (
-                    <div key={i} style={{ display: 'grid', gridTemplateColumns: 'auto 1fr 1fr 1fr 1fr', fontSize: 11, padding: '6px 12px', borderBottom: i < rows.length - 1 ? '1px solid #f1f5f9' : 'none', color: '#475569' }}>
-                      <span style={{ fontWeight: 600 }}>{r.period}</span>
-                      <span style={{ textAlign: 'right' }}>{fmt(r.emi)}</span>
-                      <span style={{ textAlign: 'right', color: '#f59e0b' }}>{fmt(r.interest)}</span>
-                      <span style={{ textAlign: 'right', color: '#2563eb' }}>{fmt(r.principal)}</span>
-                      <span style={{ textAlign: 'right', fontWeight: 600 }}>{fmt(r.balance)}</span>
-                    </div>
-                  ))}
+                <div style={{ overflowX: 'auto' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '40px 1fr 1fr 1fr 1fr', minWidth: 460, fontSize: 10, fontWeight: 600, color: '#94a3b8', padding: '6px 12px', borderBottom: '1px solid #e2e8f0' }}>
+                    <span>{view === 'yearly' ? 'Yr' : 'Mo'}</span><span style={{ textAlign: 'right' }}>EMI</span><span style={{ textAlign: 'right' }}>Interest</span><span style={{ textAlign: 'right' }}>Principal</span><span style={{ textAlign: 'right' }}>Balance</span>
+                  </div>
+                  <div style={{ maxHeight: 300, overflowY: 'auto' }}>
+                    {rows.map((r, i) => (
+                      <div key={i} style={{ display: 'grid', gridTemplateColumns: '40px 1fr 1fr 1fr 1fr', minWidth: 460, fontSize: 11, padding: '6px 12px', borderBottom: i < rows.length - 1 ? '1px solid #f1f5f9' : 'none', color: '#475569' }}>
+                        <span style={{ fontWeight: 600 }}>{r.period}</span>
+                        <span style={{ textAlign: 'right' }}>{fmt(r.emi)}</span>
+                        <span style={{ textAlign: 'right', color: '#f59e0b' }}>{fmt(r.interest)}</span>
+                        <span style={{ textAlign: 'right', color: '#2563eb' }}>{fmt(r.principal)}</span>
+                        <span style={{ textAlign: 'right', fontWeight: 600 }}>{fmt(r.balance)}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             )}
