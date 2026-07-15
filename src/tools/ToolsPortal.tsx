@@ -50,6 +50,7 @@ import { DobCalculator } from './calculators/DobCalculator';
 import { FdCalculator } from './calculators/FdCalculator';
 import { FindDayCalculator } from './calculators/FindDayCalculator';
 import { LoanCalculator } from './calculators/LoanCalculator';
+import { LoanCompareCalculator } from './calculators/LoanCompareCalculator';
 import { PercentageCalculator } from './calculators/PercentageCalculator';
 import { OldRegimeTaxCalculator } from './calculators/OldRegimeTaxCalculator';
 import { NewRegimeTaxCalculator } from './calculators/NewRegimeTaxCalculator';
@@ -186,6 +187,7 @@ export const TOOL_COMPONENTS: Record<string, React.FC<any>> = {
   // Loans & EMI
   'loan-calculator': LoanCalculator,
   'emi-calculator': EmiCalculator,
+  'loan-compare': LoanCompareCalculator,
   'dti-calculator': DtiCalculator,
   'ltv-calculator': LtvCalculator,
   // Investments

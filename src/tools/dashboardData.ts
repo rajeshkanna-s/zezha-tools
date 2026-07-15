@@ -14,7 +14,7 @@ import {
     Hash, ShieldAlert, Fingerprint, Shuffle, Globe, Palette,
     MapPin, Map, Building, Car,
     Gift, Clock, Heart, CalendarCheck, GraduationCap,
-    Calculator, KeyRound, ClipboardCheck
+    Calculator, KeyRound, ClipboardCheck, GitCompare
 } from 'lucide-react';
 
 export interface DashboardTool {
@@ -41,6 +41,7 @@ export const BUSINESS_TAX_TOOLS: DashboardTool[] = [
 export const LOANS_EMI_TOOLS: DashboardTool[] = [
     { id: 'loan-calculator', icon: Landmark, title: 'Loan Calculator', desc: 'Calculate EMI, interest & view payment breakdown', color: 'bg-blue-600' },
     { id: 'emi-calculator', icon: CreditCard, title: 'EMI Calculator', desc: 'Calculate monthly loan EMI, interest & total payment', color: 'bg-emerald-600' },
+    { id: 'loan-compare', icon: GitCompare, title: 'Loan Compare Calculator', desc: 'Compare two loan offers side-by-side', color: 'bg-indigo-600' },
     { id: 'dti-calculator', icon: Percent, title: 'DTI Calculator', desc: 'Calculate your Debt-to-Income Ratio', color: 'bg-orange-500' },
     { id: 'ltv-calculator', icon: Landmark, title: 'LTV Calculator', desc: 'Calculate Loan-to-Value ratio for property', color: 'bg-purple-500' },
 ];
