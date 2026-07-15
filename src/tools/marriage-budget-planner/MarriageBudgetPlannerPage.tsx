@@ -175,6 +175,7 @@ export const MarriageBudgetPlannerPage: React.FC = () => {
     };
 
     return (
+        <>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in pb-24">
             {/* Header */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
@@ -343,40 +344,6 @@ export const MarriageBudgetPlannerPage: React.FC = () => {
                             </button>
                         </div>
 
-                        {showForm && (
-                            <div className="p-6 bg-blue-50/30 border-b border-blue-100 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
-                                <div className="lg:col-span-1">
-                                    <label className="block text-xs font-medium text-slate-600 mb-1">Category</label>
-                                    <select value={formData.categoryId} onChange={e => setFormData({ ...formData, categoryId: e.target.value })} className="w-full px-3 py-2 text-sm border rounded-md">
-                                        {CATEGORIES.map(c => <option key={c.id} value={c.id}>{c.label}</option>)}
-                                    </select>
-                                </div>
-                                <div className="lg:col-span-1">
-                                    <label className="block text-xs font-medium text-slate-600 mb-1">Item Description</label>
-                                    <input type="text" placeholder="E.g. Main Hall Rent" value={formData.item} onChange={e => setFormData({ ...formData, item: e.target.value })} className="w-full px-3 py-2 text-sm border rounded-md" />
-                                </div>
-                                <div className="lg:col-span-1">
-                                    <label className="block text-xs font-medium text-slate-600 mb-1">Vendor (Opt)</label>
-                                    <input type="text" placeholder="E.g. ITC Grand" value={formData.vendor} onChange={e => setFormData({ ...formData, vendor: e.target.value })} className="w-full px-3 py-2 text-sm border rounded-md" />
-                                </div>
-                                <div className="lg:col-span-1">
-                                    <label className="block text-xs font-medium text-slate-600 mb-1">Estimated Cost</label>
-                                    <input type="number" value={formData.estimatedCost || ''} onChange={e => setFormData({ ...formData, estimatedCost: Number(e.target.value) })} className="w-full px-3 py-2 text-sm border rounded-md" />
-                                </div>
-                                <div className="lg:col-span-1">
-                                    <label className="block text-xs font-medium text-slate-600 mb-1">Actual Contract Value</label>
-                                    <input type="number" value={formData.actualCost || ''} onChange={e => setFormData({ ...formData, actualCost: Number(e.target.value) })} className="w-full px-3 py-2 text-sm border rounded-md" />
-                                </div>
-                                <div className="lg:col-span-1">
-                                    <label className="block text-xs font-medium text-slate-600 mb-1">Amount Paid (Advance)</label>
-                                    <input type="number" value={formData.paid || ''} onChange={e => setFormData({ ...formData, paid: Number(e.target.value) })} className="w-full px-3 py-2 text-sm border rounded-md" />
-                                </div>
-                                <div className="lg:col-span-2 flex gap-2">
-                                    <button onClick={() => setShowForm(false)} className="flex-1 py-2 border rounded-md text-sm font-medium hover:bg-slate-50">Cancel</button>
-                                    <button onClick={handleSave} className="flex-1 py-2 bg-primary text-white rounded-md text-sm font-medium hover:bg-primary-dark">Save Entry</button>
-                                </div>
-                            </div>
-                        )}
 
                         <div className="overflow-x-auto">
                             {expenses.length === 0 ? (
@@ -424,5 +391,125 @@ export const MarriageBudgetPlannerPage: React.FC = () => {
 
             </div>
         </div>
-    );
+
+        {showForm && (
+            <div 
+                className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-[9999]"
+                onClick={() => {
+                    setShowForm(false);
+                    setEditingId(null);
+                    setFormData({ categoryId: 'venue', item: '', estimatedCost: 0, actualCost: 0, paid: 0, vendor: '', notes: '' });
+                }}
+            >
+                <div 
+                    className="bg-white rounded-2xl border border-slate-200 shadow-xl w-full max-w-lg overflow-hidden animate-fade-in"
+                    onClick={e => e.stopPropagation()}
+                >
+                    {/* Header */}
+                    <div className="bg-gradient-to-r from-pink-500 to-rose-500 px-6 py-4 flex items-center justify-between text-white">
+                        <h3 className="font-bold text-lg">
+                            {editingId ? 'Edit Expense Entry' : 'Add New Expense Entry'}
+                        </h3>
+                        <button 
+                            onClick={() => {
+                                setShowForm(false);
+                                setEditingId(null);
+                                setFormData({ categoryId: 'venue', item: '', estimatedCost: 0, actualCost: 0, paid: 0, vendor: '', notes: '' });
+                            }}
+                            className="text-white hover:text-white/80 font-bold text-xl"
+                        >
+                            ✕
+                        </button>
+                    </div>
+
+                    {/* Form Fields */}
+                    <div className="p-6 space-y-4">
+                        <div>
+                            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Category</label>
+                            <select 
+                                value={formData.categoryId} 
+                                onChange={e => setFormData({ ...formData, categoryId: e.target.value })} 
+                                className="w-full px-3 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500"
+                            >
+                                {CATEGORIES.map(c => <option key={c.id} value={c.id}>{c.label}</option>)}
+                            </select>
+                        </div>
+
+                        <div>
+                            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Item Description *</label>
+                            <input 
+                                type="text" 
+                                placeholder="E.g. Main Hall Rent" 
+                                value={formData.item} 
+                                onChange={e => setFormData({ ...formData, item: e.target.value })} 
+                                className="w-full px-3 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500" 
+                            />
+                        </div>
+
+                        <div>
+                            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Vendor (Optional)</label>
+                            <input 
+                                type="text" 
+                                placeholder="E.g. ITC Grand" 
+                                value={formData.vendor} 
+                                onChange={e => setFormData({ ...formData, vendor: e.target.value })} 
+                                className="w-full px-3 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500" 
+                            />
+                        </div>
+
+                        <div className="grid grid-cols-3 gap-3">
+                            <div>
+                                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Est. Cost</label>
+                                <input 
+                                    type="number" 
+                                    value={formData.estimatedCost || ''} 
+                                    onChange={e => setFormData({ ...formData, estimatedCost: Number(e.target.value) })} 
+                                    className="w-full px-3 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500" 
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Actual Cost</label>
+                                <input 
+                                    type="number" 
+                                    value={formData.actualCost || ''} 
+                                    onChange={e => setFormData({ ...formData, actualCost: Number(e.target.value) })} 
+                                    className="w-full px-3 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500" 
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Paid (Adv.)</label>
+                                <input 
+                                    type="number" 
+                                    value={formData.paid || ''} 
+                                    onChange={e => setFormData({ ...formData, paid: Number(e.target.value) })} 
+                                    className="w-full px-3 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500" 
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Footer Buttons */}
+                    <div className="bg-slate-50 px-6 py-4 flex gap-3 border-t border-slate-100 justify-end">
+                        <button 
+                            onClick={() => {
+                                setShowForm(false);
+                                setEditingId(null);
+                                setFormData({ categoryId: 'venue', item: '', estimatedCost: 0, actualCost: 0, paid: 0, vendor: '', notes: '' });
+                            }} 
+                            className="px-4 py-2 border rounded-lg text-sm font-medium hover:bg-slate-100 transition-colors"
+                        >
+                            Cancel
+                        </button>
+                        <button 
+                            onClick={handleSave} 
+                            className="px-6 py-2 bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
+                        >
+                            Save Entry
+                        </button>
+                    </div>
+                </div>
+            </div>
+        )}
+    </>
+  );
 };
