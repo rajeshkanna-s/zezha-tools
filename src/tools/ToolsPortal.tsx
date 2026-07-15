@@ -17,6 +17,9 @@ const GiftBudgetPlannerPage = React.lazy(() => import('./gift-budget-planner/Gif
 const RentVsBuyCalculatorPage = React.lazy(() => import('./rent-vs-buy-calculator/RentVsBuyCalculatorPage').then(m => ({ default: m.RentVsBuyCalculatorPage })));
 const MarriageBudgetPlannerPage = React.lazy(() => import('./marriage-budget-planner/MarriageBudgetPlannerPage').then(m => ({ default: m.MarriageBudgetPlannerPage })));
 const UnitConverterPage = React.lazy(() => import('./unit-converter/UnitConverterPage').then(m => ({ default: m.UnitConverterPage })));
+const LogoCreatorPage = React.lazy(() => import('./logo/LogoCreator').then(m => ({ default: m.LogoCreator })));
+const EventPageCreatorPage = React.lazy(() => import('./eventpage/EventPageCreator').then(m => ({ default: m.EventPageCreator })));
+const InvitationCreatorPage = React.lazy(() => import('./invitation/InvitationCreator').then(m => ({ default: m.InvitationCreator })));
 
 const ImageSearchDownloader = React.lazy(() => import('../APIs/getImages'));
 const VideoSearchDownloader = React.lazy(() => import('../APIs/getVideo'));
@@ -131,16 +134,16 @@ import { RawDataBankFdRates } from './raw-data/RawDataBankFdRates';
 import { RawDataStatutoryDueDates } from './raw-data/RawDataStatutoryDueDates';
 
 interface ToolsPortalProps {
-  onHome: () => void;
-  onInvoice: () => void;
-  onBankStatement: () => void;
-  onPayInPayOut: () => void;
-  onSubscribe: () => void;
-  onInvitation: () => void;
-  onEventPage: () => void;
-  onLogoCreator: () => void;
-  onAtsAnalyser: () => void;
-  onEbookCreator: () => void;
+  onHome?: () => void;
+  onInvoice?: () => void;
+  onBankStatement?: () => void;
+  onPayInPayOut?: () => void;
+  onSubscribe?: () => void;
+  onInvitation?: () => void;
+  onEventPage?: () => void;
+  onLogoCreator?: () => void;
+  onAtsAnalyser?: () => void;
+  onEbookCreator?: () => void;
   /** From global search: tool to auto-select when portal mounts/updates */
   pendingToolSelect?: { toolId: string; sectionId: string } | null;
   /** Callback to clear pending tool after it has been consumed */
@@ -400,14 +403,14 @@ export const ToolsPortal: React.FC<ToolsPortalProps> = ({ onHome, onInvoice, onB
 
   const handleSelectTool = (toolId: string) => {
     // Intercept certain tools that are actually standalone sections
-    if (['startup-name-checker', 'festival-gift-planner', 'rent-vs-buy-calculator', 'marriage-budget-planner', 'unit-converter', 'products', 'home'].includes(toolId)) {
+    if (['startup-name-checker', 'festival-gift-planner', 'rent-vs-buy-calculator', 'marriage-budget-planner', 'unit-converter', 'products', 'home', 'invitation-creator', 'event-page-creator', 'logo-creator'].includes(toolId)) {
       handleSelectSection(toolId);
       return;
     }
 
     if (!isSubscribed) {
       setShowExpiredToast(true);
-      setTimeout(() => { setShowExpiredToast(false); onSubscribe(); }, 1500);
+      setTimeout(() => { setShowExpiredToast(false); onSubscribe?.(); }, 1500);
       return;
     }
     // Track tool usage for activity stats
@@ -419,37 +422,10 @@ export const ToolsPortal: React.FC<ToolsPortalProps> = ({ onHome, onInvoice, onB
   };
 
   const handleSelectSection = (sectionId: string) => {
-    if (sectionId === 'invitation-creator') {
+    if (['home', 'get-img-video', 'products', 'life-decision-simulator', 'startup-name-checker', 'festival-gift-planner', 'rent-vs-buy-calculator', 'marriage-budget-planner', 'unit-converter', 'govt-scheme-finder', 'invitation-creator', 'event-page-creator', 'logo-creator'].includes(sectionId)) {
       if (!isSubscribed) {
         setShowExpiredToast(true);
-        setTimeout(() => { setShowExpiredToast(false); onSubscribe(); }, 1500);
-        return;
-      }
-      onInvitation();
-      return;
-    }
-    if (sectionId === 'event-page-creator') {
-      if (!isSubscribed) {
-        setShowExpiredToast(true);
-        setTimeout(() => { setShowExpiredToast(false); onSubscribe(); }, 1500);
-        return;
-      }
-      onEventPage();
-      return;
-    }
-    if (sectionId === 'logo-creator') {
-      if (!isSubscribed) {
-        setShowExpiredToast(true);
-        setTimeout(() => { setShowExpiredToast(false); onSubscribe(); }, 1500);
-        return;
-      }
-      onLogoCreator();
-      return;
-    }
-    if (['home', 'get-img-video', 'products', 'life-decision-simulator', 'startup-name-checker', 'festival-gift-planner', 'rent-vs-buy-calculator', 'marriage-budget-planner', 'unit-converter', 'govt-scheme-finder'].includes(sectionId)) {
-      if (!isSubscribed) {
-        setShowExpiredToast(true);
-        setTimeout(() => { setShowExpiredToast(false); onSubscribe(); }, 1500);
+        setTimeout(() => { setShowExpiredToast(false); onSubscribe?.(); }, 1500);
         return;
       }
       setActiveSection(sectionId);
@@ -517,6 +493,36 @@ export const ToolsPortal: React.FC<ToolsPortalProps> = ({ onHome, onInvoice, onB
 
       case 'govt-scheme-finder':
         return <GovtSchemeFinder />;
+      case 'invitation-creator':
+        return (
+          <div className="flex flex-col h-full">
+            <div className="flex-1 overflow-y-auto">
+              <Suspense fallback={<div className="flex items-center justify-center h-full text-slate-400 text-sm">Loading Invitation Creator...</div>}>
+                <InvitationCreatorPage />
+              </Suspense>
+            </div>
+          </div>
+        );
+      case 'event-page-creator':
+        return (
+          <div className="flex flex-col h-full">
+            <div className="flex-1 overflow-y-auto">
+              <Suspense fallback={<div className="flex items-center justify-center h-full text-slate-400 text-sm">Loading Event Page Creator...</div>}>
+                <EventPageCreatorPage />
+              </Suspense>
+            </div>
+          </div>
+        );
+      case 'logo-creator':
+        return (
+          <div className="flex flex-col h-full">
+            <div className="flex-1 overflow-y-auto">
+              <Suspense fallback={<div className="flex items-center justify-center h-full text-slate-400 text-sm">Loading Logo Creator...</div>}>
+                <LogoCreatorPage />
+              </Suspense>
+            </div>
+          </div>
+        );
       default:
         return (
           <Suspense fallback={<div className="flex items-center justify-center h-full text-slate-400 text-sm">Loading Image Downloader...</div>}>
@@ -527,7 +533,7 @@ export const ToolsPortal: React.FC<ToolsPortalProps> = ({ onHome, onInvoice, onB
   };
 
   return (
-    <ToolsLayout onHome={onHome}>
+    <ToolsLayout onHome={onHome || (() => {})}>
       <div className="flex flex-col h-full">
         {/* Mobile Header Bar */}
         <header className="md:hidden flex items-center justify-between px-4 py-3 bg-white border-b border-slate-200 shrink-0 sticky top-0 z-20 mobile-header-shadow">
