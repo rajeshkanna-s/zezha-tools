@@ -26,7 +26,6 @@ const SELF_PROJECTS: Project[] = [
   { url: 'https://parkingmate.netlify.app' },
   { url: 'https://exptkr.netlify.app' },
   { url: 'https://dfits.netlify.app' },
-  { url: 'https://aiapiss.netlify.app' },
   { url: 'https://inv-c.netlify.app', label: 'Professional Invoice' }
 ];
 
