@@ -114,13 +114,13 @@ export const DobCalculator: React.FC = () => {
             </div>
 
             <div className="calc-card">
-                <div className="calc-input-row">
-                    <div className="calc-form-group" style={{ flex: 1 }}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="calc-form-group">
                         <label className="calc-label">Date of Birth</label>
                         <input type="date" className="calc-input" value={dob} onChange={e => setDob(e.target.value)} max={now}
                             style={{ fontSize: 14, fontWeight: 700 }} />
                     </div>
-                    <div className="calc-form-group" style={{ flex: 1 }}>
+                    <div className="calc-form-group">
                         <label className="calc-label">As of Date</label>
                         <input type="date" className="calc-input" value={now} onChange={e => setNow(e.target.value)}
                             style={{ fontSize: 14, fontWeight: 700 }} />

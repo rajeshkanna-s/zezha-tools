@@ -22,6 +22,7 @@ export const RdCalculator: React.FC = () => {
   const [rateStr, setRateStr] = useState('7');
   const [periodStr, setPeriodStr] = useState('3');
   const [timeUnit, setTimeUnit] = useState<'years' | 'months'>('years');
+  const [activeModal, setActiveModal] = useState<'monthly' | 'invested' | 'interest' | 'maturity' | null>(null);
 
   const parseNum = (v: string) => { const n = parseFloat(v.replace(/,/g, '')); return isNaN(n) || n < 0 ? 0 : n; };
   const fmt = (n: number) => n.toLocaleString('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 0, maximumFractionDigits: 0 });
@@ -140,12 +141,24 @@ export const RdCalculator: React.FC = () => {
               <div>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 8 }}>
                   {[
-                    ['Monthly Deposit', fmt(result.monthlyDeposit), '#1e293b'],
-                    ['Total Invested', fmt(result.totalInvested), '#475569'],
-                    ['Interest Earned', fmt(result.totalInterest), '#2563eb'],
-                    ['Maturity Amount', fmt(result.maturityAmount), '#7c3aed'],
-                  ].map(([l, v, c], i) => (
-                    <div key={i} style={{ background: 'white', borderRadius: 8, padding: 10, border: '1px solid #e2e8f0' }}>
+                    ['Monthly Deposit', fmt(result.monthlyDeposit), '#1e293b', 'monthly' as const],
+                    ['Total Invested', fmt(result.totalInvested), '#475569', 'invested' as const],
+                    ['Interest Earned', fmt(result.totalInterest), '#2563eb', 'interest' as const],
+                    ['Maturity Amount', fmt(result.maturityAmount), '#7c3aed', 'maturity' as const],
+                  ].map(([l, v, c, type], i) => (
+                    <div key={i}
+                      onClick={() => type && setActiveModal(type as any)}
+                      style={{
+                        background: 'white',
+                        borderRadius: 8,
+                        padding: 10,
+                        border: '1px solid #e2e8f0',
+                        cursor: type ? 'pointer' : 'default',
+                        transition: 'transform 0.1s ease',
+                      }}
+                      onMouseEnter={e => type && (e.currentTarget.style.transform = 'scale(1.02)')}
+                      onMouseLeave={e => type && (e.currentTarget.style.transform = 'scale(1)')}
+                    >
                       <div style={{ fontSize: 9, color: '#94a3b8', textTransform: 'uppercase' }}>{l}</div>
                       <div style={{ fontSize: 14, fontWeight: 700, color: c as string }}>{v}</div>
                     </div>
@@ -194,6 +207,146 @@ export const RdCalculator: React.FC = () => {
           </div>
         )}
       </div>
+
+      {activeModal && result && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0, 0, 0, 0.4)',
+          backdropFilter: 'blur(4px)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 9999,
+          padding: 16
+        }} onClick={() => setActiveModal(null)}>
+          <div style={{
+            background: 'white',
+            borderRadius: 16,
+            width: '100%',
+            maxWidth: 360,
+            maxHeight: 'calc(100vh - 32px)',
+            display: 'flex',
+            flexDirection: 'column',
+            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+            overflow: 'hidden',
+          }} onClick={e => e.stopPropagation()}>
+            {/* Header */}
+            <div style={{
+              background: 'linear-gradient(135deg, #2563eb, #1d4ed8)',
+              padding: '16px 20px',
+              color: 'white',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexShrink: 0
+            }}>
+              <h3 style={{ margin: 0, fontSize: 14, fontWeight: 800 }}>
+                {activeModal === 'monthly' ? 'Monthly Deposit Breakdown' : activeModal === 'invested' ? 'Total Invested Breakdown' : activeModal === 'interest' ? 'Interest Earned Breakdown' : 'Maturity Amount Breakdown'}
+              </h3>
+              <button
+                onClick={() => setActiveModal(null)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'white',
+                  fontSize: 16,
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  opacity: 0.8
+                }}
+              >
+                ✕
+              </button>
+            </div>
+            {/* List */}
+            <div style={{ padding: 20, overflowY: 'auto', flex: 1 }}>
+              {(() => {
+                let baseVal = 0;
+                if (activeModal === 'monthly') {
+                  baseVal = result.monthlyDeposit;
+                } else if (activeModal === 'invested') {
+                  baseVal = result.totalInvested;
+                } else if (activeModal === 'interest') {
+                  baseVal = result.totalInterest;
+                } else {
+                  baseVal = result.maturityAmount;
+                }
+
+                const isMonthly = activeModal === 'monthly';
+                const totalDays = (result.totalMonths / 12) * 365;
+                const daily = isMonthly ? (baseVal * 12) / 365 : baseVal / totalDays;
+                const weekly = daily * 7;
+                const monthly = isMonthly ? baseVal : baseVal / result.totalMonths;
+                const quarterly = monthly * 3;
+                const halfly = monthly * 6;
+                const yearly = monthly * 12;
+
+                const items: [string, number][] = isMonthly ? [
+                  ['Daily (Per Day)', daily],
+                  ['Weekly', weekly],
+                  ['Monthly', monthly]
+                ] : [
+                  ['Daily (Per Day)', daily],
+                  ['Weekly', weekly],
+                  ['Monthly', monthly],
+                  ['Quarterly', quarterly],
+                  ['Half-Yearly (Halfly)', halfly],
+                  ['Yearly', yearly]
+                ];
+
+                const fmtD = (num: number) => num.toLocaleString('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+                return (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                    {items.map(([label, val], idx) => (
+                      <div key={idx} style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        paddingBottom: idx < items.length - 1 ? 10 : 0,
+                        borderBottom: idx < items.length - 1 ? '1px solid #f1f5f9' : 'none'
+                      }}>
+                        <span style={{ fontSize: 12, color: '#64748b', fontWeight: 600 }}>{label}</span>
+                        <span style={{ fontSize: 13, color: '#1e293b', fontWeight: 700 }}>
+                          {idx < 2 || isMonthly ? fmtD(val) : fmt(Math.round(val))}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                );
+              })()}
+            </div>
+            {/* Footer */}
+            <div style={{
+              background: '#f8fafc',
+              padding: '12px 20px',
+              textAlign: 'right',
+              borderTop: '1px solid #e2e8f0',
+              flexShrink: 0
+            }}>
+              <button
+                onClick={() => setActiveModal(null)}
+                style={{
+                  background: '#2563eb',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: 6,
+                  padding: '6px 16px',
+                  fontSize: 12,
+                  fontWeight: 700,
+                  cursor: 'pointer'
+                }}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

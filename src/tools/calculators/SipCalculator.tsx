@@ -28,6 +28,7 @@ export const SipCalculator: React.FC = () => {
   const [yearsStr, setYearsStr] = useState('10');
   const [stepUpStr, setStepUpStr] = useState('10');
   const [inflationStr, setInflationStr] = useState('6');
+  const [activeModal, setActiveModal] = useState<'monthly' | 'invested' | 'interest' | 'maturity' | 'inflation' | null>(null);
 
   const parseNum = (v: string) => { const n = parseFloat(v.replace(/,/g, '')); return isNaN(n) || n < 0 ? 0 : n; };
   const fmt = (n: number) => n.toLocaleString('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 0, maximumFractionDigits: 0 });
@@ -211,19 +212,45 @@ export const SipCalculator: React.FC = () => {
               <div>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 8 }}>
                   {[
-                    ['Total Invested', fmt(result.totalInvested), '#1e293b'],
-                    ['Est. Returns', fmt(result.totalReturns), '#16a34a'],
-                    ['Maturity Value', fmt(result.maturityAmount), '#7c3aed'],
-                    ['Wealth Gain', `${result.effectiveReturn}%`, '#d97706'],
-                  ].map(([l, v, c], i) => (
-                    <div key={i} style={{ background: 'white', borderRadius: 8, padding: 10, border: '1px solid #e2e8f0' }}>
+                    ['Total Invested', fmt(result.totalInvested), '#1e293b', 'invested' as const],
+                    ['Est. Returns', fmt(result.totalReturns), '#16a34a', 'interest' as const],
+                    ['Maturity Value', fmt(result.maturityAmount), '#7c3aed', 'maturity' as const],
+                    ['Wealth Gain', `${result.effectiveReturn}%`, '#d97706', null]
+                  ].map(([l, v, c, type], i) => (
+                    <div key={i}
+                      onClick={() => type && setActiveModal(type as any)}
+                      style={{
+                        background: 'white',
+                        borderRadius: 8,
+                        padding: 10,
+                        border: '1px solid #e2e8f0',
+                        cursor: type ? 'pointer' : 'default',
+                        transition: 'transform 0.1s ease',
+                      }}
+                      onMouseEnter={e => type && (e.currentTarget.style.transform = 'scale(1.02)')}
+                      onMouseLeave={e => type && (e.currentTarget.style.transform = 'scale(1)')}
+                    >
                       <div style={{ fontSize: 9, color: '#94a3b8', textTransform: 'uppercase' }}>{l}</div>
                       <div style={{ fontSize: 14, fontWeight: 700, color: c as string }}>{v}</div>
                     </div>
                   ))}
                 </div>
-                <div style={{ background: 'white', borderRadius: 8, padding: '8px 12px', border: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', fontSize: 12 }}>
-                  <span style={{ color: '#64748b' }}>Inflation-Adjusted Value</span>
+                <div style={{
+                  background: 'white',
+                  borderRadius: 8,
+                  padding: '8px 12px',
+                  border: '1px solid #e2e8f0',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  fontSize: 12,
+                  cursor: 'pointer',
+                  transition: 'transform 0.1s ease',
+                }}
+                  onClick={() => setActiveModal('inflation')}
+                  onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.01)'}
+                  onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+                >
+                  <span style={{ color: '#64748b', fontWeight: 600 }}>Inflation-Adjusted Value</span>
                   <span style={{ fontWeight: 700, color: '#dc2626' }}>{fmt(result.inflationAdjusted)}</span>
                 </div>
               </div>
@@ -265,6 +292,143 @@ export const SipCalculator: React.FC = () => {
           </div>
         )}
       </div>
+
+      {activeModal && result && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0, 0, 0, 0.4)',
+          backdropFilter: 'blur(4px)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 9999,
+          padding: 16
+        }} onClick={() => setActiveModal(null)}>
+          <div style={{
+            background: 'white',
+            borderRadius: 16,
+            width: '100%',
+            maxWidth: 360,
+            maxHeight: 'calc(100vh - 32px)',
+            display: 'flex',
+            flexDirection: 'column',
+            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+            overflow: 'hidden',
+          }} onClick={e => e.stopPropagation()}>
+            {/* Header */}
+            <div style={{
+              background: 'linear-gradient(135deg, #16a34a, #15803d)',
+              padding: '16px 20px',
+              color: 'white',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexShrink: 0
+            }}>
+              <h3 style={{ margin: 0, fontSize: 14, fontWeight: 800 }}>
+                {activeModal === 'invested' ? 'Total Invested Breakdown' : activeModal === 'interest' ? 'Est. Returns Breakdown' : activeModal === 'maturity' ? 'Maturity Value Breakdown' : 'Inflation-Adjusted Breakdown'}
+              </h3>
+              <button
+                onClick={() => setActiveModal(null)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'white',
+                  fontSize: 16,
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  opacity: 0.8
+                }}
+              >
+                ✕
+              </button>
+            </div>
+            {/* List */}
+            <div style={{ padding: 20, overflowY: 'auto', flex: 1 }}>
+              {(() => {
+                let baseVal = 0;
+                if (activeModal === 'invested') {
+                  baseVal = result.totalInvested;
+                } else if (activeModal === 'interest') {
+                  baseVal = result.totalReturns;
+                } else if (activeModal === 'maturity') {
+                  baseVal = result.maturityAmount;
+                } else {
+                  baseVal = result.inflationAdjusted;
+                }
+
+                const yearsVal = parseFloat(yearsStr) || 10;
+                const months = yearsVal * 12;
+                const totalDays = (months / 12) * 365;
+                const daily = baseVal / totalDays;
+                const weekly = daily * 7;
+                const monthly = baseVal / months;
+                const quarterly = monthly * 3;
+                const halfly = monthly * 6;
+                const yearly = monthly * 12;
+
+                const items: [string, number][] = [
+                  ['Daily (Per Day)', daily],
+                  ['Weekly', weekly],
+                  ['Monthly', monthly],
+                  ['Quarterly', quarterly],
+                  ['Half-Yearly (Halfly)', halfly],
+                  ['Yearly', yearly]
+                ];
+
+                const fmtD = (num: number) => num.toLocaleString('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+                return (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                    {items.map(([label, val], idx) => (
+                      <div key={idx} style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        paddingBottom: idx < items.length - 1 ? 10 : 0,
+                        borderBottom: idx < items.length - 1 ? '1px solid #f1f5f9' : 'none'
+                      }}>
+                        <span style={{ fontSize: 12, color: '#64748b', fontWeight: 600 }}>{label}</span>
+                        <span style={{ fontSize: 13, color: '#1e293b', fontWeight: 700 }}>
+                          {idx < 2 ? fmtD(val) : fmt(Math.round(val))}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                );
+              })()}
+            </div>
+            {/* Footer */}
+            <div style={{
+              background: '#f8fafc',
+              padding: '12px 20px',
+              textAlign: 'right',
+              borderTop: '1px solid #e2e8f0',
+              flexShrink: 0
+            }}>
+              <button
+                onClick={() => setActiveModal(null)}
+                style={{
+                  background: '#16a34a',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: 6,
+                  padding: '6px 16px',
+                  fontSize: 12,
+                  fontWeight: 700,
+                  cursor: 'pointer'
+                }}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
