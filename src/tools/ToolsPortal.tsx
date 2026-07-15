@@ -300,10 +300,20 @@ const GET_IMG_VIDEO_TOOLS = [
 export const ToolsPortal: React.FC<ToolsPortalProps> = ({ onHome, onInvoice, onBankStatement, onPayInPayOut, onSubscribe, onInvitation, onEventPage, onLogoCreator, onAtsAnalyser, onEbookCreator, pendingToolSelect, onPendingToolConsumed, defaultDomain: defaultDomainProp, onDefaultDomainConsumed }) => {
   const [activeTool, setActiveTool] = useState<string | null>(() => {
     const params = new URLSearchParams(window.location.search);
-    return params.get('tool');
+    const tool = params.get('tool');
+    const STANDALONE_SECTION_TOOLS = ['startup-name-checker', 'festival-gift-planner', 'rent-vs-buy-calculator', 'marriage-budget-planner', 'unit-converter', 'products', 'home', 'invitation-creator', 'event-page-creator', 'logo-creator'];
+    if (tool && STANDALONE_SECTION_TOOLS.includes(tool)) {
+      return null;
+    }
+    return tool;
   });
   const [activeSection, setActiveSection] = useState<string>(() => {
     const params = new URLSearchParams(window.location.search);
+    const tool = params.get('tool');
+    const STANDALONE_SECTION_TOOLS = ['startup-name-checker', 'festival-gift-planner', 'rent-vs-buy-calculator', 'marriage-budget-planner', 'unit-converter', 'products', 'home', 'invitation-creator', 'event-page-creator', 'logo-creator'];
+    if (tool && STANDALONE_SECTION_TOOLS.includes(tool)) {
+      return tool;
+    }
     return params.get('section') || 'home';
   });
   const [showExpiredToast, setShowExpiredToast] = useState(false);
@@ -356,8 +366,14 @@ export const ToolsPortal: React.FC<ToolsPortalProps> = ({ onHome, onInvoice, onB
       const params = new URLSearchParams(window.location.search);
       const tool = params.get('tool');
       const section = params.get('section') || 'home';
-      setActiveTool(tool);
-      setActiveSection(section);
+      const STANDALONE_SECTION_TOOLS = ['startup-name-checker', 'festival-gift-planner', 'rent-vs-buy-calculator', 'marriage-budget-planner', 'unit-converter', 'products', 'home', 'invitation-creator', 'event-page-creator', 'logo-creator'];
+      if (tool && STANDALONE_SECTION_TOOLS.includes(tool)) {
+        setActiveTool(null);
+        setActiveSection(tool);
+      } else {
+        setActiveTool(tool);
+        setActiveSection(section);
+      }
     };
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
