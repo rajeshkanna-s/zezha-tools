@@ -3,6 +3,7 @@ import { ExternalLink, Search, Sparkles, FolderGit2, Briefcase, LayoutTemplate }
 
 interface Project {
   url: string;
+  label?: string;
 }
 
 const SELF_PROJECTS: Project[] = [
@@ -25,7 +26,8 @@ const SELF_PROJECTS: Project[] = [
   { url: 'https://parkingmate.netlify.app' },
   { url: 'https://exptkr.netlify.app' },
   { url: 'https://dfits.netlify.app' },
-  { url: 'https://aiapiss.netlify.app' }
+  { url: 'https://aiapiss.netlify.app' },
+  { url: 'https://inv-c.netlify.app', label: 'Professional Invoice' }
 ];
 
 const CLIENT_PROJECTS: Project[] = [
@@ -136,7 +138,7 @@ export const ProductsPage: React.FC = () => {
                     className="group flex items-center justify-between p-4 bg-white rounded-2xl border border-slate-200/60 shadow-sm hover:shadow-md hover:border-indigo-500/30 hover:-translate-y-0.5 transition-all duration-200"
                   >
                     <span className="text-sm font-semibold text-slate-700 group-hover:text-indigo-600 transition-colors truncate pr-2">
-                      {getCleanDomain(proj.url)}
+                      {proj.label || getCleanDomain(proj.url)}
                     </span>
                     <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-indigo-500 transition-colors shrink-0" />
                   </a>
@@ -162,7 +164,7 @@ export const ProductsPage: React.FC = () => {
                     className="group flex items-center justify-between p-4 bg-white rounded-2xl border border-slate-200/60 shadow-sm hover:shadow-md hover:border-teal-500/30 hover:-translate-y-0.5 transition-all duration-200"
                   >
                     <span className="text-sm font-semibold text-slate-700 group-hover:text-teal-600 transition-colors truncate pr-2">
-                      {getCleanDomain(proj.url)}
+                      {proj.label || getCleanDomain(proj.url)}
                     </span>
                     <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-teal-500 transition-colors shrink-0" />
                   </a>
@@ -188,7 +190,7 @@ export const ProductsPage: React.FC = () => {
                     className="group flex items-center justify-between p-4 bg-white rounded-2xl border border-slate-200/60 shadow-sm hover:shadow-md hover:border-emerald-500/30 hover:-translate-y-0.5 transition-all duration-200"
                   >
                     <span className="text-sm font-semibold text-slate-700 group-hover:text-emerald-600 transition-colors truncate pr-2">
-                      {getCleanDomain(proj.url)}
+                      {proj.label || getCleanDomain(proj.url)}
                     </span>
                     <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-emerald-500 transition-colors shrink-0" />
                   </a>

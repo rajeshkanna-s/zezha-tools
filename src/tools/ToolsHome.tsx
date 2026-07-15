@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Search, Sparkles, ArrowRight, Star } from 'lucide-react';
+import { Search, Sparkles, ArrowRight, Star, Zap, CreditCard, PiggyBank, Calendar, Percent, FileSpreadsheet, BarChart3, Receipt, Image } from 'lucide-react';
 import { MENU_SECTIONS } from './ToolsSidebar';
 import { useCustomTools } from '@/hooks/useCustomTools';
 import { useFavouriteTools } from '@/hooks/useFavouriteTools';
@@ -59,6 +59,18 @@ export const ToolsHome: React.FC<ToolsHomeProps> = ({ onSelectTool, onSelectSect
     return allVisibleTools.filter(t => t.label.toLowerCase().includes(q));
   }, [searchQuery, allVisibleTools]);
 
+  const quickAccessTools = useMemo(() => [
+    { id: 'emi-calculator', sectionId: 'loans-emi', label: 'EMI Calculator', icon: CreditCard, color: 'text-emerald-600 bg-emerald-50' },
+    { id: 'fd-calculator', sectionId: 'investments', label: 'FD Calculator', icon: PiggyBank, color: 'text-amber-600 bg-amber-50' },
+    { id: 'dob-calculator', sectionId: 'utilities', label: 'DOB Calculator', icon: Calendar, color: 'text-blue-600 bg-blue-50' },
+    { id: 'percentage-calculator', sectionId: 'utilities', label: 'Percentage', icon: Percent, color: 'text-indigo-600 bg-indigo-50' },
+    { id: 'old-regime-tax', sectionId: 'business-tax', label: 'Old Regime Tax', icon: FileSpreadsheet, color: 'text-rose-600 bg-rose-50' },
+    { id: 'new-regime-tax', sectionId: 'business-tax', label: 'New Regime Tax', icon: FileSpreadsheet, color: 'text-cyan-600 bg-cyan-50' },
+    { id: 'tax-compare', sectionId: 'business-tax', label: 'Tax Compare', icon: BarChart3, color: 'text-purple-600 bg-purple-50' },
+    { id: 'tds-calculator', sectionId: 'business-tax', label: 'TDS Calculator', icon: Receipt, color: 'text-teal-600 bg-teal-50' },
+    { id: 'image-to-pdf', sectionId: 'convertors', label: 'Image to PDF', icon: Image, color: 'text-violet-600 bg-violet-50' }
+  ], []);
+
   const handleNavigate = (sectionId: string, toolId: string) => {
     onSelectSection(sectionId);
     onSelectTool(toolId);
@@ -70,17 +82,10 @@ export const ToolsHome: React.FC<ToolsHomeProps> = ({ onSelectTool, onSelectSect
       <div className="bg-gradient-to-r from-primary via-indigo-600 to-violet-600 rounded-3xl p-6 md:p-10 shadow-xl shadow-indigo-100/50 text-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:24px_24px]" />
         <div className="relative z-10 space-y-4 max-w-3xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-xs font-semibold tracking-wider">
-            <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-            <span>100% BROWSER-BASED UTILITIES</span>
-          </div>
-          <h1 className="text-3xl md:text-5xl font-black font-display tracking-tight leading-none">
-            Zezha Tools & <span className="text-indigo-200">Utilities Hub</span>
-          </h1>
-          <p className="text-sm md:text-base text-slate-100 leading-relaxed max-w-xl">
-            A comprehensive suite of privacy-first file converters, calculators, generators & reference datasets. No files or data ever leave your device.
-          </p>
 
+          <h1 className="text-3xl md:text-5xl font-black font-display tracking-tight leading-none">
+            Zezha Tools
+          </h1>
           {/* Search Box in Hero */}
           <div className="relative max-w-md pt-2">
             <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -151,6 +156,36 @@ export const ToolsHome: React.FC<ToolsHomeProps> = ({ onSelectTool, onSelectSect
         </div>
       ) : (
         <div className="space-y-10">
+          {/* Quick Access Section */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 text-slate-800 font-extrabold text-lg border-b border-slate-100 pb-2">
+              <div className="w-8 h-8 rounded-lg bg-slate-50 border border-slate-200/50 flex items-center justify-center text-slate-600">
+                <Zap size={16} className="text-amber-500 fill-amber-500" />
+              </div>
+              <h2>Quick Access</h2>
+            </div>
+            
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-3">
+              {quickAccessTools.map(tool => {
+                const Icon = tool.icon;
+                return (
+                  <div
+                    key={tool.id}
+                    onClick={() => handleNavigate(tool.sectionId, tool.id)}
+                    className="group bg-white rounded-2xl border border-slate-200/60 p-3 shadow-sm hover:shadow-md hover:border-primary/20 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer flex flex-col items-center justify-center text-center space-y-2"
+                  >
+                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${tool.color} group-hover:scale-105 transition-transform shrink-0`}>
+                      <Icon size={20} />
+                    </div>
+                    <span className="font-bold text-slate-700 text-xs group-hover:text-primary transition-colors line-clamp-2 leading-tight">
+                      {tool.label}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
           {/* Main Grid: Grouped Sections */}
           {visibleSections.map(section => {
             const SectionIcon = section.icon;
