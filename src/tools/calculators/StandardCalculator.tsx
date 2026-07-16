@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Calculator, History, Trash2, HelpCircle } from 'lucide-react';
+import { Calculator, History, Trash2, HelpCircle, Layers } from 'lucide-react';
 import './calculators.css';
 
 interface HistoryItem {
@@ -10,11 +10,13 @@ interface HistoryItem {
 }
 
 export const StandardCalculator: React.FC = () => {
+  const [mode, setMode] = useState<'standard' | 'scientific'>('standard');
   const [display, setDisplay] = useState('0');
   const [equation, setEquation] = useState('');
   const [memory, setMemory] = useState<number | null>(null);
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [showHistory, setShowHistory] = useState(false);
+  const [isRad, setIsRad] = useState(false); // Radians vs Degrees
 
   // Calculator logic states
   const prevValRef = useRef<number | null>(null);
@@ -57,19 +59,17 @@ export const StandardCalculator: React.FC = () => {
       setDisplay(digit);
       shouldResetDisplayRef.current = false;
     } else {
-      // Prevent double decimals
       if (digit === '.' && display.includes('.')) return;
       setDisplay(prev => prev + digit);
     }
   };
 
-  // Handle operation inputs (+, -, *, /)
+  // Handle operation inputs (+, -, *, /, ^, mod)
   const handleOperator = (op: string) => {
     const currentNum = parseFloat(display);
     if (isNaN(currentNum)) return;
 
     if (operatorRef.current && !shouldResetDisplayRef.current) {
-      // Perform intermediate calculation
       const result = calculate(prevValRef.current || 0, currentNum, operatorRef.current);
       setDisplay(result.toString());
       prevValRef.current = result;
@@ -82,7 +82,7 @@ export const StandardCalculator: React.FC = () => {
     shouldResetDisplayRef.current = true;
   };
 
-  // Perform basic calculation
+  // Perform basic & scientific binary calculations
   const calculate = (a: number, b: number, op: string): number => {
     switch (op) {
       case '+': return a + b;
@@ -91,8 +91,20 @@ export const StandardCalculator: React.FC = () => {
       case '*': return a * b;
       case '÷':
       case '/': return b === 0 ? 0 : a / b;
+      case 'x^y':
+      case '^': return Math.pow(a, b);
+      case 'mod': return a % b;
       default: return b;
     }
+  };
+
+  // Factorial utility
+  const factorial = (n: number): number => {
+    if (n < 0) return 0;
+    if (n === 0 || n === 1) return 1;
+    let res = 1;
+    for (let i = 2; i <= Math.min(n, 150); i++) res *= i;
+    return res;
   };
 
   // Handle equals
@@ -117,14 +129,13 @@ export const StandardCalculator: React.FC = () => {
     };
     setHistory(prevHist => [newItem, ...prevHist]);
 
-    // Reset logic states
     prevValRef.current = null;
     operatorRef.current = null;
     shouldResetDisplayRef.current = true;
   };
 
-  // Single operand functions (1/x, x^2, sqrt, negation, percentage)
-  const handleFunction = (func: '1/x' | 'x^2' | 'sqrt' | '+/-' | '%') => {
+  // Single operand functions
+  const handleFunction = (func: string) => {
     const val = parseFloat(display);
     if (isNaN(val)) return;
 
@@ -141,6 +152,10 @@ export const StandardCalculator: React.FC = () => {
         result = val * val;
         desc = `sqr(${val})`;
         break;
+      case 'x^3':
+        result = val * val * val;
+        desc = `cube(${val})`;
+        break;
       case 'sqrt':
         if (val < 0) return;
         result = Math.sqrt(val);
@@ -149,7 +164,7 @@ export const StandardCalculator: React.FC = () => {
       case '+/-':
         result = -val;
         setDisplay(result.toString());
-        return; // Doesn't require setting equation
+        return;
       case '%':
         if (prevValRef.current !== null && operatorRef.current) {
           result = (prevValRef.current * val) / 100;
@@ -158,6 +173,53 @@ export const StandardCalculator: React.FC = () => {
         }
         setDisplay(result.toString());
         return;
+      // Scientific Unary Functions
+      case 'sin':
+        result = isRad ? Math.sin(val) : Math.sin((val * Math.PI) / 180);
+        desc = `sin(${val}${isRad ? '' : '°'})`;
+        break;
+      case 'cos':
+        result = isRad ? Math.cos(val) : Math.cos((val * Math.PI) / 180);
+        desc = `cos(${val}${isRad ? '' : '°'})`;
+        break;
+      case 'tan':
+        result = isRad ? Math.tan(val) : Math.tan((val * Math.PI) / 180);
+        desc = `tan(${val}${isRad ? '' : '°'})`;
+        break;
+      case 'log':
+        if (val <= 0) return;
+        result = Math.log10(val);
+        desc = `log(${val})`;
+        break;
+      case 'ln':
+        if (val <= 0) return;
+        result = Math.log(val);
+        desc = `ln(${val})`;
+        break;
+      case '10^x':
+        result = Math.pow(10, val);
+        desc = `10^(${val})`;
+        break;
+      case 'e^x':
+        result = Math.exp(val);
+        desc = `e^(${val})`;
+        break;
+      case 'abs':
+        result = Math.abs(val);
+        desc = `abs(${val})`;
+        break;
+      case 'n!':
+        result = factorial(val);
+        desc = `fact(${val})`;
+        break;
+      case 'pi':
+        setDisplay(Math.PI.toString());
+        return;
+      case 'e':
+        setDisplay(Math.E.toString());
+        return;
+      default:
+        return;
     }
 
     setEquation(desc);
@@ -165,7 +227,7 @@ export const StandardCalculator: React.FC = () => {
     shouldResetDisplayRef.current = true;
   };
 
-  // Clear entry / Clear all / Backspace
+  // Clear types
   const handleClear = (type: 'CE' | 'C' | 'backspace') => {
     if (type === 'CE') {
       setDisplay('0');
@@ -209,32 +271,65 @@ export const StandardCalculator: React.FC = () => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [display, equation]);
+  }, [display, equation, isRad]);
 
   return (
-    <div className="calc-wrapper" style={{ maxWidth: 440 }}>
+    <div className="calc-wrapper transition-all duration-300" style={{ maxWidth: mode === 'scientific' ? 580 : 420 }}>
       {/* Header */}
-      <div className="calc-header">
-        <div className="calc-header-icon" style={{ background: '#dbeafe', color: '#2563eb' }}>
-          <Calculator size={22} />
+      <div className="calc-header flex items-center justify-between gap-4 mb-4">
+        <div className="flex items-center gap-3">
+          <div className="calc-header-icon bg-gradient-to-tr from-blue-500 to-indigo-600 text-white shadow-md shadow-blue-500/20 p-2 rounded-xl">
+            <Calculator size={22} />
+          </div>
+          <div>
+            <h2 className="calc-header-title text-slate-800 font-bold text-lg">Smart Calculator</h2>
+            <p className="calc-header-desc text-slate-500 text-xs">Standard & Scientific Mode with History</p>
+          </div>
         </div>
-        <div className="flex-1">
-          <h2 className="calc-header-title">Standard Calculator</h2>
-          <p className="calc-header-desc">Standard mathematical calculations & history</p>
+
+        <div className="flex items-center gap-2">
+          {/* Mode Switcher */}
+          <div className="bg-slate-100/80 p-0.5 rounded-lg flex items-center border border-slate-200">
+            <button
+              onClick={() => setMode('standard')}
+              className={`px-2.5 py-1 rounded-md text-xs font-semibold transition-all ${mode === 'standard' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}
+            >
+              Standard
+            </button>
+            <button
+              onClick={() => setMode('scientific')}
+              className={`px-2.5 py-1 rounded-md text-xs font-semibold transition-all ${mode === 'scientific' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}
+            >
+              Scientific
+            </button>
+          </div>
+
+          {/* History Button */}
+          <button
+            onClick={() => setShowHistory(!showHistory)}
+            className={`p-2 rounded-lg border transition-all ${showHistory ? 'bg-blue-50 border-blue-200 text-blue-600 shadow-sm' : 'bg-white border-slate-200 text-slate-500 hover:bg-slate-50'}`}
+            title="History"
+          >
+            <History size={16} />
+          </button>
         </div>
-        <button
-          onClick={() => setShowHistory(!showHistory)}
-          className={`p-1.5 rounded-lg transition-colors ${showHistory ? 'bg-blue-100 text-blue-600' : 'text-slate-500 hover:bg-slate-100'}`}
-          title="History"
-        >
-          <History size={20} />
-        </button>
       </div>
 
-      <div className="relative overflow-hidden bg-white border border-slate-200 rounded-2xl shadow-xl flex flex-col">
+      {/* Main Glassmorphic Calculator Case */}
+      <div className="relative overflow-hidden bg-white/90 backdrop-blur-md border border-slate-200/80 rounded-2xl shadow-xl flex flex-col transition-all duration-300">
+        
         {/* Main Display Area */}
-        <div className="bg-slate-50/50 px-5 py-6 border-b border-slate-100 flex flex-col items-end justify-end h-32 select-all">
-          <div className="text-xs text-slate-400 font-medium h-5 overflow-hidden text-right w-full tracking-wide">
+        <div className="bg-slate-50/60 px-5 py-6 border-b border-slate-100 flex flex-col items-end justify-end h-32 relative">
+          {mode === 'scientific' && (
+            <button
+              onClick={() => setIsRad(!isRad)}
+              className="absolute left-4 top-4 px-2 py-0.5 rounded text-[10px] font-bold border transition-colors bg-white border-slate-200 text-slate-500 hover:bg-slate-50 hover:text-slate-700"
+            >
+              {isRad ? 'RAD' : 'DEG'}
+            </button>
+          )}
+          
+          <div className="text-xs text-slate-400 font-semibold h-5 overflow-hidden text-right w-full tracking-wide">
             {equation}
           </div>
           <div className="text-3xl font-extrabold text-slate-800 text-right w-full overflow-x-auto whitespace-nowrap scrollbar-thin py-1 tracking-tight">
@@ -243,68 +338,98 @@ export const StandardCalculator: React.FC = () => {
         </div>
 
         {/* Memory Row */}
-        <div className="flex justify-between px-3 py-1 bg-slate-50/30 border-b border-slate-100 text-xs font-semibold text-slate-500">
-          {(['MC', 'MR', 'M+', 'M-', 'MS'] as const).map(action => (
-            <button
-              key={action}
-              onClick={() => handleMemory(action)}
-              disabled={action === 'MR' && memory === null}
-              className={`px-3 py-1.5 rounded hover:bg-slate-100/80 transition-colors ${action === 'MR' && memory === null ? 'opacity-40 cursor-not-allowed' : ''}`}
-            >
-              {action}
-            </button>
-          ))}
-          <span className="flex items-center text-[10px] text-slate-400 select-none">
-            {memory !== null ? `M = ${memory}` : ''}
-          </span>
+        <div className="flex justify-between px-4 py-1.5 bg-slate-50/30 border-b border-slate-100 text-[11px] font-bold text-slate-500 select-none">
+          <div className="flex gap-4">
+            {(['MC', 'MR', 'M+', 'M-', 'MS'] as const).map(action => (
+              <button
+                key={action}
+                onClick={() => handleMemory(action)}
+                disabled={action === 'MR' && memory === null}
+                className={`transition-colors ${action === 'MR' && memory === null ? 'opacity-30 cursor-not-allowed' : 'hover:text-blue-600'}`}
+              >
+                {action}
+              </button>
+            ))}
+          </div>
+          {memory !== null && (
+            <span className="text-[10px] text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded-md font-mono">
+              M = {memory}
+            </span>
+          )}
         </div>
 
-        {/* Keypad */}
-        <div className="grid grid-cols-4 gap-1 p-3 bg-slate-50/10">
-          {/* Row 1 */}
-          <button onClick={() => handleFunction('%')} className="py-4 text-sm font-bold text-slate-600 hover:bg-slate-100 rounded-xl transition-colors">%</button>
-          <button onClick={() => handleClear('CE')} className="py-4 text-sm font-bold text-rose-500 hover:bg-rose-50 rounded-xl transition-colors">CE</button>
-          <button onClick={() => handleClear('C')} className="py-4 text-sm font-bold text-rose-500 hover:bg-rose-50 rounded-xl transition-colors">C</button>
-          <button onClick={() => handleClear('backspace')} className="py-4 text-sm font-bold text-slate-600 hover:bg-slate-100 rounded-xl transition-colors font-mono">⌫</button>
+        {/* Layout Grid */}
+        <div className="flex flex-col md:flex-row bg-slate-50/10">
+          {/* Scientific Block - Left Side */}
+          {mode === 'scientific' && (
+            <div className="grid grid-cols-5 md:grid-cols-2 gap-1 p-3 bg-slate-100/30 border-b md:border-b-0 md:border-r border-slate-200/60 md:w-52">
+              <button onClick={() => handleFunction('sin')} className="py-2.5 md:py-3.5 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-lg border border-slate-200/40 bg-white/50 transition-colors">sin</button>
+              <button onClick={() => handleFunction('cos')} className="py-2.5 md:py-3.5 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-lg border border-slate-200/40 bg-white/50 transition-colors">cos</button>
+              <button onClick={() => handleFunction('tan')} className="py-2.5 md:py-3.5 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-lg border border-slate-200/40 bg-white/50 transition-colors">tan</button>
+              <button onClick={() => handleFunction('ln')} className="py-2.5 md:py-3.5 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-lg border border-slate-200/40 bg-white/50 transition-colors">ln</button>
+              <button onClick={() => handleFunction('log')} className="py-2.5 md:py-3.5 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-lg border border-slate-200/40 bg-white/50 transition-colors">log</button>
 
-          {/* Row 2 */}
-          <button onClick={() => handleFunction('1/x')} className="py-4 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-xl transition-colors">¹/x</button>
-          <button onClick={() => handleFunction('x^2')} className="py-4 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-xl transition-colors">x²</button>
-          <button onClick={() => handleFunction('sqrt')} className="py-4 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-xl transition-colors">²√x</button>
-          <button onClick={() => handleOperator('÷')} className="py-4 text-lg font-bold text-blue-600 hover:bg-blue-50 rounded-xl transition-colors">÷</button>
+              <button onClick={() => handleOperator('x^y')} className="py-2.5 md:py-3.5 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-lg border border-slate-200/40 bg-white/50 transition-colors">xʸ</button>
+              <button onClick={() => handleFunction('x^3')} className="py-2.5 md:py-3.5 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-lg border border-slate-200/40 bg-white/50 transition-colors">x³</button>
+              <button onClick={() => handleFunction('10^x')} className="py-2.5 md:py-3.5 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-lg border border-slate-200/40 bg-white/50 transition-colors">10ˣ</button>
+              <button onClick={() => handleFunction('e^x')} className="py-2.5 md:py-3.5 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-lg border border-slate-200/40 bg-white/50 transition-colors">eˣ</button>
+              <button onClick={() => handleFunction('abs')} className="py-2.5 md:py-3.5 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-lg border border-slate-200/40 bg-white/50 transition-colors">|x|</button>
 
-          {/* Row 3 */}
-          <button onClick={() => handleDigit('7')} className="py-4 text-lg font-bold text-slate-800 hover:bg-slate-100 rounded-xl transition-colors">7</button>
-          <button onClick={() => handleDigit('8')} className="py-4 text-lg font-bold text-slate-800 hover:bg-slate-100 rounded-xl transition-colors">8</button>
-          <button onClick={() => handleDigit('9')} className="py-4 text-lg font-bold text-slate-800 hover:bg-slate-100 rounded-xl transition-colors">9</button>
-          <button onClick={() => handleOperator('×')} className="py-4 text-lg font-bold text-blue-600 hover:bg-blue-50 rounded-xl transition-colors">×</button>
+              <button onClick={() => handleFunction('pi')} className="py-2.5 md:py-3.5 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-lg border border-slate-200/40 bg-white/50 transition-colors">π</button>
+              <button onClick={() => handleFunction('e')} className="py-2.5 md:py-3.5 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-lg border border-slate-200/40 bg-white/50 transition-colors">e</button>
+              <button onClick={() => handleOperator('mod')} className="py-2.5 md:py-3.5 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-lg border border-slate-200/40 bg-white/50 transition-colors">mod</button>
+              <button onClick={() => handleFunction('n!')} className="py-2.5 md:py-3.5 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-lg border border-slate-200/40 bg-white/50 transition-colors">n!</button>
+              <button onClick={() => handleFunction('1/x')} className="py-2.5 md:py-3.5 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-lg border border-slate-200/40 bg-white/50 transition-colors">¹/x</button>
+            </div>
+          )}
 
-          {/* Row 4 */}
-          <button onClick={() => handleDigit('4')} className="py-4 text-lg font-bold text-slate-800 hover:bg-slate-100 rounded-xl transition-colors">4</button>
-          <button onClick={() => handleDigit('5')} className="py-4 text-lg font-bold text-slate-800 hover:bg-slate-100 rounded-xl transition-colors">5</button>
-          <button onClick={() => handleDigit('6')} className="py-4 text-lg font-bold text-slate-800 hover:bg-slate-100 rounded-xl transition-colors">6</button>
-          <button onClick={() => handleOperator('-')} className="py-4 text-xl font-bold text-blue-600 hover:bg-blue-50 rounded-xl transition-colors">−</button>
+          {/* Standard Block - Right Side */}
+          <div className="grid grid-cols-4 gap-1 p-3 flex-1">
+            {/* Row 1 */}
+            <button onClick={() => handleFunction('%')} className="py-3 sm:py-4 text-xs sm:text-sm font-bold text-slate-500 hover:bg-slate-100 rounded-xl transition-colors">%</button>
+            <button onClick={() => handleClear('CE')} className="py-3 sm:py-4 text-xs sm:text-sm font-bold text-rose-500 hover:bg-rose-50 rounded-xl transition-colors">CE</button>
+            <button onClick={() => handleClear('C')} className="py-3 sm:py-4 text-xs sm:text-sm font-bold text-rose-500 hover:bg-rose-50 rounded-xl transition-colors">C</button>
+            <button onClick={() => handleClear('backspace')} className="py-3 sm:py-4 text-xs sm:text-sm font-bold text-slate-500 hover:bg-slate-100 rounded-xl transition-colors font-mono">⌫</button>
 
-          {/* Row 5 */}
-          <button onClick={() => handleDigit('1')} className="py-4 text-lg font-bold text-slate-800 hover:bg-slate-100 rounded-xl transition-colors">1</button>
-          <button onClick={() => handleDigit('2')} className="py-4 text-lg font-bold text-slate-800 hover:bg-slate-100 rounded-xl transition-colors">2</button>
-          <button onClick={() => handleDigit('3')} className="py-4 text-lg font-bold text-slate-800 hover:bg-slate-100 rounded-xl transition-colors">3</button>
-          <button onClick={() => handleOperator('+')} className="py-4 text-lg font-bold text-blue-600 hover:bg-blue-50 rounded-xl transition-colors">+</button>
+            {/* Row 2 */}
+            <button onClick={() => handleFunction('x^2')} className="py-3 sm:py-4 text-xs sm:text-sm font-bold text-slate-500 hover:bg-slate-100 rounded-xl transition-colors">x²</button>
+            <button onClick={() => handleFunction('sqrt')} className="py-3 sm:py-4 text-xs sm:text-sm font-bold text-slate-500 hover:bg-slate-100 rounded-xl transition-colors">²√x</button>
+            <button onClick={() => handleFunction('+/-')} className="py-3 sm:py-4 text-xs sm:text-sm font-bold text-slate-500 hover:bg-slate-100 rounded-xl transition-colors">+/−</button>
+            <button onClick={() => handleOperator('÷')} className="py-3 sm:py-4 text-sm sm:text-base font-bold text-blue-600 hover:bg-blue-50 rounded-xl transition-colors">÷</button>
 
-          {/* Row 6 */}
-          <button onClick={() => handleFunction('+/-')} className="py-4 text-sm font-bold text-slate-800 hover:bg-slate-100 rounded-xl transition-colors">+/−</button>
-          <button onClick={() => handleDigit('0')} className="py-4 text-lg font-bold text-slate-800 hover:bg-slate-100 rounded-xl transition-colors">0</button>
-          <button onClick={() => handleDigit('.')} className="py-4 text-lg font-bold text-slate-800 hover:bg-slate-100 rounded-xl transition-colors">.</button>
-          <button onClick={handleEquals} className="py-4 text-lg font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-all shadow-md shadow-blue-500/20">=</button>
+            {/* Row 3 */}
+            <button onClick={() => handleDigit('7')} className="py-3 sm:py-4 text-sm sm:text-base font-bold text-slate-800 hover:bg-slate-100 rounded-xl transition-colors bg-white/40 border border-slate-200/20">7</button>
+            <button onClick={() => handleDigit('8')} className="py-3 sm:py-4 text-sm sm:text-base font-bold text-slate-800 hover:bg-slate-100 rounded-xl transition-colors bg-white/40 border border-slate-200/20">8</button>
+            <button onClick={() => handleDigit('9')} className="py-3 sm:py-4 text-sm sm:text-base font-bold text-slate-800 hover:bg-slate-100 rounded-xl transition-colors bg-white/40 border border-slate-200/20">9</button>
+            <button onClick={() => handleOperator('×')} className="py-3 sm:py-4 text-sm sm:text-base font-bold text-blue-600 hover:bg-blue-50 rounded-xl transition-colors">×</button>
+
+            {/* Row 4 */}
+            <button onClick={() => handleDigit('4')} className="py-3 sm:py-4 text-sm sm:text-base font-bold text-slate-800 hover:bg-slate-100 rounded-xl transition-colors bg-white/40 border border-slate-200/20">4</button>
+            <button onClick={() => handleDigit('5')} className="py-3 sm:py-4 text-sm sm:text-base font-bold text-slate-800 hover:bg-slate-100 rounded-xl transition-colors bg-white/40 border border-slate-200/20">5</button>
+            <button onClick={() => handleDigit('6')} className="py-3 sm:py-4 text-sm sm:text-base font-bold text-slate-800 hover:bg-slate-100 rounded-xl transition-colors bg-white/40 border border-slate-200/20">6</button>
+            <button onClick={() => handleOperator('-')} className="py-3 sm:py-4 text-sm sm:text-base font-bold text-blue-600 hover:bg-blue-50 rounded-xl transition-colors">−</button>
+
+            {/* Row 5 */}
+            <button onClick={() => handleDigit('1')} className="py-3 sm:py-4 text-sm sm:text-base font-bold text-slate-800 hover:bg-slate-100 rounded-xl transition-colors bg-white/40 border border-slate-200/20">1</button>
+            <button onClick={() => handleDigit('2')} className="py-3 sm:py-4 text-sm sm:text-base font-bold text-slate-800 hover:bg-slate-100 rounded-xl transition-colors bg-white/40 border border-slate-200/20">2</button>
+            <button onClick={() => handleDigit('3')} className="py-3 sm:py-4 text-sm sm:text-base font-bold text-slate-800 hover:bg-slate-100 rounded-xl transition-colors bg-white/40 border border-slate-200/20">3</button>
+            <button onClick={() => handleOperator('+')} className="py-3 sm:py-4 text-sm sm:text-base font-bold text-blue-600 hover:bg-blue-50 rounded-xl transition-colors">+</button>
+
+            {/* Row 6 */}
+            <button disabled className="py-3 sm:py-4 rounded-xl opacity-0 cursor-default"></button>
+            <button onClick={() => handleDigit('0')} className="py-3 sm:py-4 text-sm sm:text-base font-bold text-slate-800 hover:bg-slate-100 rounded-xl transition-colors bg-white/40 border border-slate-200/20">0</button>
+            <button onClick={() => handleDigit('.')} className="py-3 sm:py-4 text-sm sm:text-base font-bold text-slate-800 hover:bg-slate-100 rounded-xl transition-colors bg-white/40 border border-slate-200/20">.</button>
+            <button onClick={handleEquals} className="py-3 sm:py-4 text-sm sm:text-base font-bold bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl shadow-md shadow-blue-500/10 hover:shadow-blue-500/20 hover:brightness-105 transition-all text-center flex items-center justify-center">=</button>
+          </div>
         </div>
 
         {/* History Drawer Overlay */}
         {showHistory && (
-          <div className="absolute inset-0 bg-slate-900/5 backdrop-blur-sm z-20 flex justify-end">
+          <div className="absolute inset-0 bg-slate-900/10 backdrop-blur-sm z-20 flex justify-end">
             <div className="w-64 bg-white border-l border-slate-200 h-full flex flex-col animate-slide-in">
-              <div className="px-4 py-3.5 border-b border-slate-100 flex items-center justify-between">
-                <span className="font-bold text-slate-700 text-sm flex items-center gap-1.5">
-                  <History size={15} /> Calculation History
+              <div className="px-4 py-3.5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+                <span className="font-bold text-slate-700 text-xs flex items-center gap-1.5">
+                  <History size={14} /> Calculation History
                 </span>
                 <button
                   onClick={() => setHistory([])}
@@ -312,11 +437,11 @@ export const StandardCalculator: React.FC = () => {
                   className={`text-slate-400 hover:text-rose-500 rounded p-1 transition-colors ${history.length === 0 ? 'opacity-30 cursor-not-allowed' : ''}`}
                   title="Clear history"
                 >
-                  <Trash2 size={15} />
+                  <Trash2 size={14} />
                 </button>
               </div>
 
-              <div className="flex-1 overflow-y-auto p-3 space-y-2.5">
+              <div className="flex-1 overflow-y-auto p-3 space-y-2">
                 {history.length === 0 ? (
                   <div className="text-center py-16 text-xs text-slate-400 font-medium">
                     No calculations recorded yet.
@@ -330,7 +455,7 @@ export const StandardCalculator: React.FC = () => {
                         setEquation(item.equation);
                         shouldResetDisplayRef.current = true;
                       }}
-                      className="w-full text-right p-2 rounded-lg hover:bg-slate-50 transition-colors border border-slate-100/50 group block"
+                      className="w-full text-right p-2.5 rounded-lg hover:bg-slate-50 transition-colors border border-slate-100/50 group block"
                     >
                       <p className="text-[10px] text-slate-400 font-semibold truncate group-hover:text-slate-500 mb-0.5">{item.equation}</p>
                       <p className="text-sm font-extrabold text-slate-700 truncate">{item.result}</p>
@@ -343,11 +468,18 @@ export const StandardCalculator: React.FC = () => {
         )}
       </div>
 
-      <div className="mt-3 flex items-start gap-1.5 text-[11px] text-slate-400/90 bg-slate-50/50 p-2 border border-slate-100 rounded-lg">
+      <div className="mt-3 flex items-start gap-1.5 text-[10px] sm:text-[11px] text-slate-400/90 bg-slate-50/50 p-2.5 border border-slate-100 rounded-xl leading-relaxed">
         <HelpCircle size={13} className="text-slate-400/70 mt-0.5 flex-shrink-0" />
-        <p className="leading-normal">
-          Supports keyboard shortcuts! You can type numbers, operators <code className="bg-slate-200/50 px-1 py-0.5 rounded text-slate-600 font-semibold font-mono">+-*/</code>, percent <code className="bg-slate-200/50 px-1 py-0.5 rounded text-slate-600 font-semibold font-mono">%</code>, enter or <code className="bg-slate-200/50 px-1 py-0.5 rounded text-slate-600 font-semibold font-mono">=</code>, backspace to delete, and <code className="bg-slate-200/50 px-1 py-0.5 rounded text-slate-600 font-semibold font-mono">Esc</code> to clear.
-        </p>
+        <div>
+          <p>
+            Supports keyboard shortcuts! You can type numbers, operators <code className="bg-slate-200/50 px-1 py-0.2 rounded text-slate-600 font-semibold font-mono">+-*/</code>, percent <code className="bg-slate-200/50 px-1 py-0.2 rounded text-slate-600 font-semibold font-mono">%</code>, enter or <code className="bg-slate-200/50 px-1 py-0.2 rounded text-slate-600 font-semibold font-mono">=</code>, backspace to delete, and <code className="bg-slate-200/50 px-1 py-0.2 rounded text-slate-600 font-semibold font-mono">Esc</code> to clear.
+          </p>
+          {mode === 'scientific' && (
+            <p className="mt-1 font-medium text-slate-500">
+              Trig functions (sin, cos, tan) can be solved in either Degrees or Radians by toggling the mode indicator.
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );
