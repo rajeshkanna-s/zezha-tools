@@ -44,6 +44,7 @@ export const LOANS_EMI_TOOLS: DashboardTool[] = [
     { id: 'loan-compare', icon: GitCompare, title: 'Loan Compare Calculator', desc: 'Compare two loan offers side-by-side', color: 'bg-indigo-600' },
     { id: 'dti-calculator', icon: Percent, title: 'DTI Calculator', desc: 'Calculate your Debt-to-Income Ratio', color: 'bg-orange-500' },
     { id: 'ltv-calculator', icon: Landmark, title: 'LTV Calculator', desc: 'Calculate Loan-to-Value ratio for property', color: 'bg-purple-500' },
+    { id: 'standard-calculator', icon: Calculator, title: 'Standard Calculator', desc: 'Standard mathematical calculations & history', color: 'bg-blue-500' },
 ];
 
 export const INVESTMENTS_TOOLS: DashboardTool[] = [

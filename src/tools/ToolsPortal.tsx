@@ -67,6 +67,7 @@ import { IncomeTaxEstimator } from './calculators/IncomeTaxEstimator';
 import { GstVatCalculator } from './calculators/GstVatCalculator';
 import { DtiCalculator } from './calculators/DtiCalculator';
 import { LtvCalculator } from './calculators/LtvCalculator';
+import { StandardCalculator } from './calculators/StandardCalculator';
 
 // Global Settings & Profile
 import { GlobalSettings } from './settings/GlobalSettings';
@@ -190,6 +191,7 @@ export const TOOL_COMPONENTS: Record<string, React.FC<any>> = {
   'loan-compare': LoanCompareCalculator,
   'dti-calculator': DtiCalculator,
   'ltv-calculator': LtvCalculator,
+  'standard-calculator': StandardCalculator,
   // Investments
   'fd-calculator': FdCalculator,
   'rd-calculator': RdCalculator,

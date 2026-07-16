@@ -80,6 +80,7 @@ export const MENU_SECTIONS: MenuSection[] = [
             { id: 'loan-compare', label: 'Loan Compare Calculator', icon: GitCompare },
             { id: 'dti-calculator', label: 'DTI Calculator', icon: Percent },
             { id: 'ltv-calculator', label: 'LTV Calculator', icon: Landmark },
+            { id: 'standard-calculator', label: 'Standard Calculator', icon: Calculator },
         ],
     },
     {
