@@ -104,6 +104,10 @@ export const MENU_SECTIONS: MenuSection[] = [
             { id: 'festival-gift-planner', label: 'Festival Gift Planner', icon: Gift },
             { id: 'rent-vs-buy-calculator', label: 'Rent vs Buy Calculator', icon: Home },
             { id: 'marriage-budget-planner', label: 'Marriage Budget Planner', icon: Heart },
+            { id: 'subscription-optimizer', label: 'Subscription Optimizer', icon: Wallet },
+            { id: 'decision-matrix', label: 'Weighted Decision Matrix', icon: Scale },
+            { id: 'time-boxer', label: 'Time-Boxer Planner', icon: Clock },
+            { id: 'fire-calculator', label: 'FIRE Calculator', icon: Flame },
         ],
     },
     {

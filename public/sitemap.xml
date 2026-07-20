@@ -146,12 +146,22 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://zezhatools.com/?tool=loan-compare&amp;section=loans-emi</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://zezhatools.com/?tool=dti-calculator&amp;section=loans-emi</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://zezhatools.com/?tool=ltv-calculator&amp;section=loans-emi</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/?tool=standard-calculator&amp;section=loans-emi</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -227,6 +237,26 @@
   </url>
   <url>
     <loc>https://zezhatools.com/?tool=marriage-budget-planner&amp;section=utilities</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/?tool=subscription-optimizer&amp;section=utilities</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/?tool=decision-matrix&amp;section=utilities</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/?tool=time-boxer&amp;section=utilities</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/?tool=fire-calculator&amp;section=utilities</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>

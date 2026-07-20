@@ -14,7 +14,8 @@ import {
     Hash, ShieldAlert, Fingerprint, Shuffle, Globe, Palette,
     MapPin, Map, Building, Car,
     Gift, Clock, Heart, CalendarCheck, GraduationCap,
-    Calculator, KeyRound, ClipboardCheck, GitCompare
+    Calculator, KeyRound, ClipboardCheck, GitCompare,
+    Wallet, Flame
 } from 'lucide-react';
 
 export interface DashboardTool {
@@ -64,6 +65,10 @@ export const UTILITIES_TOOLS: DashboardTool[] = [
     { id: 'festival-gift-planner', icon: Gift, title: 'Festival Gift Planner', desc: 'Budget allocation & gift tracking for families', color: 'bg-rose-500' },
     { id: 'rent-vs-buy-calculator', icon: Home, title: 'Rent vs Buy Calculator', desc: 'Compare cost of renting vs buying over 30 years', color: 'bg-blue-600' },
     { id: 'marriage-budget-planner', icon: Heart, title: 'Marriage Budget Planner', desc: 'Categorize & track typical 18-expense Indian wedding', color: 'bg-pink-500' },
+    { id: 'subscription-optimizer', icon: Wallet, title: 'Subscription Optimizer', desc: 'Prune unused plans & switch monthly plans to annual', color: 'bg-indigo-600' },
+    { id: 'decision-matrix', icon: Scale, title: 'Weighted Decision Matrix', desc: 'Structure choices by rating & weighting key factors', color: 'bg-teal-600' },
+    { id: 'time-boxer', icon: Clock, title: 'Time-Boxer Planner', desc: 'Brain dump, select priorities & schedule day hour-by-hour', color: 'bg-violet-600' },
+    { id: 'fire-calculator', icon: Flame, title: 'FIRE Calculator', desc: 'Determine early retirement age & safe withdrawal target', color: 'bg-rose-600' },
 ];
 
 export const DEV_TOOLKIT_TOOLS: DashboardTool[] = [

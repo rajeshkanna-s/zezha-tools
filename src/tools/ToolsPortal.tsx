@@ -21,6 +21,11 @@ const LogoCreatorPage = React.lazy(() => import('./logo/LogoCreator').then(m => 
 const EventPageCreatorPage = React.lazy(() => import('./eventpage/EventPageCreator').then(m => ({ default: m.EventPageCreator })));
 const InvitationCreatorPage = React.lazy(() => import('./invitation/InvitationCreator').then(m => ({ default: m.InvitationCreator })));
 
+const SubscriptionOptimizerPage = React.lazy(() => import('./subscription-optimizer/SubscriptionOptimizerPage').then(m => ({ default: m.SubscriptionOptimizerPage })));
+const DecisionMatrixPage = React.lazy(() => import('./decision-matrix/DecisionMatrixPage').then(m => ({ default: m.DecisionMatrixPage })));
+const TimeBoxerPage = React.lazy(() => import('./time-boxer/TimeBoxerPage').then(m => ({ default: m.TimeBoxerPage })));
+const FireCalculatorPage = React.lazy(() => import('./fire-calculator/FireCalculatorPage').then(m => ({ default: m.FireCalculatorPage })));
+
 const ImageSearchDownloader = React.lazy(() => import('../APIs/getImages'));
 const VideoSearchDownloader = React.lazy(() => import('../APIs/getVideo'));
 
@@ -203,6 +208,10 @@ export const TOOL_COMPONENTS: Record<string, React.FC<any>> = {
   'dob-calculator': DobCalculator,
   'find-day-calculator': FindDayCalculator,
   'global-settings': GlobalSettings,
+  'subscription-optimizer': SubscriptionOptimizerPage,
+  'decision-matrix': DecisionMatrixPage,
+  'time-boxer': TimeBoxerPage,
+  'fire-calculator': FireCalculatorPage,
   // Developer Toolkit
   'dev-json-formatter': JsonFormatter,
   'dev-json-minifier': JsonMinifier,
