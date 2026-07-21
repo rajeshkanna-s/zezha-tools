@@ -277,14 +277,14 @@ export const StandardCalculator: React.FC = () => {
   // Theme-based class mappings
   const themeClasses = {
     wrapper: theme === 'dark' ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-800',
-    case: theme === 'dark' 
-      ? 'bg-slate-900/90 border-slate-800 shadow-2xl shadow-black/60' 
+    case: theme === 'dark'
+      ? 'bg-slate-900/90 border-slate-800 shadow-2xl shadow-black/60'
       : 'bg-white/90 border-slate-200 shadow-xl shadow-slate-200/50',
     displayArea: theme === 'dark' ? 'bg-black/40 border-slate-800/60' : 'bg-slate-100/60 border-slate-200/60',
     displayText: theme === 'dark' ? 'text-white' : 'text-slate-900',
     equationText: theme === 'dark' ? 'text-slate-400' : 'text-slate-500',
-    keyDigit: theme === 'dark' 
-      ? 'bg-slate-800/80 hover:bg-slate-700/90 text-white border-slate-800/30' 
+    keyDigit: theme === 'dark'
+      ? 'bg-slate-800/80 hover:bg-slate-700/90 text-white border-slate-800/30'
       : 'bg-white hover:bg-slate-100/80 text-slate-800 border-slate-100 shadow-sm',
     keyFunc: theme === 'dark'
       ? 'bg-slate-800/40 hover:bg-slate-700/60 text-slate-300'
@@ -306,8 +306,8 @@ export const StandardCalculator: React.FC = () => {
             <Calculator size={22} />
           </div>
           <div>
-            <h2 className="calc-header-title text-slate-800 font-extrabold text-xl tracking-tight">Smart Calculator</h2>
-            <p className="text-[10px] text-slate-400 font-semibold tracking-wider uppercase">Standard & Scientific</p>
+            <h2 className="calc-header-title text-slate-800 font-extrabold text-xl tracking-tight">Calculator</h2>
+
           </div>
         </div>
 
@@ -315,37 +315,33 @@ export const StandardCalculator: React.FC = () => {
           {/* Theme Toggle */}
           <button
             onClick={() => setTheme(prev => prev === 'light' ? 'dark' : 'light')}
-            className={`p-2 rounded-xl border transition-all ${
-              theme === 'dark' 
-                ? 'bg-slate-800 border-slate-700 text-amber-400 hover:bg-slate-700' 
-                : 'bg-white border-slate-200 text-slate-500 hover:bg-slate-50'
-            }`}
+            className={`p-2 rounded-xl border transition-all ${theme === 'dark'
+              ? 'bg-slate-800 border-slate-700 text-amber-400 hover:bg-slate-700'
+              : 'bg-white border-slate-200 text-slate-500 hover:bg-slate-50'
+              }`}
             title={theme === 'light' ? 'Dark Mode' : 'Light Mode'}
           >
             {theme === 'light' ? <Moon size={15} /> : <Sun size={15} />}
           </button>
 
           {/* Mode Switcher */}
-          <div className={`p-0.5 rounded-xl flex items-center border ${
-            theme === 'dark' ? 'bg-slate-800 border-slate-700' : 'bg-slate-100 border-slate-200'
-          }`}>
+          <div className={`p-0.5 rounded-xl flex items-center border ${theme === 'dark' ? 'bg-slate-800 border-slate-700' : 'bg-slate-100 border-slate-200'
+            }`}>
             <button
               onClick={() => setMode('standard')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                mode === 'standard' 
-                  ? 'bg-gradient-to-tr from-orange-500 to-amber-500 text-white shadow-sm' 
-                  : theme === 'dark' ? 'text-slate-400 hover:text-slate-200' : 'text-slate-500 hover:text-slate-800'
-              }`}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${mode === 'standard'
+                ? 'bg-gradient-to-tr from-orange-500 to-amber-500 text-white shadow-sm'
+                : theme === 'dark' ? 'text-slate-400 hover:text-slate-200' : 'text-slate-500 hover:text-slate-800'
+                }`}
             >
               Standard
             </button>
             <button
               onClick={() => setMode('scientific')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                mode === 'scientific' 
-                  ? 'bg-gradient-to-tr from-orange-500 to-amber-500 text-white shadow-sm' 
-                  : theme === 'dark' ? 'text-slate-400 hover:text-slate-200' : 'text-slate-500 hover:text-slate-800'
-              }`}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${mode === 'scientific'
+                ? 'bg-gradient-to-tr from-orange-500 to-amber-500 text-white shadow-sm'
+                : theme === 'dark' ? 'text-slate-400 hover:text-slate-200' : 'text-slate-500 hover:text-slate-800'
+                }`}
             >
               Scientific
             </button>
@@ -354,11 +350,10 @@ export const StandardCalculator: React.FC = () => {
           {/* History Button */}
           <button
             onClick={() => setShowHistory(!showHistory)}
-            className={`p-2 rounded-xl border transition-all ${
-              showHistory 
-                ? 'bg-orange-50 border-orange-200 text-orange-600 shadow-sm' 
-                : theme === 'dark' ? 'bg-slate-800 border-slate-700 text-slate-400 hover:bg-slate-700' : 'bg-white border-slate-200 text-slate-500 hover:bg-slate-50'
-            }`}
+            className={`p-2 rounded-xl border transition-all ${showHistory
+              ? 'bg-orange-50 border-orange-200 text-orange-600 shadow-sm'
+              : theme === 'dark' ? 'bg-slate-800 border-slate-700 text-slate-400 hover:bg-slate-700' : 'bg-white border-slate-200 text-slate-500 hover:bg-slate-50'
+              }`}
             title="History Log"
           >
             <History size={15} />
@@ -368,17 +363,16 @@ export const StandardCalculator: React.FC = () => {
 
       {/* Main Glassmorphic Calculator Case */}
       <div className={`relative overflow-hidden border rounded-3xl transition-all duration-300 backdrop-blur-lg ${themeClasses.case}`}>
-        
+
         {/* Main Display Area */}
         <div className={`px-6 py-6 border-b flex flex-col items-end justify-end h-36 relative transition-colors ${themeClasses.displayArea}`}>
           {mode === 'scientific' && (
             <button
               onClick={() => setIsRad(!isRad)}
-              className={`absolute left-5 top-5 px-2.5 py-1 rounded-lg text-[9px] font-black border transition-colors ${
-                theme === 'dark' 
-                  ? 'bg-slate-800/80 border-slate-700 text-slate-300 hover:bg-slate-700' 
-                  : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
-              }`}
+              className={`absolute left-5 top-5 px-2.5 py-1 rounded-lg text-[9px] font-black border transition-colors ${theme === 'dark'
+                ? 'bg-slate-800/80 border-slate-700 text-slate-300 hover:bg-slate-700'
+                : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
+                }`}
             >
               {isRad ? 'RAD' : 'DEG'}
             </button>
@@ -400,20 +394,18 @@ export const StandardCalculator: React.FC = () => {
                 key={action}
                 onClick={() => handleMemory(action)}
                 disabled={action === 'MR' && memory === null}
-                className={`transition-colors uppercase tracking-wider ${
-                  action === 'MR' && memory === null 
-                    ? 'opacity-25 cursor-not-allowed' 
-                    : theme === 'dark' ? 'hover:text-orange-400 text-slate-300' : 'hover:text-orange-500 text-slate-600'
-                }`}
+                className={`transition-colors uppercase tracking-wider ${action === 'MR' && memory === null
+                  ? 'opacity-25 cursor-not-allowed'
+                  : theme === 'dark' ? 'hover:text-orange-400 text-slate-300' : 'hover:text-orange-500 text-slate-600'
+                  }`}
               >
                 {action}
               </button>
             ))}
           </div>
           {memory !== null && (
-            <span className={`text-[9px] font-bold uppercase px-2 py-0.5 rounded-full font-mono ${
-              theme === 'dark' ? 'bg-orange-500/10 text-orange-400' : 'bg-orange-50 text-orange-600'
-            }`}>
+            <span className={`text-[9px] font-bold uppercase px-2 py-0.5 rounded-full font-mono ${theme === 'dark' ? 'bg-orange-500/10 text-orange-400' : 'bg-orange-50 text-orange-600'
+              }`}>
               M = {memory}
             </span>
           )}
@@ -423,25 +415,24 @@ export const StandardCalculator: React.FC = () => {
         <div className="flex flex-col md:flex-row">
           {/* Scientific Block - Left Side */}
           {mode === 'scientific' && (
-            <div className={`grid grid-cols-5 md:grid-cols-3 gap-1.5 p-4 border-b md:border-b-0 md:border-r md:w-[280px] shrink-0 ${
-              theme === 'dark' ? 'bg-slate-900/30 border-slate-800/60' : 'bg-slate-50/50 border-slate-200/60'
-            }`}>
+            <div className={`grid grid-cols-5 md:grid-cols-3 gap-1.5 p-4 border-b md:border-b-0 md:border-r md:w-[280px] shrink-0 ${theme === 'dark' ? 'bg-slate-900/30 border-slate-800/60' : 'bg-slate-50/50 border-slate-200/60'
+              }`}>
               <button onClick={() => handleFunction('sin')} className={`py-3 text-xs font-extrabold rounded-xl border border-transparent transition-all active:scale-95 duration-100 ${themeClasses.keyFunc}`}>sin</button>
               <button onClick={() => handleFunction('cos')} className={`py-3 text-xs font-extrabold rounded-xl border border-transparent transition-all active:scale-95 duration-100 ${themeClasses.keyFunc}`}>cos</button>
               <button onClick={() => handleFunction('tan')} className={`py-3 text-xs font-extrabold rounded-xl border border-transparent transition-all active:scale-95 duration-100 ${themeClasses.keyFunc}`}>tan</button>
-              
+
               <button onClick={() => handleFunction('ln')} className={`py-3 text-xs font-extrabold rounded-xl border border-transparent transition-all active:scale-95 duration-100 ${themeClasses.keyFunc}`}>ln</button>
               <button onClick={() => handleFunction('log')} className={`py-3 text-xs font-extrabold rounded-xl border border-transparent transition-all active:scale-95 duration-100 ${themeClasses.keyFunc}`}>log</button>
               <button onClick={() => handleOperator('x^y')} className={`py-3 text-xs font-extrabold rounded-xl border border-transparent transition-all active:scale-95 duration-100 ${themeClasses.keyFunc}`}>xʸ</button>
-              
+
               <button onClick={() => handleFunction('x^3')} className={`py-3 text-xs font-extrabold rounded-xl border border-transparent transition-all active:scale-95 duration-100 ${themeClasses.keyFunc}`}>x³</button>
               <button onClick={() => handleFunction('10^x')} className={`py-3 text-xs font-extrabold rounded-xl border border-transparent transition-all active:scale-95 duration-100 ${themeClasses.keyFunc}`}>10ˣ</button>
               <button onClick={() => handleFunction('e^x')} className={`py-3 text-xs font-extrabold rounded-xl border border-transparent transition-all active:scale-95 duration-100 ${themeClasses.keyFunc}`}>eˣ</button>
-              
+
               <button onClick={() => handleFunction('abs')} className={`py-3 text-xs font-extrabold rounded-xl border border-transparent transition-all active:scale-95 duration-100 ${themeClasses.keyFunc}`}>|x|</button>
               <button onClick={() => handleFunction('pi')} className={`py-3 text-xs font-extrabold rounded-xl border border-transparent transition-all active:scale-95 duration-100 ${themeClasses.keyFunc}`}>π</button>
               <button onClick={() => handleFunction('e')} className={`py-3 text-xs font-extrabold rounded-xl border border-transparent transition-all active:scale-95 duration-100 ${themeClasses.keyFunc}`}>e</button>
-              
+
               <button onClick={() => handleOperator('mod')} className={`py-3 text-xs font-extrabold rounded-xl border border-transparent transition-all active:scale-95 duration-100 ${themeClasses.keyFunc}`}>mod</button>
               <button onClick={() => handleFunction('n!')} className={`py-3 text-xs font-extrabold rounded-xl border border-transparent transition-all active:scale-95 duration-100 ${themeClasses.keyFunc}`}>n!</button>
               <button onClick={() => handleFunction('1/x')} className={`py-3 text-xs font-extrabold rounded-xl border border-transparent transition-all active:scale-95 duration-100 ${themeClasses.keyFunc}`}>¹/x</button>
@@ -522,11 +513,10 @@ export const StandardCalculator: React.FC = () => {
                         setEquation(item.equation);
                         shouldResetDisplayRef.current = true;
                       }}
-                      className={`w-full text-right p-3.5 rounded-2xl transition-all border block group hover:border-orange-500/30 ${
-                        theme === 'dark' 
-                          ? 'bg-slate-950/40 border-slate-800/80 hover:bg-slate-950/80' 
-                          : 'bg-slate-50 border-slate-100 hover:bg-slate-100'
-                      }`}
+                      className={`w-full text-right p-3.5 rounded-2xl transition-all border block group hover:border-orange-500/30 ${theme === 'dark'
+                        ? 'bg-slate-950/40 border-slate-800/80 hover:bg-slate-950/80'
+                        : 'bg-slate-50 border-slate-100 hover:bg-slate-100'
+                        }`}
                     >
                       <p className="text-[10px] text-slate-400 font-semibold truncate group-hover:text-orange-500 mb-1 tracking-wider">{item.equation}</p>
                       <p className={`text-base font-extrabold truncate ${theme === 'dark' ? 'text-white' : 'text-slate-800'}`}>{item.result}</p>
@@ -539,19 +529,7 @@ export const StandardCalculator: React.FC = () => {
         )}
       </div>
 
-      <div className={`mt-4 flex items-start gap-2.5 text-[11px] p-3.5 border rounded-2xl leading-relaxed ${themeClasses.helpBox}`}>
-        <HelpCircle size={15} className="text-orange-500 mt-0.5 shrink-0" />
-        <div>
-          <p>
-            Supports keyboard shortcuts! You can type numbers, operators <code className="bg-slate-200/40 px-1 py-0.2 rounded font-semibold font-mono text-orange-500">+-*/</code>, percent <code className="bg-slate-200/40 px-1 py-0.2 rounded font-semibold font-mono text-orange-500">%</code>, enter or <code className="bg-slate-200/40 px-1 py-0.2 rounded font-semibold font-mono text-orange-500">=</code>, backspace to delete, and <code className="bg-slate-200/40 px-1 py-0.2 rounded font-semibold font-mono text-orange-500">Esc</code> to clear.
-          </p>
-          {mode === 'scientific' && (
-            <p className="mt-1 font-medium">
-              Trig functions (sin, cos, tan) can be solved in either Degrees or Radians by toggling the mode indicator.
-            </p>
-          )}
-        </div>
-      </div>
+
     </div>
   );
 };
