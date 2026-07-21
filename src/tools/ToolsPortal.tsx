@@ -139,6 +139,7 @@ import { RawDataLeaveRules } from './raw-data/RawDataLeaveRules';
 import { RawDataGratuityRules } from './raw-data/RawDataGratuityRules';
 import { RawDataBankFdRates } from './raw-data/RawDataBankFdRates';
 import { RawDataStatutoryDueDates } from './raw-data/RawDataStatutoryDueDates';
+import { RawDataDashboard } from './raw-data/RawDataDashboard';
 
 interface ToolsPortalProps {
   onHome?: () => void;
@@ -529,7 +530,7 @@ export const ToolsPortal: React.FC<ToolsPortalProps> = ({ onHome, onInvoice, onB
       case 'unit-converter':
         return (<div className="flex flex-col h-full"><div className="flex-1 overflow-y-auto"><Suspense fallback={<div className="flex items-center justify-center h-full text-slate-400 text-sm">Loading Universal Unit Converter...</div>}><UnitConverterPage onBack={() => setActiveSection('utilities')} /></Suspense></div></div>);
       case 'raw-data':
-        return <Suspense fallback={<div className="flex items-center justify-center h-full text-slate-400 text-sm">Loading Raw Data...</div>}><RawDataIndianStates /></Suspense>;
+        return <Suspense fallback={<div className="flex items-center justify-center h-full text-slate-400 text-sm">Loading Raw Data...</div>}><RawDataDashboard onSelectTool={handleSelectTool} /></Suspense>;
 
       case 'govt-scheme-finder':
         return <GovtSchemeFinder />;

@@ -11,7 +11,7 @@ import {
     MousePointer, Layers3, Code2, Copy,
     Binary, Link, Image,
     Database, Table2, Type, Timer,
-    Hash, ShieldAlert, Fingerprint, Shuffle, Globe, Palette,
+    Hash, ShieldAlert, Fingerprint, Shuffle, Globe, Palette, AlertTriangle,
     MapPin, Map, Building, Car,
     Gift, Clock, Heart, CalendarCheck, GraduationCap,
     Calculator, KeyRound, ClipboardCheck, GitCompare,
