@@ -399,8 +399,8 @@ export const ToolsSidebar: React.FC<ToolsSidebarProps> = ({
         if (collapsed) {
             setCollapsed(false);
             setExpandedSections(new Set([section.id]));
+            onSelectSection(section.id);
             if (section.items.length === 0) {
-                onSelectSection(section.id);
                 onSelectTool(section.id);
                 onClose();
             }
@@ -412,6 +412,7 @@ export const ToolsSidebar: React.FC<ToolsSidebarProps> = ({
             } else {
                 setExpandedSections(new Set([section.id]));
             }
+            onSelectSection(section.id);
         } else {
             setExpandedSections(new Set());
             onSelectSection(section.id);
