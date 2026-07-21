@@ -65,60 +65,90 @@ export const BodyFatCalculatorPage: React.FC = () => {
 
   /* ─── Helpers to fall back on sane defaults when inputs are empty ─ */
   const safeAge = age === '' ? 28 : age;
-  const safeHeight = (() => {
-    const v = heightCm === '' ? 175 : heightCm;
-    return unit === 'in' ? v * 2.54 : v;
-  })();
-  const safeWeight = weightKg === '' ? 76 : weightKg;
-  const safeNeck = (() => {
-    const v = neckCm === '' ? 38 : neckCm;
-    return unit === 'in' ? v * 2.54 : v;
-  })();
-  const safeWaist = (() => {
-    const v = waistCm === '' ? 85 : waistCm;
-    return unit === 'in' ? v * 2.54 : v;
-  })();
-  const safeHip = (() => {
-    const v = hipCm === '' ? 95 : hipCm;
+
+  // All circumference + height values are always converted to CM internally
+  const safeHeightCm = (() => {
+    const v = heightCm === '' ? (unit === 'cm' ? 175 : 69) : heightCm;
     return unit === 'in' ? v * 2.54 : v;
   })();
 
-  /* ─── US Navy Body Fat Formula ───────────────────────────────── */
+  // Weight is always converted to KG internally
+  const safeWeightKg = (() => {
+    const v = weightKg === '' ? (unit === 'cm' ? 76 : 168) : weightKg;
+    return unit === 'in' ? v * 0.453592 : v;
+  })();
+
+  const safeNeckCm = (() => {
+    const v = neckCm === '' ? (unit === 'cm' ? 38 : 15) : neckCm;
+    return unit === 'in' ? v * 2.54 : v;
+  })();
+  const safeWaistCm = (() => {
+    const v = waistCm === '' ? (unit === 'cm' ? 85 : 33) : waistCm;
+    return unit === 'in' ? v * 2.54 : v;
+  })();
+  const safeHipCm = (() => {
+    const v = hipCm === '' ? (unit === 'cm' ? 95 : 37) : hipCm;
+    return unit === 'in' ? v * 2.54 : v;
+  })();
+
+  // The user's raw weight for display purposes (in the unit they selected)
+  const displayWeight = weightKg === '' ? (unit === 'cm' ? 76 : 168) : weightKg;
+  const weightLabel = unit === 'cm' ? 'kg' : 'lbs';
+
+  /* ─── US Navy Body Fat Formula (Metric / CM version) ─────────── */
+  /*
+   * Official formula uses body density first, then Siri equation:
+   *   BF% = 495 / density − 450
+   *
+   * Male density   = 1.0324 − 0.19077 × log₁₀(waist − neck) + 0.15456 × log₁₀(height)
+   * Female density = 1.29579 − 0.35004 × log₁₀(waist + hip − neck) + 0.22100 × log₁₀(height)
+   *
+   * All measurements MUST be in centimeters.
+   */
   const bodyFatPct = useMemo(() => {
-    if (safeHeight <= 0) return 0;
+    if (safeHeightCm <= 0) return 0;
     if (gender === 'male') {
-      // 86.010 × log10(waist − neck) − 70.041 × log10(height) + 36.76
-      const diff = safeWaist - safeNeck;
+      const diff = safeWaistCm - safeNeckCm;
       if (diff <= 0) return 0;
-      return parseFloat(
-        (86.01 * Math.log10(diff) - 70.041 * Math.log10(safeHeight) + 36.76).toFixed(1)
-      );
+      const density = 1.0324 - 0.19077 * Math.log10(diff) + 0.15456 * Math.log10(safeHeightCm);
+      if (density <= 0) return 0;
+      return parseFloat(((495 / density) - 450).toFixed(1));
     } else {
-      // 163.205 × log10(waist + hip − neck) − 97.684 × log10(height) − 78.387
-      const diff = safeWaist + safeHip - safeNeck;
+      const diff = safeWaistCm + safeHipCm - safeNeckCm;
       if (diff <= 0) return 0;
-      return parseFloat(
-        (163.205 * Math.log10(diff) - 97.684 * Math.log10(safeHeight) - 78.387).toFixed(1)
-      );
+      const density = 1.29579 - 0.35004 * Math.log10(diff) + 0.22100 * Math.log10(safeHeightCm);
+      if (density <= 0) return 0;
+      return parseFloat(((495 / density) - 450).toFixed(1));
     }
-  }, [gender, safeHeight, safeWaist, safeNeck, safeHip]);
+  }, [gender, safeHeightCm, safeWaistCm, safeNeckCm, safeHipCm]);
 
-  /* ─── BMI-based body fat estimate (Deurenberg formula) ──────── */
+  /* ─── BMI-based body fat estimate (Deurenberg et al. 1991) ───── */
+  /*
+   * BF% = 1.20 × BMI + 0.23 × Age − 10.8 × sex − 5.4
+   * where sex: male = 1, female = 0
+   * BMI = weight(kg) / height(m)²
+   */
   const bmi = useMemo(() => {
-    const hm = safeHeight / 100;
+    const hm = safeHeightCm / 100;
     if (hm <= 0) return 0;
-    return parseFloat((safeWeight / (hm * hm)).toFixed(1));
-  }, [safeWeight, safeHeight]);
+    return parseFloat((safeWeightKg / (hm * hm)).toFixed(1));
+  }, [safeWeightKg, safeHeightCm]);
 
   const bodyFatBmi = useMemo(() => {
-    // BF% = 1.20 × BMI + 0.23 × Age − 10.8 × sex − 5.4   (sex: male=1, female=0)
     const sex = gender === 'male' ? 1 : 0;
     return parseFloat((1.2 * bmi + 0.23 * safeAge - 10.8 * sex - 5.4).toFixed(1));
   }, [bmi, safeAge, gender]);
 
-  /* ─── Derived metrics ──────────────────────────────────────── */
-  const fatMass = useMemo(() => parseFloat(((bodyFatPct / 100) * safeWeight).toFixed(1)), [bodyFatPct, safeWeight]);
-  const leanMass = useMemo(() => parseFloat((safeWeight - fatMass).toFixed(1)), [safeWeight, fatMass]);
+  /* ─── Derived metrics (always in the user's display unit) ───── */
+  const fatMassDisplay = useMemo(() => {
+    const fatKg = (bodyFatPct / 100) * safeWeightKg;
+    if (unit === 'in') return parseFloat((fatKg / 0.453592).toFixed(1)); // show lbs
+    return parseFloat(fatKg.toFixed(1));
+  }, [bodyFatPct, safeWeightKg, unit]);
+
+  const leanMassDisplay = useMemo(() => {
+    return parseFloat((displayWeight - fatMassDisplay).toFixed(1));
+  }, [displayWeight, fatMassDisplay]);
 
   /* ─── Category classification ──────────────────────────────── */
   const categories = gender === 'male' ? BF_CATEGORIES_MALE : BF_CATEGORIES_FEMALE;
@@ -144,9 +174,9 @@ export const BodyFatCalculatorPage: React.FC = () => {
 
   /* ─── Chart Data: Composition Donut ────────────────────────── */
   const compositionData = useMemo(() => [
-    { name: 'Fat Mass', value: fatMass, color: '#f43f5e' },
-    { name: 'Lean Mass', value: leanMass, color: '#06b6d4' },
-  ], [fatMass, leanMass]);
+    { name: 'Fat Mass', value: fatMassDisplay, color: '#f43f5e' },
+    { name: 'Lean Mass', value: leanMassDisplay, color: '#06b6d4' },
+  ], [fatMassDisplay, leanMassDisplay]);
 
   /* ─── Chart Data: Category range bar ──────────────────────── */
   const categoryBarData = useMemo(() =>
@@ -347,11 +377,11 @@ export const BodyFatCalculatorPage: React.FC = () => {
               <div className="grid grid-cols-2 gap-3 pt-2">
                 <div className="bg-white/5 backdrop-blur-sm rounded-xl p-3 text-center border border-white/10">
                   <p className="text-[9px] font-bold uppercase tracking-wider text-rose-300">Fat Mass</p>
-                  <p className="text-lg font-black mt-0.5">{fatMass} <span className="text-xs font-semibold text-slate-300">kg</span></p>
+                  <p className="text-lg font-black mt-0.5">{fatMassDisplay} <span className="text-xs font-semibold text-slate-300">{weightLabel}</span></p>
                 </div>
                 <div className="bg-white/5 backdrop-blur-sm rounded-xl p-3 text-center border border-white/10">
                   <p className="text-[9px] font-bold uppercase tracking-wider text-cyan-300">Lean Mass</p>
-                  <p className="text-lg font-black mt-0.5">{leanMass} <span className="text-xs font-semibold text-slate-300">kg</span></p>
+                  <p className="text-lg font-black mt-0.5">{leanMassDisplay} <span className="text-xs font-semibold text-slate-300">{weightLabel}</span></p>
                 </div>
               </div>
             </div>
@@ -404,7 +434,7 @@ export const BodyFatCalculatorPage: React.FC = () => {
                     ))}
                   </Pie>
                   <Tooltip
-                    formatter={(value: any) => [`${value} kg`, '']}
+                    formatter={(value: any) => [`${value} ${weightLabel}`, '']}
                     contentStyle={{ borderRadius: 12, fontSize: 11, border: '1px solid #e2e8f0' }}
                   />
                   <Legend
