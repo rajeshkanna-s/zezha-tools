@@ -21,7 +21,7 @@ import {
     Gift, Users,
     Braces, CheckCircle2, ArrowLeftRight, FileCode2, MousePointer, Layers3,
     Copy, Binary, Link, Database, Table2, Type, Timer,
-    Hash, ShieldAlert, Fingerprint, Shuffle, Globe, Palette, Terminal, Compass, Calculator,
+    Hash, ShieldAlert, Fingerprint, Shuffle, Globe, Palette, Terminal, Compass, Calculator, Apple,
     MapPin, Map, Building, Car, Regex
 } from 'lucide-react';
 import { useCustomTools } from '@/hooks/useCustomTools';
@@ -108,6 +108,7 @@ export const MENU_SECTIONS: MenuSection[] = [
             { id: 'decision-matrix', label: 'Weighted Decision Matrix', icon: Scale },
             { id: 'time-boxer', label: 'Time-Boxer Planner', icon: Clock },
             { id: 'fire-calculator', label: 'FIRE Calculator', icon: Flame },
+            { id: 'fitness-nutrition-planner', label: 'BMI & Nutrition Planner', icon: Apple },
         ],
     },
     {

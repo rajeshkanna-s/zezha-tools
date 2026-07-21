@@ -15,7 +15,7 @@ import {
     MapPin, Map, Building, Car,
     Gift, Clock, Heart, CalendarCheck, GraduationCap,
     Calculator, KeyRound, ClipboardCheck, GitCompare,
-    Wallet, Flame
+    Wallet, Flame, Apple
 } from 'lucide-react';
 
 export interface DashboardTool {
@@ -69,6 +69,7 @@ export const UTILITIES_TOOLS: DashboardTool[] = [
     { id: 'decision-matrix', icon: Scale, title: 'Weighted Decision Matrix', desc: 'Structure choices by rating & weighting key factors', color: 'bg-teal-600' },
     { id: 'time-boxer', icon: Clock, title: 'Time-Boxer Planner', desc: 'Brain dump, select priorities & schedule day hour-by-hour', color: 'bg-violet-600' },
     { id: 'fire-calculator', icon: Flame, title: 'FIRE Calculator', desc: 'Determine early retirement age & safe withdrawal target', color: 'bg-rose-600' },
+    { id: 'fitness-nutrition-planner', icon: Apple, title: 'BMI & Nutrition Planner', desc: 'Calculate BMI, TDEE, macros & log food intake', color: 'bg-rose-500' },
 ];
 
 export const DEV_TOOLKIT_TOOLS: DashboardTool[] = [

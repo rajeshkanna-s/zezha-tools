@@ -25,6 +25,7 @@ const SubscriptionOptimizerPage = React.lazy(() => import('./subscription-optimi
 const DecisionMatrixPage = React.lazy(() => import('./decision-matrix/DecisionMatrixPage').then(m => ({ default: m.DecisionMatrixPage })));
 const TimeBoxerPage = React.lazy(() => import('./time-boxer/TimeBoxerPage').then(m => ({ default: m.TimeBoxerPage })));
 const FireCalculatorPage = React.lazy(() => import('./fire-calculator/FireCalculatorPage').then(m => ({ default: m.FireCalculatorPage })));
+const FitnessPlannerPage = React.lazy(() => import('./fitness-planner/FitnessPlannerPage').then(m => ({ default: m.FitnessPlannerPage })));
 
 const ImageSearchDownloader = React.lazy(() => import('../APIs/getImages'));
 const VideoSearchDownloader = React.lazy(() => import('../APIs/getVideo'));
@@ -213,6 +214,7 @@ export const TOOL_COMPONENTS: Record<string, React.FC<any>> = {
   'decision-matrix': DecisionMatrixPage,
   'time-boxer': TimeBoxerPage,
   'fire-calculator': FireCalculatorPage,
+  'fitness-nutrition-planner': FitnessPlannerPage,
   // Developer Toolkit
   'dev-json-formatter': JsonFormatter,
   'dev-json-minifier': JsonMinifier,
