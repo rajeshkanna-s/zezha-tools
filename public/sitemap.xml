@@ -266,6 +266,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://zezhatools.com/?tool=body-fat-calculator&amp;section=utilities</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://zezhatools.com/?section=govt-scheme-finder</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>

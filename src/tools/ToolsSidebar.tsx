@@ -109,6 +109,7 @@ export const MENU_SECTIONS: MenuSection[] = [
             { id: 'time-boxer', label: 'Time-Boxer Planner', icon: Clock },
             { id: 'fire-calculator', label: 'FIRE Calculator', icon: Flame },
             { id: 'fitness-nutrition-planner', label: 'BMI & Nutrition Planner', icon: Apple },
+            { id: 'body-fat-calculator', label: 'Body Fat % Calculator', icon: Activity },
         ],
     },
     {
