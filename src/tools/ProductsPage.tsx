@@ -26,7 +26,10 @@ const SELF_PROJECTS: Project[] = [
   { url: 'https://parkingmate.netlify.app' },
   { url: 'https://exptkr.netlify.app' },
   { url: 'https://dfits.netlify.app' },
-  { url: 'https://inv-c.netlify.app', label: 'Professional Invoice' }
+  { url: 'https://inv-c.netlify.app', label: 'Professional Invoice' },
+  { url: 'https://smartbible.netlify.app', label: 'Smart-Bible — AI Explained Smart Bible' },
+  { url: 'https://promptcrafty.netlify.app', label: 'AI Prompt Generator for all types' },
+  { url: 'https://wishcrafty.lovable.app', label: 'WISH Craft — Generate Invitations' }
 ];
 
 const CLIENT_PROJECTS: Project[] = [
@@ -66,13 +69,16 @@ export const ProductsPage: React.FC = () => {
   const filterProjects = (list: Project[]) => {
     return list.filter(p => {
       const displayUrl = p.url.replace(/^https?:\/\/(www\.)?/, '');
-      return displayUrl.toLowerCase().includes(searchQuery.toLowerCase());
+      const searchTarget = `${displayUrl} ${p.label || ''}`.toLowerCase();
+      return searchTarget.includes(searchQuery.toLowerCase());
     });
   };
 
   const getCleanDomain = (url: string) => {
-    let domain = url.replace(/^https?:\/\/(www\.)?/, '');
+    let domain = url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
     if (domain.endsWith('.netlify.app')) {
+      domain = domain.substring(0, domain.length - 12);
+    } else if (domain.endsWith('.lovable.app')) {
       domain = domain.substring(0, domain.length - 12);
     }
     return domain;
@@ -134,6 +140,7 @@ export const ProductsPage: React.FC = () => {
                     href={proj.url}
                     target="_blank"
                     rel="noopener noreferrer"
+                    title={proj.label || getCleanDomain(proj.url)}
                     className="group flex items-center justify-between p-4 bg-white rounded-2xl border border-slate-200/60 shadow-sm hover:shadow-md hover:border-indigo-500/30 hover:-translate-y-0.5 transition-all duration-200"
                   >
                     <span className="text-sm font-semibold text-slate-700 group-hover:text-indigo-600 transition-colors truncate pr-2">
@@ -160,6 +167,7 @@ export const ProductsPage: React.FC = () => {
                     href={proj.url}
                     target="_blank"
                     rel="noopener noreferrer"
+                    title={proj.label || getCleanDomain(proj.url)}
                     className="group flex items-center justify-between p-4 bg-white rounded-2xl border border-slate-200/60 shadow-sm hover:shadow-md hover:border-teal-500/30 hover:-translate-y-0.5 transition-all duration-200"
                   >
                     <span className="text-sm font-semibold text-slate-700 group-hover:text-teal-600 transition-colors truncate pr-2">
@@ -186,6 +194,7 @@ export const ProductsPage: React.FC = () => {
                     href={proj.url}
                     target="_blank"
                     rel="noopener noreferrer"
+                    title={proj.label || getCleanDomain(proj.url)}
                     className="group flex items-center justify-between p-4 bg-white rounded-2xl border border-slate-200/60 shadow-sm hover:shadow-md hover:border-emerald-500/30 hover:-translate-y-0.5 transition-all duration-200"
                   >
                     <span className="text-sm font-semibold text-slate-700 group-hover:text-emerald-600 transition-colors truncate pr-2">
