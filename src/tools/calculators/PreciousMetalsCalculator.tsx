@@ -93,6 +93,12 @@ export const PreciousMetalsCalculator: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const [lastFetchedAt, setLastFetchedAt] = useState<string>('');
+  const [lastFetchedTime, setLastFetchedTime] = useState<string>(() => {
+    return new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+  });
+  const [lastFetchedDate, setLastFetchedDate] = useState<string>(() => {
+    return new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+  });
   const [copied, setCopied] = useState<boolean>(false);
 
   // Active Tool Tab State
@@ -162,7 +168,10 @@ export const PreciousMetalsCalculator: React.FC = () => {
         setSilverSeries(sSeriesJson.observations || []);
       }
 
-      setLastFetchedAt(new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
+      const now = new Date();
+      setLastFetchedTime(now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }));
+      setLastFetchedDate(now.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }));
+      setLastFetchedAt(now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
 
       // Cache locally
       localStorage.setItem('ibja_gold_latest', JSON.stringify({ data: goldJson, time: new Date().toISOString() }));
@@ -539,6 +548,25 @@ export const PreciousMetalsCalculator: React.FC = () => {
     };
   }, [sipMonthlyAmount, sipYears, sipExpectedGrowth, metal, liveRates]);
 
+  // Format Date for Display (Mandatory)
+  const effectiveDate = useMemo(() => {
+    const rawDate = metal === 'XAU' ? liveRates.goldDate : liveRates.silverDate;
+    if (rawDate) {
+      try {
+        const d = new Date(rawDate);
+        if (!isNaN(d.getTime())) {
+          return d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+        }
+      } catch (_) {}
+      return rawDate;
+    }
+    return lastFetchedDate || new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+  }, [metal, liveRates.goldDate, liveRates.silverDate, lastFetchedDate]);
+
+  const effectiveTime = useMemo(() => {
+    return lastFetchedTime || new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+  }, [lastFetchedTime]);
+
   // Copy rate summary
   const handleCopySummary = () => {
     let summary = '';
@@ -579,17 +607,17 @@ Source: India Bullion and Jewellers Association (IBJA)`;
         }
         .pm-hero-header {
           background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-          border-radius: 20px;
-          padding: 24px 28px;
+          border-radius: 14px;
+          padding: 10px 16px;
           color: #ffffff;
-          box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.25);
-          margin-bottom: 20px;
+          box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.2);
+          margin-bottom: 14px;
         }
         .pm-hero-top {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          gap: 16px;
+          gap: 10px;
           flex-wrap: wrap;
         }
         .pm-four-cards-grid {
@@ -639,7 +667,7 @@ Source: India Bullion and Jewellers Association (IBJA)`;
         }
         @media (max-width: 480px) {
           .pm-hero-header {
-            padding: 18px 16px;
+            padding: 8px 12px;
           }
           .pm-four-cards-grid {
             grid-template-columns: 1fr;
@@ -652,15 +680,16 @@ Source: India Bullion and Jewellers Association (IBJA)`;
         }
       `}</style>
 
-      {/* ═══ HERO HEADER BANNER ═══ */}
+      {/* ═══ SLIM HERO HEADER BANNER (Mandatory Date & Time) ═══ */}
       <div className="pm-hero-header">
         <div className="pm-hero-top">
-          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+          {/* Left: Compact Icon + Title + Mandatory Date & Time */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
             <div
               style={{
-                width: 46,
-                height: 46,
-                borderRadius: 14,
+                width: 34,
+                height: 34,
+                borderRadius: 9,
                 background: metal === 'XAU'
                   ? 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)'
                   : 'linear-gradient(135deg, #94a3b8 0%, #64748b 100%)',
@@ -668,59 +697,72 @@ Source: India Bullion and Jewellers Association (IBJA)`;
                 alignItems: 'center',
                 justifyContent: 'center',
                 boxShadow: metal === 'XAU'
-                  ? '0 6px 14px rgba(245, 158, 11, 0.4)'
-                  : '0 6px 14px rgba(148, 163, 184, 0.4)',
+                  ? '0 3px 8px rgba(245, 158, 11, 0.35)'
+                  : '0 3px 8px rgba(148, 163, 184, 0.35)',
                 flexShrink: 0,
               }}
             >
-              {metal === 'XAU' ? <Gem size={26} color="#ffffff" /> : <Coins size={26} color="#ffffff" />}
+              {metal === 'XAU' ? <Gem size={17} color="#ffffff" /> : <Coins size={17} color="#ffffff" />}
             </div>
             <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-                <h1 style={{ margin: 0, fontSize: 22, fontWeight: 900, letterSpacing: '-0.3px', color: '#ffffff' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+                <h1 style={{ margin: 0, fontSize: 16, fontWeight: 900, letterSpacing: '-0.2px', color: '#ffffff', lineHeight: 1.2 }}>
                   {metal === 'XAU' ? 'Gold Rates & GST Calculator' : 'Silver Rates & GST Calculator'}
                 </h1>
                 <span
                   style={{
-                    background: 'rgba(245, 158, 11, 0.2)',
+                    background: 'rgba(245, 158, 11, 0.18)',
                     color: '#fbbf24',
-                    border: '1px solid rgba(245, 158, 11, 0.4)',
-                    fontSize: 10,
+                    border: '1px solid rgba(245, 158, 11, 0.35)',
+                    fontSize: 9,
                     fontWeight: 800,
-                    padding: '2px 8px',
-                    borderRadius: 6,
+                    padding: '1px 5px',
+                    borderRadius: 4,
+                    letterSpacing: '0.3px',
                     textTransform: 'uppercase',
                   }}
                 >
-                  Official IBJA Benchmark
+                  IBJA
                 </span>
               </div>
-              <p style={{ margin: '4px 0 0', fontSize: 13, color: '#94a3b8', lineHeight: 1.4 }}>
-                Domestic benchmark followed across Tamil Nadu (Chennai, Coimbatore, Madurai, Salem) & India
-              </p>
+
+              {/* MANDATORY DATE & TIME ROW */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: '#cbd5e1', marginTop: 2, flexWrap: 'wrap' }}>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3.5, color: '#f8fafc', fontWeight: 700 }}>
+                  <Calendar size={11} color="#f59e0b" />
+                  {effectiveDate}
+                </span>
+                <span style={{ color: '#64748b', fontSize: 10 }}>•</span>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3.5, color: '#f8fafc', fontWeight: 700 }}>
+                  <Clock size={11} color="#f59e0b" />
+                  {effectiveTime}
+                </span>
+                <span style={{ color: '#64748b', fontSize: 10 }}>•</span>
+                <span style={{ color: '#f59e0b', fontWeight: 700, fontSize: 10.5 }}>₹ INR</span>
+              </div>
             </div>
           </div>
 
-          {/* Action buttons */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+          {/* Right: Actions (Share + Live Check) */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             <button
               onClick={handleCopySummary}
               title="Copy Rate Summary"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: 5,
-                padding: '7px 12px',
+                gap: 4,
+                padding: '5px 10px',
                 fontSize: 11,
                 fontWeight: 600,
                 color: '#cbd5e1',
                 background: 'rgba(255, 255, 255, 0.08)',
                 border: '1px solid rgba(255, 255, 255, 0.15)',
-                borderRadius: 8,
+                borderRadius: 6,
                 cursor: 'pointer',
               }}
             >
-              {copied ? <Check size={12} color="#10b981" /> : <Copy size={12} />}
+              {copied ? <Check size={11} color="#10b981" /> : <Copy size={11} />}
               {copied ? 'Copied' : 'Share'}
             </button>
             <button
@@ -730,60 +772,23 @@ Source: India Bullion and Jewellers Association (IBJA)`;
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: 6,
-                padding: '7px 16px',
-                fontSize: 12,
+                gap: 5,
+                padding: '5px 12px',
+                fontSize: 11.5,
                 fontWeight: 800,
                 color: '#0f172a',
                 background: '#f59e0b',
                 border: 'none',
-                borderRadius: 8,
+                borderRadius: 6,
                 cursor: loading ? 'not-allowed' : 'pointer',
                 opacity: loading ? 0.7 : 1,
-                boxShadow: '0 2px 8px rgba(245, 158, 11, 0.4)',
+                boxShadow: '0 2px 6px rgba(245, 158, 11, 0.35)',
               }}
             >
-              <RefreshCw size={13} className={loading ? 'animate-spin' : ''} />
+              <RefreshCw size={11} className={loading ? 'animate-spin' : ''} />
               {loading ? 'Checking...' : 'Live Check'}
             </button>
           </div>
-        </div>
-
-        {/* Info Sub-bar */}
-        <div
-          style={{
-            marginTop: 14,
-            paddingTop: 12,
-            borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            fontSize: 11,
-            color: '#94a3b8',
-            flexWrap: 'wrap',
-            gap: 8,
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-            <span>
-              Source: <strong style={{ color: '#e2e8f0' }}>India Bullion and Jewellers Association (IBJA)</strong>
-            </span>
-            <span>·</span>
-            <span>
-              Calendar: <strong style={{ color: '#e2e8f0' }}>IN-BULLION (Daily Domestic)</strong>
-            </span>
-            {lastFetchedAt && (
-              <>
-                <span>·</span>
-                <span>
-                  Updated: <strong style={{ color: '#e2e8f0' }}>{lastFetchedAt}</strong>
-                </span>
-              </>
-            )}
-          </div>
-          <span style={{ color: '#f59e0b', fontWeight: 600 }}>
-            Currency: ₹ Indian Rupee (INR)
-          </span>
         </div>
       </div>
 
