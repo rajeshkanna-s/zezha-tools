@@ -64,6 +64,7 @@ import { NewRegimeTaxCalculator } from './calculators/NewRegimeTaxCalculator';
 import { TaxCompareCalculator } from './calculators/TaxCompareCalculator';
 import { RdCalculator } from './calculators/RdCalculator';
 import { SipCalculator } from './calculators/SipCalculator';
+import { PreciousMetalsCalculator } from './calculators/PreciousMetalsCalculator';
 import { TdsCalculator } from './calculators/TdsCalculator';
 import { ValueOfPercentageCalculator } from './calculators/ValueOfPercentageCalculator';
 import { ProfitLossCalculator } from './calculators/ProfitLossCalculator';
@@ -204,6 +205,7 @@ export const TOOL_COMPONENTS: Record<string, React.FC<any>> = {
   'fd-calculator': FdCalculator,
   'rd-calculator': RdCalculator,
   'sip-calculator': SipCalculator,
+  'precious-metals-calculator': PreciousMetalsCalculator,
   // Utilities
   'currency-calculator': CurrencyCalculator,
   'percentage-calculator': PercentageCalculator,

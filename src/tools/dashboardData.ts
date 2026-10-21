@@ -15,7 +15,7 @@ import {
     MapPin, Map, Building, Car,
     Gift, Clock, Heart, CalendarCheck, GraduationCap,
     Calculator, KeyRound, ClipboardCheck, GitCompare,
-    Wallet, Flame, Apple, Activity
+    Wallet, Flame, Apple, Activity, Sparkles
 } from 'lucide-react';
 
 export interface DashboardTool {
@@ -52,6 +52,7 @@ export const INVESTMENTS_TOOLS: DashboardTool[] = [
     { id: 'fd-calculator', icon: PiggyBank, title: 'FD Calculator', desc: 'Calculate Fixed Deposit maturity & returns', color: 'bg-emerald-500' },
     { id: 'rd-calculator', icon: PiggyBank, title: 'RD Calculator', desc: 'Calculate Recurring Deposit maturity amount', color: 'bg-blue-500' },
     { id: 'sip-calculator', icon: TrendingUp, title: 'SIP Calculator', desc: 'Estimate returns on systematic investment plans', color: 'bg-violet-500' },
+    { id: 'precious-metals-calculator', icon: Sparkles, title: 'Gold & Silver Rates (IBJA)', desc: 'Official IBJA Gold & Silver domestic rates (INR), GST jewellery & investment calculator', color: 'bg-amber-500' },
 ];
 
 export const UTILITIES_TOOLS: DashboardTool[] = [

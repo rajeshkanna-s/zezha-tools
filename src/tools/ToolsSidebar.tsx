@@ -22,7 +22,7 @@ import {
     Braces, CheckCircle2, ArrowLeftRight, FileCode2, MousePointer, Layers3,
     Copy, Binary, Link, Database, Table2, Type, Timer,
     Hash, ShieldAlert, Fingerprint, Shuffle, Globe, Palette, Terminal, Compass, Calculator, Apple,
-    MapPin, Map, Building, Car, Regex
+    MapPin, Map, Building, Car, Regex, Sparkles
 } from 'lucide-react';
 import { useCustomTools } from '@/hooks/useCustomTools';
 import { useFavouriteTools } from '@/hooks/useFavouriteTools';
@@ -89,6 +89,7 @@ export const MENU_SECTIONS: MenuSection[] = [
             { id: 'fd-calculator', label: 'FD Calculator', icon: PiggyBank },
             { id: 'rd-calculator', label: 'RD Calculator', icon: PiggyBank },
             { id: 'sip-calculator', label: 'SIP Calculator', icon: TrendingUp },
+            { id: 'precious-metals-calculator', label: 'Gold & Silver Rates', icon: Sparkles },
         ],
     },
     {

@@ -186,6 +186,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://zezhatools.com/?tool=precious-metals-calculator&amp;section=investments</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://zezhatools.com/?section=utilities</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
