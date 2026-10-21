@@ -23,7 +23,7 @@ while ((match = sectionRegex.exec(content)) !== null) {
 
   if (sectionId !== 'home') {
     urls.push({
-      loc: `${baseUrl}/?section=${sectionId}`,
+      loc: `${baseUrl}/${sectionId}`,
       changefreq: 'weekly',
       priority: '0.8'
     });
@@ -33,7 +33,7 @@ while ((match = sectionRegex.exec(content)) !== null) {
   while ((itemMatch = itemRegex.exec(itemsText)) !== null) {
     const itemId = itemMatch[1];
     urls.push({
-      loc: `${baseUrl}/?tool=${itemId}&amp;section=${sectionId}`,
+      loc: `${baseUrl}/${sectionId}/${itemId}`,
       changefreq: 'weekly',
       priority: '0.7'
     });

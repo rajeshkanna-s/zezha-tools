@@ -6,617 +6,617 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?section=convertors</loc>
+    <loc>https://zezhatools.com/convertors</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=image-to-pdf&amp;section=convertors</loc>
+    <loc>https://zezhatools.com/convertors/image-to-pdf</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=compress-pdf&amp;section=convertors</loc>
+    <loc>https://zezhatools.com/convertors/compress-pdf</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=edit-pdf&amp;section=convertors</loc>
+    <loc>https://zezhatools.com/convertors/edit-pdf</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=compress-image&amp;section=convertors</loc>
+    <loc>https://zezhatools.com/convertors/compress-image</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=merge-pdf&amp;section=convertors</loc>
+    <loc>https://zezhatools.com/convertors/merge-pdf</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=pdf-to-image&amp;section=convertors</loc>
+    <loc>https://zezhatools.com/convertors/pdf-to-image</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=word-to-pdf&amp;section=convertors</loc>
+    <loc>https://zezhatools.com/convertors/word-to-pdf</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=image-to-text&amp;section=convertors</loc>
+    <loc>https://zezhatools.com/convertors/image-to-text</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=split-pdf&amp;section=convertors</loc>
+    <loc>https://zezhatools.com/convertors/split-pdf</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=organize-pdf&amp;section=convertors</loc>
+    <loc>https://zezhatools.com/convertors/organize-pdf</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=html-to-pdf&amp;section=convertors</loc>
+    <loc>https://zezhatools.com/convertors/html-to-pdf</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=crop-pdf&amp;section=convertors</loc>
+    <loc>https://zezhatools.com/convertors/crop-pdf</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=delete-pdf-pages&amp;section=convertors</loc>
+    <loc>https://zezhatools.com/convertors/delete-pdf-pages</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?section=business-tax</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=profit-loss-calculator&amp;section=business-tax</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=roi-calculator&amp;section=business-tax</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=break-even-calculator&amp;section=business-tax</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=income-tax-estimator&amp;section=business-tax</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=old-regime-tax&amp;section=business-tax</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=new-regime-tax&amp;section=business-tax</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=tax-compare&amp;section=business-tax</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=gst-vat-calculator&amp;section=business-tax</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=tds-calculator&amp;section=business-tax</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=business-valuation&amp;section=business-tax</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?section=loans-emi</loc>
+    <loc>https://zezhatools.com/business-tax</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=loan-calculator&amp;section=loans-emi</loc>
+    <loc>https://zezhatools.com/business-tax/profit-loss-calculator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=emi-calculator&amp;section=loans-emi</loc>
+    <loc>https://zezhatools.com/business-tax/roi-calculator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=loan-compare&amp;section=loans-emi</loc>
+    <loc>https://zezhatools.com/business-tax/break-even-calculator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=dti-calculator&amp;section=loans-emi</loc>
+    <loc>https://zezhatools.com/business-tax/income-tax-estimator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=ltv-calculator&amp;section=loans-emi</loc>
+    <loc>https://zezhatools.com/business-tax/old-regime-tax</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=standard-calculator&amp;section=loans-emi</loc>
+    <loc>https://zezhatools.com/business-tax/new-regime-tax</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?section=investments</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=fd-calculator&amp;section=investments</loc>
+    <loc>https://zezhatools.com/business-tax/tax-compare</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=rd-calculator&amp;section=investments</loc>
+    <loc>https://zezhatools.com/business-tax/gst-vat-calculator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=sip-calculator&amp;section=investments</loc>
+    <loc>https://zezhatools.com/business-tax/tds-calculator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=precious-metals-calculator&amp;section=investments</loc>
+    <loc>https://zezhatools.com/business-tax/business-valuation</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?section=utilities</loc>
+    <loc>https://zezhatools.com/loans-emi</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=unit-converter&amp;section=utilities</loc>
+    <loc>https://zezhatools.com/loans-emi/loan-calculator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=currency-calculator&amp;section=utilities</loc>
+    <loc>https://zezhatools.com/loans-emi/emi-calculator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=percentage-calculator&amp;section=utilities</loc>
+    <loc>https://zezhatools.com/loans-emi/loan-compare</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=value-of-percentage&amp;section=utilities</loc>
+    <loc>https://zezhatools.com/loans-emi/dti-calculator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=dob-calculator&amp;section=utilities</loc>
+    <loc>https://zezhatools.com/loans-emi/ltv-calculator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=find-day-calculator&amp;section=utilities</loc>
+    <loc>https://zezhatools.com/loans-emi/standard-calculator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=startup-name-checker&amp;section=utilities</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=festival-gift-planner&amp;section=utilities</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=rent-vs-buy-calculator&amp;section=utilities</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=marriage-budget-planner&amp;section=utilities</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=subscription-optimizer&amp;section=utilities</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=decision-matrix&amp;section=utilities</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=time-boxer&amp;section=utilities</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=fire-calculator&amp;section=utilities</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=fitness-nutrition-planner&amp;section=utilities</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=body-fat-calculator&amp;section=utilities</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?section=govt-scheme-finder</loc>
+    <loc>https://zezhatools.com/investments</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?section=dev-toolkit</loc>
+    <loc>https://zezhatools.com/investments/fd-calculator</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/investments/rd-calculator</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/investments/sip-calculator</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/investments/precious-metals-calculator</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/utilities</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=dev-json-formatter&amp;section=dev-toolkit</loc>
+    <loc>https://zezhatools.com/utilities/unit-converter</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=dev-json-minifier&amp;section=dev-toolkit</loc>
+    <loc>https://zezhatools.com/utilities/currency-calculator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=dev-json-validator&amp;section=dev-toolkit</loc>
+    <loc>https://zezhatools.com/utilities/percentage-calculator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=dev-json-comparator&amp;section=dev-toolkit</loc>
+    <loc>https://zezhatools.com/utilities/value-of-percentage</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=dev-json-to-csv&amp;section=dev-toolkit</loc>
+    <loc>https://zezhatools.com/utilities/dob-calculator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=dev-json-to-xml&amp;section=dev-toolkit</loc>
+    <loc>https://zezhatools.com/utilities/find-day-calculator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=dev-json-path&amp;section=dev-toolkit</loc>
+    <loc>https://zezhatools.com/utilities/startup-name-checker</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=dev-json-flattener&amp;section=dev-toolkit</loc>
+    <loc>https://zezhatools.com/utilities/festival-gift-planner</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=dev-text-diff&amp;section=dev-toolkit</loc>
+    <loc>https://zezhatools.com/utilities/rent-vs-buy-calculator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=dev-code-diff&amp;section=dev-toolkit</loc>
+    <loc>https://zezhatools.com/utilities/marriage-budget-planner</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=dev-file-compare&amp;section=dev-toolkit</loc>
+    <loc>https://zezhatools.com/utilities/subscription-optimizer</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=dev-duplicate-finder&amp;section=dev-toolkit</loc>
+    <loc>https://zezhatools.com/utilities/decision-matrix</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=dev-word-frequency&amp;section=dev-toolkit</loc>
+    <loc>https://zezhatools.com/utilities/time-boxer</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=dev-base64&amp;section=dev-toolkit</loc>
+    <loc>https://zezhatools.com/utilities/fire-calculator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=dev-jwt-decoder&amp;section=dev-toolkit</loc>
+    <loc>https://zezhatools.com/utilities/fitness-nutrition-planner</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=dev-url-encoder&amp;section=dev-toolkit</loc>
+    <loc>https://zezhatools.com/utilities/body-fat-calculator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=dev-image-base64&amp;section=dev-toolkit</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=dev-sql-formatter&amp;section=dev-toolkit</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=dev-csv-to-json&amp;section=dev-toolkit</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=dev-string-case&amp;section=dev-toolkit</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=dev-unix-timestamp&amp;section=dev-toolkit</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=dev-hash-generator&amp;section=dev-toolkit</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=dev-password-checker&amp;section=dev-toolkit</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=dev-uuid-generator&amp;section=dev-toolkit</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=dev-token-generator&amp;section=dev-toolkit</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=dev-ssl-checker&amp;section=dev-toolkit</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=dev-color-converter&amp;section=dev-toolkit</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=dev-regex-tester&amp;section=dev-toolkit</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=dev-cron-builder&amp;section=dev-toolkit</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=dev-code-checker&amp;section=dev-toolkit</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?section=invitation-creator</loc>
+    <loc>https://zezhatools.com/govt-scheme-finder</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?section=event-page-creator</loc>
+    <loc>https://zezhatools.com/dev-toolkit</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?section=logo-creator</loc>
+    <loc>https://zezhatools.com/dev-toolkit/dev-json-formatter</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/dev-toolkit/dev-json-minifier</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/dev-toolkit/dev-json-validator</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/dev-toolkit/dev-json-comparator</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/dev-toolkit/dev-json-to-csv</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/dev-toolkit/dev-json-to-xml</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/dev-toolkit/dev-json-path</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/dev-toolkit/dev-json-flattener</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/dev-toolkit/dev-text-diff</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/dev-toolkit/dev-code-diff</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/dev-toolkit/dev-file-compare</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/dev-toolkit/dev-duplicate-finder</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/dev-toolkit/dev-word-frequency</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/dev-toolkit/dev-base64</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/dev-toolkit/dev-jwt-decoder</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/dev-toolkit/dev-url-encoder</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/dev-toolkit/dev-image-base64</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/dev-toolkit/dev-sql-formatter</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/dev-toolkit/dev-csv-to-json</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/dev-toolkit/dev-string-case</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/dev-toolkit/dev-unix-timestamp</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/dev-toolkit/dev-hash-generator</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/dev-toolkit/dev-password-checker</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/dev-toolkit/dev-uuid-generator</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/dev-toolkit/dev-token-generator</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/dev-toolkit/dev-ssl-checker</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/dev-toolkit/dev-color-converter</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/dev-toolkit/dev-regex-tester</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/dev-toolkit/dev-cron-builder</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/dev-toolkit/dev-code-checker</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/invitation-creator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?section=raw-data</loc>
+    <loc>https://zezhatools.com/event-page-creator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=indian-states-cities&amp;section=raw-data</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=indian-cities&amp;section=raw-data</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=indian-colleges&amp;section=raw-data</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=indian-pin-codes&amp;section=raw-data</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=indian-districts&amp;section=raw-data</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=indian-parliament&amp;section=raw-data</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=indian-holidays&amp;section=raw-data</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=indian-banks&amp;section=raw-data</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=gst-state-codes&amp;section=raw-data</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=india-tax-slabs&amp;section=raw-data</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=indian-stock-market&amp;section=raw-data</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=indian-cars&amp;section=raw-data</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=tds-rate-chart&amp;section=raw-data</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=professional-tax&amp;section=raw-data</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=minimum-wages&amp;section=raw-data</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=depreciation-rates&amp;section=raw-data</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=rbi-rates-history&amp;section=raw-data</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=gst-rate-finder&amp;section=raw-data</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=section-80-deductions&amp;section=raw-data</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=cost-inflation-index&amp;section=raw-data</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=itr-forms-guide&amp;section=raw-data</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=compliance-due-dates&amp;section=raw-data</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=interest-penalty-rates&amp;section=raw-data</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=audit-threshold-limits&amp;section=raw-data</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=epf-interest-rates&amp;section=raw-data</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=hr-leave-rules&amp;section=raw-data</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=gratuity-rules&amp;section=raw-data</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=bank-fd-rates&amp;section=raw-data</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?tool=statutory-due-dates&amp;section=raw-data</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zezhatools.com/?section=get-img-video</loc>
+    <loc>https://zezhatools.com/logo-creator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=image-downloader&amp;section=get-img-video</loc>
+    <loc>https://zezhatools.com/raw-data</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/raw-data/indian-states-cities</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?tool=video-downloader&amp;section=get-img-video</loc>
+    <loc>https://zezhatools.com/raw-data/indian-cities</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zezhatools.com/?section=products</loc>
+    <loc>https://zezhatools.com/raw-data/indian-colleges</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/raw-data/indian-pin-codes</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/raw-data/indian-districts</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/raw-data/indian-parliament</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/raw-data/indian-holidays</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/raw-data/indian-banks</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/raw-data/gst-state-codes</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/raw-data/india-tax-slabs</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/raw-data/indian-stock-market</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/raw-data/indian-cars</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/raw-data/tds-rate-chart</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/raw-data/professional-tax</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/raw-data/minimum-wages</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/raw-data/depreciation-rates</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/raw-data/rbi-rates-history</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/raw-data/gst-rate-finder</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/raw-data/section-80-deductions</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/raw-data/cost-inflation-index</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/raw-data/itr-forms-guide</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/raw-data/compliance-due-dates</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/raw-data/interest-penalty-rates</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/raw-data/audit-threshold-limits</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/raw-data/epf-interest-rates</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/raw-data/hr-leave-rules</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/raw-data/gratuity-rules</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/raw-data/bank-fd-rates</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/raw-data/statutory-due-dates</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/get-img-video</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/get-img-video/image-downloader</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/get-img-video/video-downloader</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zezhatools.com/products</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>

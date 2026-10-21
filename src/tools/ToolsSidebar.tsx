@@ -7,7 +7,7 @@ import {
     Building2, FileSpreadsheet, FileBarChart, CreditCard, Landmark, Calendar,
     BarChart3, ClipboardList, FileOutput, BookOpen, FileSearch, FileScan,
     Wrench, Briefcase, Coins, WalletCards, Gauge,
-    Lock, ShieldCheck, Mail, Send, MailCheck,
+    Mail, Send, MailCheck,
     Factory, Cog, Package, Tag, ArrowUpRight, ArrowRightLeft,
     RefreshCw, Clock, Target, ArrowDownRight, ArrowDownUp,
     Scale, RotateCcw, Banknote, Award, Wallet,
@@ -242,7 +242,7 @@ interface ToolsSidebarProps {
     activeSection: string;
     onSelectTool: (tool: string) => void;
     onSelectSection: (section: string) => void;
-    isSubscribed: boolean;
+    isSubscribed?: boolean;
     /** Mobile: whether the sidebar panel is visible */
     isOpen: boolean;
     /** Mobile: called when user closes the sidebar */
@@ -550,20 +550,11 @@ export const ToolsSidebar: React.FC<ToolsSidebarProps> = ({
                                         </div>
                                         {!collapsed && <span className="whitespace-nowrap">{section.label}</span>}
                                     </div>
-                                    {!collapsed && (
-                                        <div className="flex items-center gap-1.5">
-                                            {isSubscribed ? (
-                                                <ShieldCheck size={12} className={isActiveSection ? 'text-emerald-200' : 'text-emerald-500'} />
-                                            ) : (
-                                                <Lock size={12} className={isActiveSection ? 'text-orange-200' : 'text-orange-400'} />
-                                            )}
-                                            {section.items.length > 0 && (
-                                                <ChevronDown
-                                                    size={14}
-                                                    className={`${isActiveSection ? 'text-white/70' : 'text-slate-400'} transition-transform duration-200 ${isExpanded ? 'rotate-0' : '-rotate-90'}`}
-                                                />
-                                            )}
-                                        </div>
+                                    {!collapsed && section.items.length > 0 && (
+                                        <ChevronDown
+                                            size={14}
+                                            className={`${isActiveSection ? 'text-white/70' : 'text-slate-400'} transition-transform duration-200 ${isExpanded ? 'rotate-0' : '-rotate-90'}`}
+                                        />
                                     )}
                                 </button>
 
@@ -588,12 +579,6 @@ export const ToolsSidebar: React.FC<ToolsSidebarProps> = ({
                                                     <span className={`absolute left-0 top-1/2 w-3 h-[2px] ${isActive ? 'bg-primary' : 'bg-slate-200/80'}`} />
                                                     <Icon size={12} className={`shrink-0 ${isActive ? 'text-white' : (SECTION_COLORS[section.id]?.text || 'text-slate-400')}`} />
                                                     <span className="truncate flex-1">{item.label}</span>
-                                                    <span className="shrink-0 ml-auto">
-                                                        {isSubscribed
-                                                            ? <ShieldCheck size={10} className={isActive ? 'text-emerald-200' : 'text-emerald-400'} />
-                                                            : <Lock size={10} className={isActive ? 'text-orange-200' : 'text-orange-300'} />
-                                                        }
-                                                    </span>
                                                 </button>
                                             );
                                         })}

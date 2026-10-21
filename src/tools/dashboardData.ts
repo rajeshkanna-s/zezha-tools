@@ -15,7 +15,8 @@ import {
     MapPin, Map, Building, Car,
     Gift, Clock, Heart, CalendarCheck, GraduationCap,
     Calculator, KeyRound, ClipboardCheck, GitCompare,
-    Wallet, Flame, Apple, Activity, Sparkles
+    Wallet, Flame, Apple, Activity, Sparkles,
+    FileSignature, Merge, FileImage, ScanText, Scissors, ArrowUpDown, Crop, Trash2
 } from 'lucide-react';
 
 export interface DashboardTool {
@@ -25,6 +26,22 @@ export interface DashboardTool {
     desc: string;
     color: string;
 }
+
+export const CONVERTORS_TOOLS: DashboardTool[] = [
+    { id: 'image-to-pdf', icon: Image, title: 'Image to PDF', desc: 'Convert JPG, PNG, WEBP images to PDF document', color: 'bg-indigo-500' },
+    { id: 'compress-pdf', icon: FileDown, title: 'Compress PDF', desc: 'Reduce PDF file size without losing quality', color: 'bg-emerald-500' },
+    { id: 'edit-pdf', icon: FileSignature, title: 'Edit PDF', desc: 'Add text, signatures and annotations to PDF', color: 'bg-purple-500' },
+    { id: 'compress-image', icon: Minimize2, title: 'Compress Image', desc: 'Compress JPG, PNG, and WebP images', color: 'bg-cyan-500' },
+    { id: 'merge-pdf', icon: Merge, title: 'Merge PDF', desc: 'Combine multiple PDF files into one single document', color: 'bg-blue-600' },
+    { id: 'pdf-to-image', icon: FileImage, title: 'PDF to Image', desc: 'Extract pages from PDF as high-res images', color: 'bg-rose-500' },
+    { id: 'word-to-pdf', icon: FileText, title: 'Word to PDF', desc: 'Convert Word DOCX files directly to PDF', color: 'bg-blue-500' },
+    { id: 'image-to-text', icon: ScanText, title: 'Image to Text', desc: 'Extract text from images using OCR', color: 'bg-amber-500' },
+    { id: 'split-pdf', icon: Scissors, title: 'Split PDF', desc: 'Split a PDF into separate pages or ranges', color: 'bg-orange-500' },
+    { id: 'organize-pdf', icon: ArrowUpDown, title: 'Organize PDF', desc: 'Reorder, rotate, or delete PDF pages easily', color: 'bg-teal-500' },
+    { id: 'html-to-pdf', icon: Code2, title: 'HTML to PDF', desc: 'Convert HTML code or web pages to PDF', color: 'bg-violet-500' },
+    { id: 'crop-pdf', icon: Crop, title: 'Crop PDF', desc: 'Crop margins and resize PDF pages', color: 'bg-pink-500' },
+    { id: 'delete-pdf-pages', icon: Trash2, title: 'Delete PDF Pages', desc: 'Remove unwanted pages from your PDF file', color: 'bg-red-500' },
+];
 
 export const BUSINESS_TAX_TOOLS: DashboardTool[] = [
     { id: 'profit-loss-calculator', icon: TrendingUp, title: 'Profit & Loss Calculator', desc: 'Analyze revenue, expenses & net profit/loss', color: 'bg-green-500' },

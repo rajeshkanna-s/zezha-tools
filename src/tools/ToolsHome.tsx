@@ -60,6 +60,7 @@ export const ToolsHome: React.FC<ToolsHomeProps> = ({ onSelectTool, onSelectSect
   }, [searchQuery, allVisibleTools]);
 
   const quickAccessTools = useMemo(() => [
+    { id: 'precious-metals-calculator', sectionId: 'investments', label: 'Gold & Silver Rates', icon: Sparkles, color: 'text-amber-600 bg-amber-50' },
     { id: 'emi-calculator', sectionId: 'loans-emi', label: 'EMI Calculator', icon: CreditCard, color: 'text-emerald-600 bg-emerald-50' },
     { id: 'fd-calculator', sectionId: 'investments', label: 'FD Calculator', icon: PiggyBank, color: 'text-amber-600 bg-amber-50' },
     { id: 'dob-calculator', sectionId: 'utilities', label: 'DOB Calculator', icon: Calendar, color: 'text-blue-600 bg-blue-50' },

@@ -2,13 +2,12 @@ import React, { useState, useRef, useEffect, Suspense } from 'react';
 import { Menu, ArrowLeft, LayoutGrid, Image as ImageIcon, Video, ArrowUpRight } from 'lucide-react';
 import { ToolsLayout } from './ToolsLayout';
 import { ToolsSidebar, MENU_SECTIONS } from './ToolsSidebar';
-import { useAuth } from '../contexts/AuthContext';
 import { useCustomTools } from '@/hooks/useCustomTools';
 import { activityTracker } from '@/services/ActivityTracker';
 import { ToolsHome } from './ToolsHome';
 import { SectionDashboard } from './SectionDashboard';
 import { ToolsDomainLanding, TOOL_DOMAINS } from './ToolsDomainLanding';
-import { BUSINESS_TAX_TOOLS, LOANS_EMI_TOOLS, INVESTMENTS_TOOLS, UTILITIES_TOOLS, DEV_TOOLKIT_TOOLS, RAW_DATA_TOOLS } from './dashboardData';
+import { CONVERTORS_TOOLS, BUSINESS_TAX_TOOLS, LOANS_EMI_TOOLS, INVESTMENTS_TOOLS, UTILITIES_TOOLS, DEV_TOOLKIT_TOOLS, RAW_DATA_TOOLS } from './dashboardData';
 
 const LifeDecisionSimulatorPage = React.lazy(() => import('./life-decision/LifeDecisionSimulatorPage').then(m => ({ default: m.LifeDecisionSimulatorPage })));
 
@@ -219,6 +218,17 @@ export const TOOL_COMPONENTS: Record<string, React.FC<any>> = {
   'fire-calculator': FireCalculatorPage,
   'fitness-nutrition-planner': FitnessPlannerPage,
   'body-fat-calculator': BodyFatCalculatorPage,
+  'startup-name-checker': StartupNameCheckerPage,
+  'festival-gift-planner': GiftBudgetPlannerPage,
+  'rent-vs-buy-calculator': RentVsBuyCalculatorPage,
+  'marriage-budget-planner': MarriageBudgetPlannerPage,
+  'unit-converter': UnitConverterPage,
+  'products': ProductsPage,
+  'govt-scheme-finder': GovtSchemeFinder,
+  'invitation-creator': InvitationCreatorPage,
+  'event-page-creator': EventPageCreatorPage,
+  'logo-creator': LogoCreatorPage,
+  'life-decision-simulator': LifeDecisionSimulatorPage,
   // Developer Toolkit
   'dev-json-formatter': JsonFormatter,
   'dev-json-minifier': JsonMinifier,
@@ -315,29 +325,85 @@ const GET_IMG_VIDEO_TOOLS = [
   { id: 'video-downloader', icon: Video, title: 'Video Downloader', desc: 'Search and download free high-quality videos from Pexels', color: 'bg-fuchsia-500' },
 ];
 
+// Helper to parse route from current window.location (pathname + fallback search params)
+function parseCurrentRoute(): { sectionId: string; toolId: string | null } {
+  const pathname = window.location.pathname.replace(/^\/+|\/+$/g, '');
+  const segments = pathname ? pathname.split('/') : [];
+
+  const standaloneSections = ['home', 'govt-scheme-finder', 'invitation-creator', 'event-page-creator', 'logo-creator', 'products', 'life-decision-simulator'];
+
+  // 1. Two segments: e.g. /investments/precious-metals-calculator or /tools/precious-metals-calculator
+  if (segments.length >= 2) {
+    const [first, second] = segments;
+    if (first === 'tools') {
+      const toolId = second;
+      const sectionInfo = TOOL_TO_SECTION[toolId];
+      return { sectionId: sectionInfo?.sectionId || 'home', toolId };
+    }
+    return { sectionId: first, toolId: second };
+  }
+
+  // 2. Single segment: e.g. /precious-metals-calculator or /investments or /govt-scheme-finder
+  if (segments.length === 1) {
+    const slug = segments[0];
+
+    // If slug matches a known tool in TOOL_TO_SECTION
+    if (TOOL_TO_SECTION[slug]) {
+      return { sectionId: TOOL_TO_SECTION[slug].sectionId, toolId: slug };
+    }
+
+    // If slug matches a known section in MENU_SECTIONS
+    const matchingSection = MENU_SECTIONS.find(s => s.id === slug);
+    if (matchingSection) {
+      return { sectionId: slug, toolId: null };
+    }
+
+    if (standaloneSections.includes(slug)) {
+      return { sectionId: slug, toolId: null };
+    }
+
+    if (TOOL_COMPONENTS[slug]) {
+      const sectionInfo = TOOL_TO_SECTION[slug];
+      return { sectionId: sectionInfo?.sectionId || 'utilities', toolId: slug };
+    }
+  }
+
+  // 3. Fallback to query params if someone navigated with old ?tool=...&section=...
+  const params = new URLSearchParams(window.location.search);
+  const qTool = params.get('tool');
+  const qSection = params.get('section');
+  if (qTool) {
+    const sectionInfo = TOOL_TO_SECTION[qTool];
+    return { sectionId: sectionInfo?.sectionId || qSection || 'home', toolId: qTool };
+  }
+  if (qSection && qSection !== 'home') {
+    return { sectionId: qSection, toolId: null };
+  }
+
+  return { sectionId: 'home', toolId: null };
+}
+
+// Compute the clean target URL pathname
+function getTargetUrl(sectionId: string, toolId: string | null): string {
+  const standaloneSections = ['home', 'govt-scheme-finder', 'invitation-creator', 'event-page-creator', 'logo-creator', 'products', 'life-decision-simulator'];
+  if (toolId) {
+    if (standaloneSections.includes(toolId)) {
+      return `/${toolId}`;
+    }
+    const sec = TOOL_TO_SECTION[toolId]?.sectionId || (sectionId !== 'home' ? sectionId : 'tools');
+    return `/${sec}/${toolId}`;
+  }
+  if (sectionId && sectionId !== 'home') {
+    return `/${sectionId}`;
+  }
+  return '/';
+}
+
 export const ToolsPortal: React.FC<ToolsPortalProps> = ({ onHome, onInvoice, onBankStatement, onPayInPayOut, onSubscribe, onInvitation, onEventPage, onLogoCreator, onAtsAnalyser, onEbookCreator, pendingToolSelect, onPendingToolConsumed, defaultDomain: defaultDomainProp, onDefaultDomainConsumed }) => {
-  const [activeTool, setActiveTool] = useState<string | null>(() => {
-    const params = new URLSearchParams(window.location.search);
-    const tool = params.get('tool');
-    const STANDALONE_SECTION_TOOLS = ['startup-name-checker', 'festival-gift-planner', 'rent-vs-buy-calculator', 'marriage-budget-planner', 'unit-converter', 'products', 'home', 'invitation-creator', 'event-page-creator', 'logo-creator'];
-    if (tool && STANDALONE_SECTION_TOOLS.includes(tool)) {
-      return null;
-    }
-    return tool;
-  });
-  const [activeSection, setActiveSection] = useState<string>(() => {
-    const params = new URLSearchParams(window.location.search);
-    const tool = params.get('tool');
-    const STANDALONE_SECTION_TOOLS = ['startup-name-checker', 'festival-gift-planner', 'rent-vs-buy-calculator', 'marriage-budget-planner', 'unit-converter', 'products', 'home', 'invitation-creator', 'event-page-creator', 'logo-creator'];
-    if (tool && STANDALONE_SECTION_TOOLS.includes(tool)) {
-      return tool;
-    }
-    return params.get('section') || 'home';
-  });
-  const [showExpiredToast, setShowExpiredToast] = useState(false);
+  const initialRoute = parseCurrentRoute();
+  const [activeTool, setActiveTool] = useState<string | null>(initialRoute.toolId);
+  const [activeSection, setActiveSection] = useState<string>(initialRoute.sectionId);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { canUpload } = useAuth();
-  const isSubscribed = canUpload();
   const { hiddenIds } = useCustomTools();
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -352,77 +418,50 @@ export const ToolsPortal: React.FC<ToolsPortalProps> = ({ onHome, onInvoice, onB
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // ── Sync active state with browser URL search parameters ──
+  // ── Sync active state with browser clean URL ──
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (activeTool) {
-      params.set('tool', activeTool);
-      const sectionInfo = TOOL_TO_SECTION[activeTool];
-      if (sectionInfo) {
-        params.set('section', sectionInfo.sectionId);
-      } else {
-        params.delete('section');
-      }
-    } else {
-      params.delete('tool');
-      if (activeSection && activeSection !== 'home') {
-        params.set('section', activeSection);
-      } else {
-        params.delete('section');
-      }
-    }
-    const newSearch = params.toString();
-    const newUrl = `${window.location.pathname}${newSearch ? '?' + newSearch : ''}`;
-    if (window.location.search !== (newSearch ? '?' + newSearch : '')) {
-      window.history.pushState({}, '', newUrl);
+    const targetUrl = getTargetUrl(activeSection, activeTool);
+    if (window.location.pathname !== targetUrl || window.location.search) {
+      window.history.pushState({ sectionId: activeSection, toolId: activeTool }, '', targetUrl);
     }
   }, [activeTool, activeSection]);
 
   // ── Support browser Back/Forward navigation ──
   useEffect(() => {
     const handlePopState = () => {
-      const params = new URLSearchParams(window.location.search);
-      const tool = params.get('tool');
-      const section = params.get('section') || 'home';
-      const STANDALONE_SECTION_TOOLS = ['startup-name-checker', 'festival-gift-planner', 'rent-vs-buy-calculator', 'marriage-budget-planner', 'unit-converter', 'products', 'home', 'invitation-creator', 'event-page-creator', 'logo-creator'];
-      if (tool && STANDALONE_SECTION_TOOLS.includes(tool)) {
-        setActiveTool(null);
-        setActiveSection(tool);
-      } else {
-        setActiveTool(tool);
-        setActiveSection(section);
-      }
+      const route = parseCurrentRoute();
+      setActiveTool(route.toolId);
+      setActiveSection(route.sectionId);
     };
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
-  // ── Dynamic SEO Title & Meta Description update ──
+  // ── Dynamic SEO Title, Meta Description & Canonical update ──
   useEffect(() => {
+    const targetUrl = getTargetUrl(activeSection, activeTool);
     if (activeTool) {
       const toolMeta = MENU_SECTIONS.flatMap(s => s.items).find(i => i.id === activeTool);
-      if (toolMeta) {
-        document.title = `${toolMeta.label} — Zezha Tools`;
-        let descMeta = document.querySelector('meta[name="description"]');
-        if (!descMeta) {
-          descMeta = document.createElement('meta');
-          descMeta.setAttribute('name', 'description');
-          document.head.appendChild(descMeta);
-        }
-        descMeta.setAttribute('content', `Use the free online ${toolMeta.label} on Zezha Tools. 100% browser-based, secure, and easy to use.`);
+      const title = toolMeta ? `${toolMeta.label} — Zezha Tools` : `${activeTool} — Zezha Tools`;
+      document.title = title;
+      let descMeta = document.querySelector('meta[name="description"]');
+      if (!descMeta) {
+        descMeta = document.createElement('meta');
+        descMeta.setAttribute('name', 'description');
+        document.head.appendChild(descMeta);
       }
+      descMeta.setAttribute('content', `Use the free online ${toolMeta?.label || activeTool} on Zezha Tools. 100% browser-based, secure, and easy to use.`);
     } else if (activeSection && activeSection !== 'home') {
       const sectionMeta = MENU_SECTIONS.find(s => s.id === activeSection);
-      if (sectionMeta) {
-        document.title = `${sectionMeta.label} Utilities — Zezha Tools`;
-        let descMeta = document.querySelector('meta[name="description"]');
-        if (!descMeta) {
-          descMeta = document.createElement('meta');
-          descMeta.setAttribute('name', 'description');
-          document.head.appendChild(descMeta);
-        }
-        descMeta.setAttribute('content', `Explore free online ${sectionMeta.label} utilities on Zezha Tools. 100% secure, browser-based tools.`);
+      const title = sectionMeta ? `${sectionMeta.label} Utilities — Zezha Tools` : `${activeSection} — Zezha Tools`;
+      document.title = title;
+      let descMeta = document.querySelector('meta[name="description"]');
+      if (!descMeta) {
+        descMeta = document.createElement('meta');
+        descMeta.setAttribute('name', 'description');
+        document.head.appendChild(descMeta);
       }
+      descMeta.setAttribute('content', `Explore free online ${sectionMeta?.label || activeSection} utilities on Zezha Tools. 100% secure, browser-based tools.`);
     } else {
       document.title = "Zezha Tools — Web Utilities & Calculators Hub";
       const descMeta = document.querySelector('meta[name="description"]');
@@ -430,6 +469,15 @@ export const ToolsPortal: React.FC<ToolsPortalProps> = ({ onHome, onInvoice, onB
         descMeta.setAttribute('content', "Zezha Tools — 400+ free browser-based web utilities, calculators, PDF tools, and business solutions. No data uploaded to any server.");
       }
     }
+
+    // Canonical link update
+    let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
+    if (!canonical) {
+      canonical = document.createElement('link');
+      canonical.setAttribute('rel', 'canonical');
+      document.head.appendChild(canonical);
+    }
+    canonical.setAttribute('href', `https://zezhatools.com${targetUrl === '/' ? '' : targetUrl}`);
   }, [activeTool, activeSection]);
 
   // Scroll content area to top when switching tools or sections
@@ -440,7 +488,7 @@ export const ToolsPortal: React.FC<ToolsPortalProps> = ({ onHome, onInvoice, onB
   }, [activeTool, activeSection]);
 
   // ── Auto-select tool from global search ──
-  React.useEffect(() => {
+  useEffect(() => {
     if (pendingToolSelect) {
       setActiveSection(pendingToolSelect.sectionId);
       setActiveTool(pendingToolSelect.toolId);
@@ -449,36 +497,23 @@ export const ToolsPortal: React.FC<ToolsPortalProps> = ({ onHome, onInvoice, onB
   }, [pendingToolSelect, onPendingToolConsumed]);
 
   const handleSelectTool = (toolId: string) => {
-    // Intercept certain tools that are actually standalone sections
-    if (['startup-name-checker', 'festival-gift-planner', 'rent-vs-buy-calculator', 'marriage-budget-planner', 'unit-converter', 'products', 'home', 'invitation-creator', 'event-page-creator', 'logo-creator'].includes(toolId)) {
+    const standaloneSections = ['home', 'products', 'govt-scheme-finder', 'invitation-creator', 'event-page-creator', 'logo-creator'];
+    if (standaloneSections.includes(toolId)) {
       handleSelectSection(toolId);
       return;
     }
 
-    if (!isSubscribed) {
-      setShowExpiredToast(true);
-      setTimeout(() => { setShowExpiredToast(false); onSubscribe?.(); }, 1500);
-      return;
-    }
-    // Track tool usage for activity stats
     const sectionInfo = TOOL_TO_SECTION[toolId];
+    if (sectionInfo) {
+      setActiveSection(sectionInfo.sectionId);
+    }
+    setActiveTool(toolId);
+
     const toolMeta = MENU_SECTIONS.flatMap(s => s.items).find(i => i.id === toolId);
     activityTracker.trackUsage(toolId, toolMeta?.label || toolId, sectionInfo?.sectionId, sectionInfo?.sectionLabel);
-
-    setActiveTool(toolId);
   };
 
   const handleSelectSection = (sectionId: string) => {
-    if (['home', 'get-img-video', 'products', 'life-decision-simulator', 'startup-name-checker', 'festival-gift-planner', 'rent-vs-buy-calculator', 'marriage-budget-planner', 'unit-converter', 'govt-scheme-finder', 'invitation-creator', 'event-page-creator', 'logo-creator'].includes(sectionId)) {
-      if (!isSubscribed) {
-        setShowExpiredToast(true);
-        setTimeout(() => { setShowExpiredToast(false); onSubscribe?.(); }, 1500);
-        return;
-      }
-      setActiveSection(sectionId);
-      setActiveTool(null);
-      return;
-    }
     setActiveSection(sectionId);
     setActiveTool(null);
   };
@@ -502,42 +537,24 @@ export const ToolsPortal: React.FC<ToolsPortalProps> = ({ onHome, onInvoice, onB
     switch (activeSection) {
       case 'home':
         return <ToolsHome onSelectTool={handleSelectTool} onSelectSection={handleSelectSection} />;
-      case 'get-img-video':
-        return (
-          <Suspense fallback={<div className="flex items-center justify-center h-full text-slate-400 text-sm">Loading Image Downloader...</div>}>
-            <ImageSearchDownloader />
-          </Suspense>
-        );
-      case 'products':
-        return <ProductsPage />;
       case 'convertors':
-        return <ImageToPdf />;
+        return <SectionDashboard title="Convertors & PDF Tools" subtitle="Fast, secure, browser-based document utilities" tools={CONVERTORS_TOOLS} onSelectTool={handleSelectTool} />;
       case 'business-tax':
-        return <ProfitLossCalculator />;
+        return <SectionDashboard title="Business & Tax Calculators" subtitle="Accurate Indian tax estimation & business valuation" tools={BUSINESS_TAX_TOOLS} onSelectTool={handleSelectTool} />;
       case 'loans-emi':
-        return <LoanCalculator />;
+        return <SectionDashboard title="Loans & EMI Calculators" subtitle="Smart debt planning, EMI & loan comparisons" tools={LOANS_EMI_TOOLS} onSelectTool={handleSelectTool} />;
       case 'investments':
-        return <Suspense fallback={<div className="flex items-center justify-center h-full text-slate-400 text-sm">Loading Investment Calculator...</div>}><FdCalculator /></Suspense>;
+        return <SectionDashboard title="Investments & Wealth" subtitle="Live IBJA gold & silver rates, SIP, FD & RD calculators" tools={INVESTMENTS_TOOLS} onSelectTool={handleSelectTool} />;
       case 'utilities':
-        return <Suspense fallback={<div className="flex items-center justify-center h-full text-slate-400 text-sm">Loading Currency Calculator...</div>}><CurrencyCalculator /></Suspense>;
+        return <SectionDashboard title="Daily Utilities" subtitle="Universal unit converters, currency & productivity tools" tools={UTILITIES_TOOLS} onSelectTool={handleSelectTool} />;
       case 'dev-toolkit':
-        return <Suspense fallback={<div className="flex items-center justify-center h-full text-slate-400 text-sm">Loading JSON Formatter...</div>}><JsonFormatter /></Suspense>;
-      case 'life-decision-simulator':
-        return <Suspense fallback={<div className="flex items-center justify-center h-full text-slate-400 text-sm">Loading Life Decision Simulator...</div>}><LifeDecisionSimulatorPage embedded /></Suspense>;
-
-      case 'startup-name-checker':
-        return (<div className="flex flex-col h-full"><div className="flex-1 overflow-y-auto"><Suspense fallback={<div className="flex items-center justify-center h-full text-slate-400 text-sm">Loading Startup Name Checker...</div>}><StartupNameCheckerPage /></Suspense></div></div>);
-      case 'festival-gift-planner':
-        return (<div className="flex flex-col h-full"><div className="flex-1 overflow-y-auto"><Suspense fallback={<div className="flex items-center justify-center h-full text-slate-400 text-sm">Loading Gift Budget Planner...</div>}><GiftBudgetPlannerPage /></Suspense></div></div>);
-      case 'rent-vs-buy-calculator':
-        return (<div className="flex flex-col h-full"><div className="flex-1 overflow-y-auto"><Suspense fallback={<div className="flex items-center justify-center h-full text-slate-400 text-sm">Loading Rent vs Buy Calculator...</div>}><RentVsBuyCalculatorPage /></Suspense></div></div>);
-      case 'marriage-budget-planner':
-        return (<div className="flex flex-col h-full"><div className="flex-1 overflow-y-auto"><Suspense fallback={<div className="flex items-center justify-center h-full text-slate-400 text-sm">Loading Marriage Budget Planner...</div>}><MarriageBudgetPlannerPage /></Suspense></div></div>);
-      case 'unit-converter':
-        return (<div className="flex flex-col h-full"><div className="flex-1 overflow-y-auto"><Suspense fallback={<div className="flex items-center justify-center h-full text-slate-400 text-sm">Loading Universal Unit Converter...</div>}><UnitConverterPage onBack={() => setActiveSection('utilities')} /></Suspense></div></div>);
+        return <SectionDashboard title="Developer Toolkit" subtitle="Formatters, encoders, diff checkers & developer utilities" tools={DEV_TOOLKIT_TOOLS} onSelectTool={handleSelectTool} />;
       case 'raw-data':
         return <Suspense fallback={<div className="flex items-center justify-center h-full text-slate-400 text-sm">Loading Raw Data...</div>}><RawDataDashboard onSelectTool={handleSelectTool} /></Suspense>;
-
+      case 'get-img-video':
+        return <SectionDashboard title="Image & Video Downloader" subtitle="Search and download high-resolution assets" tools={GET_IMG_VIDEO_TOOLS} onSelectTool={handleSelectTool} />;
+      case 'products':
+        return <ProductsPage />;
       case 'govt-scheme-finder':
         return <GovtSchemeFinder />;
       case 'invitation-creator':
@@ -570,12 +587,20 @@ export const ToolsPortal: React.FC<ToolsPortalProps> = ({ onHome, onInvoice, onB
             </div>
           </div>
         );
+      case 'life-decision-simulator':
+        return <Suspense fallback={<div className="flex items-center justify-center h-full text-slate-400 text-sm">Loading Life Decision Simulator...</div>}><LifeDecisionSimulatorPage embedded /></Suspense>;
+      case 'startup-name-checker':
+        return (<div className="flex flex-col h-full"><div className="flex-1 overflow-y-auto"><Suspense fallback={<div className="flex items-center justify-center h-full text-slate-400 text-sm">Loading Startup Name Checker...</div>}><StartupNameCheckerPage /></Suspense></div></div>);
+      case 'festival-gift-planner':
+        return (<div className="flex flex-col h-full"><div className="flex-1 overflow-y-auto"><Suspense fallback={<div className="flex items-center justify-center h-full text-slate-400 text-sm">Loading Gift Budget Planner...</div>}><GiftBudgetPlannerPage /></Suspense></div></div>);
+      case 'rent-vs-buy-calculator':
+        return (<div className="flex flex-col h-full"><div className="flex-1 overflow-y-auto"><Suspense fallback={<div className="flex items-center justify-center h-full text-slate-400 text-sm">Loading Rent vs Buy Calculator...</div>}><RentVsBuyCalculatorPage /></Suspense></div></div>);
+      case 'marriage-budget-planner':
+        return (<div className="flex flex-col h-full"><div className="flex-1 overflow-y-auto"><Suspense fallback={<div className="flex items-center justify-center h-full text-slate-400 text-sm">Loading Marriage Budget Planner...</div>}><MarriageBudgetPlannerPage /></Suspense></div></div>);
+      case 'unit-converter':
+        return (<div className="flex flex-col h-full"><div className="flex-1 overflow-y-auto"><Suspense fallback={<div className="flex items-center justify-center h-full text-slate-400 text-sm">Loading Universal Unit Converter...</div>}><UnitConverterPage onBack={() => handleSelectSection('utilities')} /></Suspense></div></div>);
       default:
-        return (
-          <Suspense fallback={<div className="flex items-center justify-center h-full text-slate-400 text-sm">Loading Image Downloader...</div>}>
-            <ImageSearchDownloader />
-          </Suspense>
-        );
+        return <ToolsHome onSelectTool={handleSelectTool} onSelectSection={handleSelectSection} />;
     }
   };
 
@@ -621,23 +646,13 @@ export const ToolsPortal: React.FC<ToolsPortalProps> = ({ onHome, onInvoice, onB
             activeSection={activeSection}
             onSelectTool={handleSelectTool}
             onSelectSection={handleSelectSection}
-            isSubscribed={isSubscribed}
+            isSubscribed={true}
             isOpen={sidebarOpen}
             onClose={() => setSidebarOpen(false)}
           />
           <div ref={contentRef} className="flex-1 overflow-y-auto tool-container-wrap">
             {renderContent()}
           </div>
-
-          {/* Subscription expired toast */}
-          {showExpiredToast && (
-            <div className="fixed top-20 left-1/2 -translate-x-1/2 z-[9999] animate-fade-in">
-              <div className="bg-red-600 text-white px-6 py-3 rounded-xl shadow-2xl flex items-center gap-3 font-semibold text-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
-                Subscription expired, please upgrade.
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </ToolsLayout>
