@@ -650,7 +650,7 @@ export const ToolsPortal: React.FC<ToolsPortalProps> = ({ onHome, onInvoice, onB
             isOpen={sidebarOpen}
             onClose={() => setSidebarOpen(false)}
           />
-          <div ref={contentRef} className="flex-1 overflow-y-auto tool-container-wrap">
+          <div ref={contentRef} className="flex-1 min-w-0 overflow-y-auto overflow-x-hidden tool-container-wrap">
             {renderContent()}
           </div>
         </div>

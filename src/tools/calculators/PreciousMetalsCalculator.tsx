@@ -604,6 +604,8 @@ Source: India Bullion and Jewellers Association (IBJA)`;
           padding: 16px 14px 48px;
           box-sizing: border-box;
           font-family: inherit;
+          width: 100%;
+          min-width: 0;
         }
         .pm-hero-header {
           background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
@@ -612,6 +614,8 @@ Source: India Bullion and Jewellers Association (IBJA)`;
           color: #ffffff;
           box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.2);
           margin-bottom: 14px;
+          box-sizing: border-box;
+          width: 100%;
         }
         .pm-hero-top {
           display: flex;
@@ -622,7 +626,7 @@ Source: India Bullion and Jewellers Association (IBJA)`;
         }
         .pm-four-cards-grid {
           display: grid;
-          grid-template-columns: repeat(4, 1fr);
+          grid-template-columns: repeat(4, minmax(0, 1fr));
           gap: 14px;
           margin-bottom: 22px;
         }
@@ -635,9 +639,16 @@ Source: India Bullion and Jewellers Association (IBJA)`;
           margin-bottom: 20px;
           overflow-x: auto;
           -webkit-overflow-scrolling: touch;
+          scrollbar-width: none;
+          width: 100%;
+          max-width: 100%;
+          box-sizing: border-box;
+        }
+        .pm-tabs-nav::-webkit-scrollbar {
+          display: none;
         }
         .pm-tab-btn {
-          flex: 1;
+          flex-shrink: 0;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -653,29 +664,128 @@ Source: India Bullion and Jewellers Association (IBJA)`;
         }
         .pm-calculator-layout {
           display: grid;
-          grid-template-columns: 1.15fr 0.85fr;
+          grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
           gap: 20px;
+          width: 100%;
+          box-sizing: border-box;
         }
+        .pm-card-white {
+          background: #ffffff;
+          border-radius: 16px;
+          border: 1.5px solid #e2e8f0;
+          padding: 22px 24px;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+          box-sizing: border-box;
+          width: 100%;
+          min-width: 0;
+        }
+        .pm-card-dark {
+          background: linear-gradient(180deg, #0b0f19 0%, #030712 100%);
+          border-radius: 18px;
+          border: 2px solid #eab308;
+          padding: 24px 22px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+          color: #ffffff;
+          box-sizing: border-box;
+          width: 100%;
+          min-width: 0;
+        }
+        .pm-form-row-2col {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+          gap: 12px;
+        }
+        .pm-rule-cards-grid {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+          gap: 10px;
+          margin-bottom: 16px;
+        }
+        .pm-total-payable-card {
+          border: 2px solid #eab308;
+          border-radius: 14px;
+          padding: 14px 16px;
+          background: rgba(234, 179, 8, 0.06);
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 12px;
+          box-sizing: border-box;
+          width: 100%;
+        }
+        .pm-total-payable-pill {
+          background: #facc15;
+          color: #000000;
+          padding: 8px 16px;
+          border-radius: 8px;
+          font-size: 22px;
+          font-weight: 900;
+          letter-spacing: -0.5px;
+          white-space: nowrap;
+          text-align: center;
+          flex-shrink: 0;
+        }
+
         @media (max-width: 860px) {
           .pm-four-cards-grid {
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 10px;
           }
           .pm-calculator-layout {
-            grid-template-columns: 1fr;
+            grid-template-columns: minmax(0, 1fr);
+          }
+        }
+        @media (max-width: 640px) {
+          .precious-metals-container {
+            padding: 8px 4px 36px;
+          }
+          .pm-card-white {
+            padding: 16px 12px;
+            border-radius: 12px;
+          }
+          .pm-card-dark {
+            padding: 16px 12px;
+            border-radius: 14px;
+          }
+          .pm-form-row-2col {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 10px;
+          }
+          .pm-rule-cards-grid {
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            gap: 8px;
+          }
+          .pm-total-payable-card {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 10px;
+            padding: 12px;
+          }
+          .pm-total-payable-pill {
+            font-size: 22px;
+            padding: 10px 14px;
+            width: 100%;
+            box-sizing: border-box;
           }
         }
         @media (max-width: 480px) {
           .pm-hero-header {
-            padding: 8px 12px;
+            padding: 8px 10px;
           }
           .pm-four-cards-grid {
-            grid-template-columns: 1fr;
+            grid-template-columns: minmax(0, 1fr);
             gap: 10px;
           }
           .pm-tab-btn {
             font-size: 11.5px;
             padding: 8px 10px;
+          }
+          .pm-rule-cards-grid {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 8px;
           }
         }
       `}</style>
@@ -1135,24 +1245,16 @@ Source: India Bullion and Jewellers Association (IBJA)`;
       {activeTab === 'purchase' && (
         <div className="pm-calculator-layout">
           {/* Left Panel: Inputs */}
-          <div
-            style={{
-              background: '#ffffff',
-              borderRadius: 16,
-              border: '1.5px solid #e2e8f0',
-              padding: '22px 24px',
-              boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
-              <div style={{ width: 32, height: 32, borderRadius: 8, background: '#fef3c7', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#b45309' }}>
+          <div className="pm-card-white">
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10, marginBottom: 14 }}>
+              <div style={{ width: 32, height: 32, borderRadius: 8, background: '#fef3c7', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#b45309', flexShrink: 0, marginTop: 2 }}>
                 <Calculator size={18} />
               </div>
-              <div>
-                <h3 style={{ margin: 0, fontSize: 16, fontWeight: 800, color: '#1e293b' }}>
+              <div style={{ minWidth: 0, flex: 1 }}>
+                <h3 style={{ margin: 0, fontSize: 15, fontWeight: 800, color: '#1e293b', lineHeight: 1.3, wordBreak: 'break-word' }}>
                   Indian Jewellery Quotation / Bill Estimator
                 </h3>
-                <p style={{ margin: '2px 0 0', fontSize: 12, color: '#64748b' }}>
+                <p style={{ margin: '3px 0 0', fontSize: 11.5, color: '#64748b', lineHeight: 1.4 }}>
                   Standard Indian retail breakup: Metal Value + Wastage (VA%) + Making Charges + 3% GST on Metal + 5% GST on Making
                 </p>
               </div>
@@ -1160,8 +1262,8 @@ Source: India Bullion and Jewellers Association (IBJA)`;
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               {/* Row 1: Purity Selection & Weight */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-                <div>
+              <div className="pm-form-row-2col">
+                <div style={{ minWidth: 0 }}>
                   <label style={{ display: 'block', fontSize: 11, fontWeight: 700, color: '#475569', marginBottom: 5, textTransform: 'uppercase' }}>
                     Purity / Karat
                   </label>
@@ -1173,6 +1275,8 @@ Source: India Bullion and Jewellers Association (IBJA)`;
                     }}
                     style={{
                       width: '100%',
+                      maxWidth: '100%',
+                      boxSizing: 'border-box',
                       padding: '9px 12px',
                       borderRadius: 8,
                       border: '1.5px solid #cbd5e1',
@@ -1201,7 +1305,7 @@ Source: India Bullion and Jewellers Association (IBJA)`;
                   </select>
                 </div>
 
-                <div>
+                <div style={{ minWidth: 0 }}>
                   <label style={{ display: 'block', fontSize: 11, fontWeight: 700, color: '#475569', marginBottom: 5, textTransform: 'uppercase' }}>
                     Weight
                   </label>
@@ -1294,13 +1398,13 @@ Source: India Bullion and Jewellers Association (IBJA)`;
                   padding: '12px 14px',
                 }}
               >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 5 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 5, flexWrap: 'wrap', gap: 6 }}>
                   <label style={{ fontSize: 11, fontWeight: 800, color: '#334155', textTransform: 'uppercase' }}>
                     {metal === 'XAU' ? 'Gold Rate per Gram (₹)' : 'Silver Rate per Gram (₹)'}
                   </label>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <span style={{ fontSize: 10, fontWeight: 700, color: isRateEdited ? '#b45309' : '#15803d', background: isRateEdited ? '#fef3c7' : '#dcfce7', padding: '1px 6px', borderRadius: 4 }}>
-                      {isRateEdited ? 'Custom Board Rate' : 'Live IBJA Auto-Populated'}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+                    <span style={{ fontSize: 9.5, fontWeight: 700, color: isRateEdited ? '#b45309' : '#15803d', background: isRateEdited ? '#fef3c7' : '#dcfce7', padding: '2px 6px', borderRadius: 4, whiteSpace: 'nowrap' }}>
+                      {isRateEdited ? 'Custom Rate' : `Live IBJA ${calcPurity.toUpperCase()}`}
                     </span>
                     {isRateEdited && (
                       <button
@@ -1364,7 +1468,7 @@ Source: India Bullion and Jewellers Association (IBJA)`;
               </div>
 
               {/* Row 3: Making Charges (%) and Wastage (%) */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+              <div className="pm-form-row-2col">
                 <div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 5 }}>
                     <label style={{ fontSize: 11, fontWeight: 700, color: '#475569', textTransform: 'uppercase' }}>
@@ -1471,7 +1575,7 @@ Source: India Bullion and Jewellers Association (IBJA)`;
                 <span style={{ display: 'block', fontSize: 11, fontWeight: 800, color: '#475569', marginBottom: 8, textTransform: 'uppercase' }}>
                   GST Tax Slabs (Standard Indian Jewellery Rules)
                 </span>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                <div className="pm-form-row-2col">
                   <div>
                     <label style={{ display: 'block', fontSize: 11, color: '#64748b', marginBottom: 3 }}>
                       GST on Gold/Silver Value
@@ -1546,46 +1650,35 @@ Source: India Bullion and Jewellers Association (IBJA)`;
           </div>
 
           {/* Right Panel: Official Dark Gold GST on Jewellery Bill Card (Previous Design) */}
-          <div
-            style={{
-              background: 'linear-gradient(180deg, #0b0f19 0%, #030712 100%)',
-              borderRadius: 18,
-              border: '2px solid #eab308',
-              padding: '24px 22px',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              boxShadow: '0 12px 32px rgba(0, 0, 0, 0.45)',
-              color: '#ffffff',
-            }}
-          >
+          <div className="pm-card-dark">
             <div>
               {/* Card Title */}
-              <div style={{ textAlign: 'center', marginBottom: 16 }}>
-                <h3 style={{ margin: 0, fontSize: 20, fontWeight: 900, letterSpacing: '0.6px', color: '#ffffff' }}>
+              <div style={{ textAlign: 'center', marginBottom: 14 }}>
+                <h3 style={{ margin: 0, fontSize: 18, fontWeight: 900, letterSpacing: '0.4px', color: '#ffffff', wordBreak: 'break-word' }}>
                   GST ON <span style={{ color: '#facc15' }}>{metal === 'XAU' ? 'GOLD JEWELLERY' : 'SILVER JEWELLERY'}</span>
                 </h3>
               </div>
 
               {/* Two Rule Cards Side-by-Side */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 16 }}>
+              <div className="pm-rule-cards-grid">
                 <div
                   style={{
                     background: 'rgba(255, 255, 255, 0.04)',
                     border: '1px solid rgba(255, 255, 255, 0.12)',
                     borderRadius: 10,
-                    padding: '10px 12px',
+                    padding: '8px 10px',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: 10,
+                    gap: 8,
+                    minWidth: 0,
                   }}
                 >
-                  <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'rgba(245, 158, 11, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#facc15' }}>
-                    <Coins size={16} />
+                  <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'rgba(245, 158, 11, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#facc15', flexShrink: 0 }}>
+                    <Coins size={14} />
                   </div>
-                  <div>
-                    <div style={{ fontSize: 13, fontWeight: 900, color: '#facc15' }}>{gstOnGoldPercent}% GST</div>
-                    <div style={{ fontSize: 9.5, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase' }}>ON {metal === 'XAU' ? 'GOLD' : 'SILVER'} VALUE</div>
+                  <div style={{ minWidth: 0, flex: 1 }}>
+                    <div style={{ fontSize: 12, fontWeight: 900, color: '#facc15', whiteSpace: 'nowrap' }}>{gstOnGoldPercent}% GST</div>
+                    <div style={{ fontSize: 9, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', lineHeight: 1.2 }}>ON {metal === 'XAU' ? 'GOLD' : 'SILVER'} VALUE</div>
                   </div>
                 </div>
 
@@ -1594,24 +1687,25 @@ Source: India Bullion and Jewellers Association (IBJA)`;
                     background: 'rgba(255, 255, 255, 0.04)',
                     border: '1px solid rgba(255, 255, 255, 0.12)',
                     borderRadius: 10,
-                    padding: '10px 12px',
+                    padding: '8px 10px',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: 10,
+                    gap: 8,
+                    minWidth: 0,
                   }}
                 >
-                  <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'rgba(245, 158, 11, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#facc15' }}>
-                    <Gem size={16} />
+                  <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'rgba(245, 158, 11, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#facc15', flexShrink: 0 }}>
+                    <Gem size={14} />
                   </div>
-                  <div>
-                    <div style={{ fontSize: 13, fontWeight: 900, color: '#facc15' }}>{gstOnMakingPercent}% GST</div>
-                    <div style={{ fontSize: 9.5, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase' }}>ON MAKING CHARGES</div>
+                  <div style={{ minWidth: 0, flex: 1 }}>
+                    <div style={{ fontSize: 12, fontWeight: 900, color: '#facc15', whiteSpace: 'nowrap' }}>{gstOnMakingPercent}% GST</div>
+                    <div style={{ fontSize: 9, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', lineHeight: 1.2 }}>ON MAKING CHARGES</div>
                   </div>
                 </div>
               </div>
 
               {/* Central Golden Pill: CALCULATION BREAKUP */}
-              <div style={{ textAlign: 'center', margin: '14px 0 16px' }}>
+              <div style={{ textAlign: 'center', margin: '12px 0 14px' }}>
                 <span
                   style={{
                     background: '#facc15',
@@ -1630,123 +1724,123 @@ Source: India Bullion and Jewellers Association (IBJA)`;
               </div>
 
               {/* Line Items List */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 12, fontSize: 13 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 11, fontSize: 13 }}>
                 {/* 1. Metal Value */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <div style={{ width: 24, height: 24, borderRadius: '50%', background: '#f59e0b', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#000' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0, flex: 1 }}>
+                    <div style={{ width: 24, height: 24, borderRadius: '50%', background: '#f59e0b', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#000', flexShrink: 0 }}>
                       <Coins size={13} />
                     </div>
-                    <div>
-                      <div style={{ fontWeight: 800, color: '#ffffff', fontSize: 13 }}>
+                    <div style={{ minWidth: 0 }}>
+                      <div style={{ fontWeight: 800, color: '#ffffff', fontSize: 12.5, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                         {metal === 'XAU' ? 'GOLD VALUE' : 'SILVER VALUE'}
                       </div>
-                      <div style={{ fontSize: 11, color: '#94a3b8' }}>
+                      <div style={{ fontSize: 10.5, color: '#94a3b8', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                         {purchaseCalculations.weightInGrams.toFixed(2)}g × ₹{purchaseCalculations.effectiveGramRate.toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 2 })}
                       </div>
                     </div>
                   </div>
-                  <div style={{ fontWeight: 900, fontSize: 16, color: '#ffffff' }}>
+                  <div style={{ fontWeight: 900, fontSize: 15, color: '#ffffff', flexShrink: 0, textAlign: 'right' }}>
                     ₹{Math.round(purchaseCalculations.metalValue).toLocaleString('en-IN')}
                   </div>
                 </div>
 
                 {/* 2. Making Charges */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <div style={{ width: 24, height: 24, borderRadius: '50%', background: 'rgba(255, 255, 255, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#cbd5e1' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0, flex: 1 }}>
+                    <div style={{ width: 24, height: 24, borderRadius: '50%', background: 'rgba(255, 255, 255, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#cbd5e1', flexShrink: 0 }}>
                       <Percent size={13} />
                     </div>
-                    <div>
-                      <div style={{ fontWeight: 800, color: '#ffffff', fontSize: 13 }}>
+                    <div style={{ minWidth: 0 }}>
+                      <div style={{ fontWeight: 800, color: '#ffffff', fontSize: 12.5, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                         MAKING CHARGES ({makingChargePercent}%)
                       </div>
-                      <div style={{ fontSize: 11, color: '#94a3b8' }}>
+                      <div style={{ fontSize: 10.5, color: '#94a3b8', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                         of ₹{Math.round(purchaseCalculations.metalValue).toLocaleString('en-IN')}
                       </div>
                     </div>
                   </div>
-                  <div style={{ fontWeight: 900, fontSize: 16, color: '#ffffff' }}>
+                  <div style={{ fontWeight: 900, fontSize: 15, color: '#ffffff', flexShrink: 0, textAlign: 'right' }}>
                     ₹{Math.round(purchaseCalculations.makingChargesValue).toLocaleString('en-IN')}
                   </div>
                 </div>
 
                 {/* 3. Wastage if any */}
                 {purchaseCalculations.wastageValue > 0 && (
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                      <div style={{ width: 24, height: 24, borderRadius: '50%', background: 'rgba(255, 255, 255, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#cbd5e1' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0, flex: 1 }}>
+                      <div style={{ width: 24, height: 24, borderRadius: '50%', background: 'rgba(255, 255, 255, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#cbd5e1', flexShrink: 0 }}>
                         <Scale size={13} />
                       </div>
-                      <div>
-                        <div style={{ fontWeight: 800, color: '#ffffff', fontSize: 13 }}>
+                      <div style={{ minWidth: 0 }}>
+                        <div style={{ fontWeight: 800, color: '#ffffff', fontSize: 12.5, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                           WASTAGE / VA ({wastagePercent}%)
                         </div>
-                        <div style={{ fontSize: 11, color: '#94a3b8' }}>
+                        <div style={{ fontSize: 10.5, color: '#94a3b8', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                           of ₹{Math.round(purchaseCalculations.metalValue).toLocaleString('en-IN')}
                         </div>
                       </div>
                     </div>
-                    <div style={{ fontWeight: 900, fontSize: 16, color: '#ffffff' }}>
+                    <div style={{ fontWeight: 900, fontSize: 15, color: '#ffffff', flexShrink: 0, textAlign: 'right' }}>
                       ₹{Math.round(purchaseCalculations.wastageValue).toLocaleString('en-IN')}
                     </div>
                   </div>
                 )}
 
                 {/* 4. GST on Metal */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <div style={{ width: 24, height: 24, borderRadius: 5, background: 'rgba(234, 179, 8, 0.25)', color: '#facc15', fontSize: 10, fontWeight: 900, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0, flex: 1 }}>
+                    <div style={{ width: 24, height: 24, borderRadius: 5, background: 'rgba(234, 179, 8, 0.25)', color: '#facc15', fontSize: 10, fontWeight: 900, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                       {gstOnGoldPercent}%
                     </div>
-                    <div>
-                      <div style={{ fontWeight: 800, color: '#ffffff', fontSize: 13 }}>
+                    <div style={{ minWidth: 0 }}>
+                      <div style={{ fontWeight: 800, color: '#ffffff', fontSize: 12.5, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                         GST ON {metal === 'XAU' ? 'GOLD' : 'SILVER'} ({gstOnGoldPercent}%)
                       </div>
-                      <div style={{ fontSize: 11, color: '#94a3b8' }}>
+                      <div style={{ fontSize: 10.5, color: '#94a3b8', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                         of ₹{Math.round(purchaseCalculations.metalValue).toLocaleString('en-IN')}
                       </div>
                     </div>
                   </div>
-                  <div style={{ fontWeight: 900, fontSize: 16, color: '#facc15' }}>
+                  <div style={{ fontWeight: 900, fontSize: 15, color: '#facc15', flexShrink: 0, textAlign: 'right' }}>
                     ₹{Math.round(purchaseCalculations.gstOnMetal).toLocaleString('en-IN')}
                   </div>
                 </div>
 
                 {/* 5. GST on Making */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <div style={{ width: 24, height: 24, borderRadius: 5, background: 'rgba(234, 179, 8, 0.25)', color: '#facc15', fontSize: 10, fontWeight: 900, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0, flex: 1 }}>
+                    <div style={{ width: 24, height: 24, borderRadius: 5, background: 'rgba(234, 179, 8, 0.25)', color: '#facc15', fontSize: 10, fontWeight: 900, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                       {gstOnMakingPercent}%
                     </div>
-                    <div>
-                      <div style={{ fontWeight: 800, color: '#ffffff', fontSize: 13 }}>
+                    <div style={{ minWidth: 0 }}>
+                      <div style={{ fontWeight: 800, color: '#ffffff', fontSize: 12.5, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                         GST ON MAKING ({gstOnMakingPercent}%)
                       </div>
-                      <div style={{ fontSize: 11, color: '#94a3b8' }}>
+                      <div style={{ fontSize: 10.5, color: '#94a3b8', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                         of ₹{Math.round(purchaseCalculations.totalMakingAndWastage).toLocaleString('en-IN')}
                       </div>
                     </div>
                   </div>
-                  <div style={{ fontWeight: 900, fontSize: 16, color: '#facc15' }}>
+                  <div style={{ fontWeight: 900, fontSize: 15, color: '#facc15', flexShrink: 0, textAlign: 'right' }}>
                     ₹{Math.round(purchaseCalculations.gstOnMaking).toLocaleString('en-IN')}
                   </div>
                 </div>
 
                 {/* 6. BIS Hallmark Fee */}
                 {includeHallmarkFee && (
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                      <div style={{ width: 24, height: 24, borderRadius: '50%', background: 'rgba(59, 130, 246, 0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#60a5fa' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0, flex: 1 }}>
+                      <div style={{ width: 24, height: 24, borderRadius: '50%', background: 'rgba(59, 130, 246, 0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#60a5fa', flexShrink: 0 }}>
                         <Award size={13} />
                       </div>
-                      <div>
-                        <div style={{ fontWeight: 800, color: '#ffffff', fontSize: 13 }}>
+                      <div style={{ minWidth: 0 }}>
+                        <div style={{ fontWeight: 800, color: '#ffffff', fontSize: 12.5 }}>
                           BIS Hallmark Fee
                         </div>
                       </div>
                     </div>
-                    <div style={{ fontWeight: 900, fontSize: 16, color: '#ffffff' }}>
+                    <div style={{ fontWeight: 900, fontSize: 15, color: '#ffffff', flexShrink: 0, textAlign: 'right' }}>
                       ₹{purchaseCalculations.hallmarkFee.toFixed(0)}
                     </div>
                   </div>
@@ -1755,51 +1849,29 @@ Source: India Bullion and Jewellers Association (IBJA)`;
             </div>
 
             {/* Total Box at Bottom */}
-            <div style={{ marginTop: 18 }}>
-              <div
-                style={{
-                  border: '2px solid #eab308',
-                  borderRadius: 14,
-                  padding: '14px 16px',
-                  background: 'rgba(234, 179, 8, 0.06)',
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  gap: 10,
-                  flexWrap: 'wrap',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <div style={{ width: 36, height: 36, borderRadius: 10, background: 'rgba(56, 189, 248, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#38bdf8' }}>
-                    <ShoppingBag size={20} />
+            <div style={{ marginTop: 16 }}>
+              <div className="pm-total-payable-card">
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0, flex: 1 }}>
+                  <div style={{ width: 34, height: 34, borderRadius: 10, background: 'rgba(56, 189, 248, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#38bdf8', flexShrink: 0 }}>
+                    <ShoppingBag size={18} />
                   </div>
-                  <div>
-                    <div style={{ fontSize: 12, fontWeight: 900, color: '#ffffff', letterSpacing: '0.4px', textTransform: 'uppercase' }}>
+                  <div style={{ minWidth: 0, flex: 1 }}>
+                    <div style={{ fontSize: 11.5, fontWeight: 900, color: '#ffffff', letterSpacing: '0.4px', textTransform: 'uppercase' }}>
                       TOTAL PAYABLE AMOUNT
                     </div>
-                    <div style={{ fontSize: 10, color: '#94a3b8', marginTop: 2 }}>
+                    <div style={{ fontSize: 10, color: '#94a3b8', marginTop: 2, wordBreak: 'break-word', lineHeight: 1.3 }}>
                       ₹{Math.round(purchaseCalculations.metalValue).toLocaleString('en-IN')} + ₹{Math.round(purchaseCalculations.totalMakingAndWastage).toLocaleString('en-IN')} + ₹{Math.round(purchaseCalculations.totalGst).toLocaleString('en-IN')}
                       {purchaseCalculations.hallmarkFee > 0 ? ` + ₹${purchaseCalculations.hallmarkFee}` : ''}
                     </div>
                   </div>
                 </div>
 
-                <div
-                  style={{
-                    background: '#facc15',
-                    color: '#000000',
-                    padding: '8px 16px',
-                    borderRadius: 8,
-                    fontSize: 22,
-                    fontWeight: 900,
-                    letterSpacing: '-0.5px',
-                  }}
-                >
+                <div className="pm-total-payable-pill">
                   ₹{Math.round(purchaseCalculations.totalPayable).toLocaleString('en-IN')}
                 </div>
               </div>
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 10, fontSize: 11, color: '#94a3b8', padding: '0 4px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 10, fontSize: 11, color: '#94a3b8', padding: '0 4px', flexWrap: 'wrap', gap: 6 }}>
                 <span>Effective Cost: <strong style={{ color: '#38bdf8' }}>₹{purchaseCalculations.effectiveCostPerGram.toFixed(2)}/g</strong></span>
                 <span>Purity: <strong style={{ color: '#facc15' }}>{calcPurity.toUpperCase()}</strong></span>
               </div>
@@ -1851,15 +1923,7 @@ Benchmark: Official IBJA (Zezha Tools)`;
       {/* TAB 2: PURITY & KARAT RATES MATRIX */}
       {/* ═════════════════════════════════════════════════════════════════ */}
       {activeTab === 'purity_rates' && (
-        <div
-          style={{
-            background: '#ffffff',
-            borderRadius: 16,
-            border: '1.5px solid #e2e8f0',
-            padding: '24px',
-            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.02)',
-          }}
-        >
+        <div className="pm-card-white">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, flexWrap: 'wrap', gap: 8 }}>
             <div>
               <h3 style={{ margin: 0, fontSize: 16, fontWeight: 800, color: '#1e293b' }}>
@@ -1974,14 +2038,7 @@ Benchmark: Official IBJA (Zezha Tools)`;
       {/* ═════════════════════════════════════════════════════════════════ */}
       {activeTab === 'investment_roi' && (
         <div className="pm-calculator-layout">
-          <div
-            style={{
-              background: '#ffffff',
-              borderRadius: 16,
-              border: '1.5px solid #e2e8f0',
-              padding: '22px 24px',
-            }}
-          >
+          <div className="pm-card-white">
             <h3 style={{ margin: '0 0 16px', fontSize: 16, fontWeight: 800, color: '#1e293b' }}>
               Historical Purchase vs. Live Valuation
             </h3>
@@ -2039,11 +2096,9 @@ Benchmark: Official IBJA (Zezha Tools)`;
           </div>
 
           <div
+            className="pm-card-white"
             style={{
               background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)',
-              borderRadius: 16,
-              border: '1.5px solid #e2e8f0',
-              padding: '22px 24px',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
@@ -2099,14 +2154,7 @@ Benchmark: Official IBJA (Zezha Tools)`;
       {/* ═════════════════════════════════════════════════════════════════ */}
       {activeTab === 'gold_sip' && (
         <div className="pm-calculator-layout">
-          <div
-            style={{
-              background: '#ffffff',
-              borderRadius: 16,
-              border: '1.5px solid #e2e8f0',
-              padding: '22px 24px',
-            }}
-          >
+          <div className="pm-card-white">
             <h3 style={{ margin: '0 0 16px', fontSize: 16, fontWeight: 800, color: '#1e293b' }}>
               Digital Gold & Bullion SIP
             </h3>
@@ -2158,11 +2206,9 @@ Benchmark: Official IBJA (Zezha Tools)`;
           </div>
 
           <div
+            className="pm-card-white"
             style={{
               background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)',
-              borderRadius: 16,
-              border: '1.5px solid #e2e8f0',
-              padding: '22px 24px',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
@@ -2430,7 +2476,7 @@ Benchmark: Official IBJA (Zezha Tools)`;
 
           return (
             <div style={{ marginBottom: 20, background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 12, padding: '16px 14px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8, fontSize: 12 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8, fontSize: 12, flexWrap: 'wrap', gap: 6 }}>
                 <span style={{ fontWeight: 700, color: '#334155' }}>
                   {metal === 'XAU' ? 'Gold' : 'Silver'} Daily Rate Trend ({
                     historySelectedUnit === '22k_1g' ? '22K 1g' :
@@ -2523,7 +2569,7 @@ Benchmark: Official IBJA (Zezha Tools)`;
 
           return (
             <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10, flexWrap: 'wrap', gap: 6 }}>
                 <span style={{ fontSize: 13, fontWeight: 800, color: '#1e293b' }}>
                   Daily IBJA Benchmark Rate Ledger ({displayRows.length} Days)
                 </span>
