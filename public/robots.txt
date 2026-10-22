@@ -1,0 +1,23 @@
+# Robots.txt for Zezha Tools (https://zezhatools.com)
+User-agent: *
+Allow: /
+
+# Direct Tool URLs & Section Routes
+Allow: /investments/
+Allow: /loans-emi/
+Allow: /business-tax/
+Allow: /convertors/
+Allow: /utilities/
+Allow: /dev-toolkit/
+Allow: /raw-data/
+Allow: /get-img-video/
+Allow: /govt-scheme-finder
+Allow: /invitation-creator
+Allow: /event-page-creator
+Allow: /logo-creator
+Allow: /life-decision-simulator
+Allow: /products
+
+# Sitemap
+Sitemap: https://zezhatools.com/sitemap.xml
+Host: https://zezhatools.com

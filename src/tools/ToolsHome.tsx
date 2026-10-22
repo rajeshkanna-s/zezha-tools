@@ -3,6 +3,7 @@ import { Search, Sparkles, ArrowRight, Star, Zap, CreditCard, PiggyBank, Calenda
 import { MENU_SECTIONS } from './ToolsSidebar';
 import { useCustomTools } from '@/hooks/useCustomTools';
 import { useFavouriteTools } from '@/hooks/useFavouriteTools';
+import { getToolMetadata } from '@/services/toolMetadata';
 
 interface ToolsHomeProps {
   onSelectTool: (tool: string) => void;
@@ -52,11 +53,21 @@ export const ToolsHome: React.FC<ToolsHomeProps> = ({ onSelectTool, onSelectSect
     return list;
   }, [visibleSections]);
 
-  // Search results
+  // Search results matching label, id, title, description, and keywords
   const searchResults = useMemo(() => {
     if (!searchQuery.trim()) return [];
-    const q = searchQuery.toLowerCase();
-    return allVisibleTools.filter(t => t.label.toLowerCase().includes(q));
+    const q = searchQuery.toLowerCase().trim();
+    return allVisibleTools.filter(t => {
+      if (t.label.toLowerCase().includes(q)) return true;
+      if (t.id.toLowerCase().includes(q)) return true;
+      const meta = getToolMetadata(t.id);
+      if (meta) {
+        if (meta.title.toLowerCase().includes(q)) return true;
+        if (meta.description.toLowerCase().includes(q)) return true;
+        if (meta.keywords.some(k => k.toLowerCase().includes(q))) return true;
+      }
+      return false;
+    });
   }, [searchQuery, allVisibleTools]);
 
   const quickAccessTools = useMemo(() => [
@@ -139,7 +150,16 @@ export const ToolsHome: React.FC<ToolsHomeProps> = ({ onSelectTool, onSelectSect
                       </div>
                       <div>
                         <h3 className="font-bold text-slate-800 text-sm group-hover:text-primary transition-colors">{tool.label}</h3>
-                        <p className="text-[10px] text-slate-400 font-medium uppercase tracking-wider">{tool.sectionLabel}</p>
+                        <p className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider mb-1">{tool.sectionLabel}</p>
+                        {(() => {
+                          const meta = getToolMetadata(tool.id);
+                          if (!meta) return null;
+                          return (
+                            <p className="text-[11px] text-slate-500 line-clamp-2 leading-relaxed mt-0.5">
+                              {meta.description}
+                            </p>
+                          );
+                        })()}
                       </div>
                     </div>
                     <button

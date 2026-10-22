@@ -8,6 +8,7 @@ import { ToolsHome } from './ToolsHome';
 import { SectionDashboard } from './SectionDashboard';
 import { ToolsDomainLanding, TOOL_DOMAINS } from './ToolsDomainLanding';
 import { CONVERTORS_TOOLS, BUSINESS_TAX_TOOLS, LOANS_EMI_TOOLS, INVESTMENTS_TOOLS, UTILITIES_TOOLS, DEV_TOOLKIT_TOOLS, RAW_DATA_TOOLS } from './dashboardData';
+import { getToolMetadata } from '@/services/toolMetadata';
 
 const LifeDecisionSimulatorPage = React.lazy(() => import('./life-decision/LifeDecisionSimulatorPage').then(m => ({ default: m.LifeDecisionSimulatorPage })));
 
@@ -437,37 +438,114 @@ export const ToolsPortal: React.FC<ToolsPortalProps> = ({ onHome, onInvoice, onB
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
-  // ── Dynamic SEO Title, Meta Description & Canonical update ──
+  // ── Dynamic SEO Title, Meta Description, Keywords, Canonical & Schema.org JSON-LD ──
   useEffect(() => {
     const targetUrl = getTargetUrl(activeSection, activeTool);
-    if (activeTool) {
-      const toolMeta = MENU_SECTIONS.flatMap(s => s.items).find(i => i.id === activeTool);
-      const title = toolMeta ? `${toolMeta.label} — Zezha Tools` : `${activeTool} — Zezha Tools`;
-      document.title = title;
-      let descMeta = document.querySelector('meta[name="description"]');
-      if (!descMeta) {
-        descMeta = document.createElement('meta');
-        descMeta.setAttribute('name', 'description');
-        document.head.appendChild(descMeta);
+    const fullCanonicalUrl = `https://zezhatools.com${targetUrl === '/' ? '' : targetUrl}`;
+
+    const setMetaTag = (attr: 'name' | 'property', key: string, content: string) => {
+      let el = document.querySelector(`meta[${attr}="${key}"]`);
+      if (!el) {
+        el = document.createElement('meta');
+        el.setAttribute(attr, key);
+        document.head.appendChild(el);
       }
-      descMeta.setAttribute('content', `Use the free online ${toolMeta?.label || activeTool} on Zezha Tools. 100% browser-based, secure, and easy to use.`);
+      el.setAttribute('content', content);
+    };
+
+    if (activeTool) {
+      const toolMeta = getToolMetadata(activeTool);
+      const title = toolMeta ? `${toolMeta.title} — Zezha Tools` : `${activeTool} — Zezha Tools`;
+      document.title = title;
+
+      const desc = toolMeta
+        ? toolMeta.description
+        : `Use the free online ${activeTool} on Zezha Tools. 100% browser-based, secure, and client-side processing with zero server uploads.`;
+      setMetaTag('name', 'description', desc);
+
+      const keywords = toolMeta
+        ? toolMeta.keywords.join(', ')
+        : `${activeTool}, free online calculator, web tools, zezha tools`;
+      setMetaTag('name', 'keywords', keywords);
+
+      // Open Graph Tags
+      setMetaTag('property', 'og:title', title);
+      setMetaTag('property', 'og:description', desc);
+      setMetaTag('property', 'og:url', fullCanonicalUrl);
+      setMetaTag('property', 'og:type', 'website');
+      setMetaTag('property', 'og:site_name', 'Zezha Tools');
+      setMetaTag('property', 'og:image', 'https://my--files.s3.us-east-1.amazonaws.com/Logo/ZEZHA-only-LOGO-PNG.png');
+
+      // Twitter Cards
+      setMetaTag('name', 'twitter:card', 'summary_large_image');
+      setMetaTag('name', 'twitter:title', title);
+      setMetaTag('name', 'twitter:description', desc);
+      setMetaTag('name', 'twitter:image', 'https://my--files.s3.us-east-1.amazonaws.com/Logo/ZEZHA-only-LOGO-PNG.png');
+
+      // Schema.org WebApplication JSON-LD
+      let scriptTag = document.getElementById('tool-structured-data') as HTMLScriptElement | null;
+      if (!scriptTag) {
+        scriptTag = document.createElement('script');
+        scriptTag.id = 'tool-structured-data';
+        scriptTag.type = 'application/ld+json';
+        document.head.appendChild(scriptTag);
+      }
+      const schemaData = {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": toolMeta?.shortTitle || toolMeta?.title || activeTool,
+        "alternateName": toolMeta?.title,
+        "url": fullCanonicalUrl,
+        "description": desc,
+        "applicationCategory": toolMeta?.category || "UtilityApplication",
+        "operatingSystem": "All",
+        "browserRequirements": "Requires JavaScript. Requires HTML5.",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "INR"
+        },
+        "keywords": keywords,
+        "featureList": toolMeta?.features || []
+      };
+      scriptTag.textContent = JSON.stringify(schemaData);
+
     } else if (activeSection && activeSection !== 'home') {
       const sectionMeta = MENU_SECTIONS.find(s => s.id === activeSection);
-      const title = sectionMeta ? `${sectionMeta.label} Utilities — Zezha Tools` : `${activeSection} — Zezha Tools`;
+      const title = sectionMeta ? `${sectionMeta.label} Tools & Calculators — Zezha Tools` : `${activeSection} — Zezha Tools`;
       document.title = title;
-      let descMeta = document.querySelector('meta[name="description"]');
-      if (!descMeta) {
-        descMeta = document.createElement('meta');
-        descMeta.setAttribute('name', 'description');
-        document.head.appendChild(descMeta);
-      }
-      descMeta.setAttribute('content', `Explore free online ${sectionMeta?.label || activeSection} utilities on Zezha Tools. 100% secure, browser-based tools.`);
+
+      const desc = `Explore free online ${sectionMeta?.label || activeSection} utilities, calculators, and tools on Zezha Tools. 100% private, browser-based tools with zero data uploaded.`;
+      setMetaTag('name', 'description', desc);
+
+      const keywords = `${sectionMeta?.label || activeSection}, online calculators, web utilities, free tools, zezha tools`;
+      setMetaTag('name', 'keywords', keywords);
+
+      setMetaTag('property', 'og:title', title);
+      setMetaTag('property', 'og:description', desc);
+      setMetaTag('property', 'og:url', fullCanonicalUrl);
+      setMetaTag('property', 'og:type', 'website');
+      setMetaTag('property', 'og:site_name', 'Zezha Tools');
+
+      setMetaTag('name', 'twitter:title', title);
+      setMetaTag('name', 'twitter:description', desc);
+
+      // Cleanup tool-specific schema on category page
+      const scriptTag = document.getElementById('tool-structured-data');
+      if (scriptTag) scriptTag.remove();
+
     } else {
-      document.title = "Zezha Tools — Web Utilities & Calculators Hub";
-      const descMeta = document.querySelector('meta[name="description"]');
-      if (descMeta) {
-        descMeta.setAttribute('content', "Zezha Tools — 400+ free browser-based web utilities, calculators, PDF tools, and business solutions. No data uploaded to any server.");
-      }
+      document.title = "Zezha Tools — Free Web Utilities, Calculators & PDF Tools";
+      const desc = "100+ free browser-based web utilities, gold & silver rates (IBJA), loan EMI calculators, GST estimators, PDF converters, and developer tools. 100% private and client-side.";
+      setMetaTag('name', 'description', desc);
+      setMetaTag('name', 'keywords', "gold rate today, emi calculator, gst calculator, image to pdf, pdf compressor, merge pdf, income tax calculator, unit converter, age calculator, developer tools, json formatter, jwt decoder, zezha tools");
+
+      setMetaTag('property', 'og:title', "Zezha Tools — Free Web Utilities, Calculators & PDF Tools");
+      setMetaTag('property', 'og:description', desc);
+      setMetaTag('property', 'og:url', fullCanonicalUrl);
+
+      const scriptTag = document.getElementById('tool-structured-data');
+      if (scriptTag) scriptTag.remove();
     }
 
     // Canonical link update
@@ -477,7 +555,7 @@ export const ToolsPortal: React.FC<ToolsPortalProps> = ({ onHome, onInvoice, onB
       canonical.setAttribute('rel', 'canonical');
       document.head.appendChild(canonical);
     }
-    canonical.setAttribute('href', `https://zezhatools.com${targetUrl === '/' ? '' : targetUrl}`);
+    canonical.setAttribute('href', fullCanonicalUrl);
   }, [activeTool, activeSection]);
 
   // Scroll content area to top when switching tools or sections

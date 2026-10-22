@@ -27,6 +27,7 @@ import {
 import { useCustomTools } from '@/hooks/useCustomTools';
 import { useFavouriteTools } from '@/hooks/useFavouriteTools';
 import { Star } from 'lucide-react';
+import { getToolMetadata } from '@/services/toolMetadata';
 
 export interface MenuItem { id: string; label: string; icon: React.FC<{ size?: number; className?: string }>; }
 export interface MenuSection {
@@ -394,8 +395,18 @@ export const ToolsSidebar: React.FC<ToolsSidebarProps> = ({
 
     const searchResults = useMemo(() => {
         if (!searchQuery.trim()) return [];
-        const q = searchQuery.toLowerCase();
-        return allItems.filter(item => item.label.toLowerCase().includes(q));
+        const q = searchQuery.toLowerCase().trim();
+        return allItems.filter(item => {
+            if (item.label.toLowerCase().includes(q)) return true;
+            if (item.id.toLowerCase().includes(q)) return true;
+            const meta = getToolMetadata(item.id);
+            if (meta) {
+                if (meta.title.toLowerCase().includes(q)) return true;
+                if (meta.description.toLowerCase().includes(q)) return true;
+                if (meta.keywords.some(k => k.toLowerCase().includes(q))) return true;
+            }
+            return false;
+        });
     }, [searchQuery, allItems]);
 
     const handleSectionClick = (section: MenuSection) => {
@@ -480,14 +491,20 @@ export const ToolsSidebar: React.FC<ToolsSidebarProps> = ({
                         searchResults.map((item) => {
                             const Icon = item.icon;
                             const isActive = activeTool === item.id || activeSection === item.id;
+                            const meta = getToolMetadata(item.id);
                             return (
                                 <button
                                     key={item.id}
                                     onClick={() => { onSelectSection(item.sectionId); onSelectTool(item.id); setSearchQuery(''); onClose(); }}
-                                    className={`w-full flex items-center gap-1 px-3 py-1.5 text-xs transition-colors rounded-md ${isActive ? 'bg-primary/10 text-primary font-semibold' : 'text-slate-600 hover:bg-slate-50'}`}
+                                    className={`w-full flex items-center gap-2 px-3 py-1.5 text-xs transition-colors rounded-md text-left ${isActive ? 'bg-primary/10 text-primary font-semibold' : 'text-slate-600 hover:bg-slate-50'}`}
                                 >
-                                    <Icon size={13} className={isActive ? 'text-primary' : (SECTION_COLORS[item.sectionId]?.text || 'text-slate-400')} />
-                                    <span className="truncate">{item.label}</span>
+                                    <Icon size={14} className={`shrink-0 ${isActive ? 'text-primary' : (SECTION_COLORS[item.sectionId]?.text || 'text-slate-400')}`} />
+                                    <div className="flex flex-col min-w-0 flex-1">
+                                        <span className="truncate font-medium">{item.label}</span>
+                                        <span className="text-[10px] text-slate-400 truncate leading-tight">
+                                            {meta?.sectionLabel || item.sectionId}
+                                        </span>
+                                    </div>
                                 </button>
                             );
                         })
