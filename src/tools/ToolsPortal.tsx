@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, Suspense } from 'react';
-import { Menu, ArrowLeft, LayoutGrid, Image as ImageIcon, Video, ArrowUpRight } from 'lucide-react';
+import { Menu, ArrowLeft, LayoutGrid, Image as ImageIcon, Video, ArrowUpRight, Receipt, ExternalLink } from 'lucide-react';
 import { ToolsLayout } from './ToolsLayout';
 import { ToolsSidebar, MENU_SECTIONS } from './ToolsSidebar';
 import { useCustomTools } from '@/hooks/useCustomTools';
@@ -331,7 +331,7 @@ function parseCurrentRoute(): { sectionId: string; toolId: string | null } {
   const pathname = window.location.pathname.replace(/^\/+|\/+$/g, '');
   const segments = pathname ? pathname.split('/') : [];
 
-  const standaloneSections = ['home', 'govt-scheme-finder', 'invitation-creator', 'event-page-creator', 'logo-creator', 'products', 'life-decision-simulator'];
+  const standaloneSections = ['home', 'govt-scheme-finder', 'invitation-creator', 'event-page-creator', 'logo-creator', 'create-invoice', 'products', 'life-decision-simulator'];
 
   // 1. Two segments: e.g. /investments/precious-metals-calculator or /tools/precious-metals-calculator
   if (segments.length >= 2) {
@@ -386,7 +386,7 @@ function parseCurrentRoute(): { sectionId: string; toolId: string | null } {
 
 // Compute the clean target URL pathname
 function getTargetUrl(sectionId: string, toolId: string | null): string {
-  const standaloneSections = ['home', 'govt-scheme-finder', 'invitation-creator', 'event-page-creator', 'logo-creator', 'products', 'life-decision-simulator'];
+  const standaloneSections = ['home', 'govt-scheme-finder', 'invitation-creator', 'event-page-creator', 'logo-creator', 'create-invoice', 'products', 'life-decision-simulator'];
   if (toolId) {
     if (standaloneSections.includes(toolId)) {
       return `/${toolId}`;
@@ -597,7 +597,7 @@ export const ToolsPortal: React.FC<ToolsPortalProps> = ({ onHome, onInvoice, onB
   }, [pendingToolSelect, onPendingToolConsumed]);
 
   const handleSelectTool = (toolId: string) => {
-    const standaloneSections = ['home', 'products', 'govt-scheme-finder', 'invitation-creator', 'event-page-creator', 'logo-creator'];
+    const standaloneSections = ['home', 'products', 'govt-scheme-finder', 'invitation-creator', 'event-page-creator', 'logo-creator', 'create-invoice'];
     if (standaloneSections.includes(toolId)) {
       handleSelectSection(toolId);
       return;
@@ -684,6 +684,29 @@ export const ToolsPortal: React.FC<ToolsPortalProps> = ({ onHome, onInvoice, onB
               <Suspense fallback={<div className="flex items-center justify-center h-full text-slate-400 text-sm">Loading Logo Creator...</div>}>
                 <LogoCreatorPage />
               </Suspense>
+            </div>
+          </div>
+        );
+      case 'create-invoice':
+        return (
+          <div className="flex flex-col items-center justify-center h-full p-8 text-center bg-slate-50/50">
+            <div className="max-w-md w-full bg-white rounded-2xl border border-slate-200/80 p-8 shadow-sm flex flex-col items-center">
+              <div className="w-16 h-16 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-4 border border-emerald-100">
+                <Receipt size={32} />
+              </div>
+              <h2 className="text-xl font-bold text-slate-900 mb-2">Create Invoice</h2>
+              <p className="text-sm text-slate-500 mb-6 leading-relaxed">
+                Generate professional GST & business invoices, customized receipts, and download instant PDFs with our dedicated invoice generator tool.
+              </p>
+              <a
+                href="https://inv-c.netlify.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm transition-all shadow-md shadow-emerald-600/20 active:scale-95"
+              >
+                <span>Open Create Invoice</span>
+                <ExternalLink size={16} />
+              </a>
             </div>
           </div>
         );

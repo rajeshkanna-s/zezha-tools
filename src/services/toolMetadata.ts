@@ -1183,6 +1183,20 @@ export const TOOL_METADATA_MAP: Record<string, ToolMetadata> = {
     ],
     category: 'DesignApplication'
   },
+  'create-invoice': {
+    id: 'create-invoice',
+    title: 'Free Online Invoice Generator & GST Invoice Creator',
+    shortTitle: 'Create Invoice',
+    sectionId: 'create-invoice',
+    sectionLabel: 'Business & Tools',
+    url: '/create-invoice',
+    description: 'Create professional business and GST invoices, customize line items, calculate taxes, and download ready-to-send PDF invoices instantly.',
+    keywords: [
+      'create invoice', 'invoice generator', 'free invoice maker', 'gst invoice generator online',
+      'business invoice maker', 'download invoice pdf'
+    ],
+    category: 'FinanceApplication'
+  },
   'life-decision-simulator': {
     id: 'life-decision-simulator',
     title: 'Life Decision & Career Simulator — Model Long-Term Trajectories',

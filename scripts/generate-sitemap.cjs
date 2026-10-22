@@ -38,7 +38,8 @@ const HIGH_PRIORITY_TOOLS = new Set([
   'dev-base64',
   'govt-scheme-finder',
   'invitation-creator',
-  'logo-creator'
+  'logo-creator',
+  'create-invoice'
 ]);
 
 // Standalone pages
@@ -47,6 +48,7 @@ const STANDALONE_SECTIONS = new Set([
   'invitation-creator',
   'event-page-creator',
   'logo-creator',
+  'create-invoice',
   'life-decision-simulator',
   'products'
 ]);

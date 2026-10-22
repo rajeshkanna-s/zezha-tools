@@ -29,11 +29,12 @@ import { useFavouriteTools } from '@/hooks/useFavouriteTools';
 import { Star } from 'lucide-react';
 import { getToolMetadata } from '@/services/toolMetadata';
 
-export interface MenuItem { id: string; label: string; icon: React.FC<{ size?: number; className?: string }>; }
+export interface MenuItem { id: string; label: string; icon: React.FC<{ size?: number; className?: string }>; externalUrl?: string; }
 export interface MenuSection {
     id: string; label: string;
     icon: React.FC<{ size?: number; className?: string }>;
     items: MenuItem[];
+    externalUrl?: string;
 }
 
 export const MENU_SECTIONS: MenuSection[] = [
@@ -163,6 +164,9 @@ export const MENU_SECTIONS: MenuSection[] = [
         id: 'logo-creator', label: 'Logo Creator', icon: Palette, items: [],
     },
     {
+        id: 'create-invoice', label: 'Create Invoice', icon: Receipt, items: [], externalUrl: 'https://inv-c.netlify.app/',
+    },
+    {
         id: 'raw-data', label: 'Raw Data', icon: Database,
         items: [
             { id: 'indian-states-cities', label: 'Indian States', icon: Database },
@@ -224,6 +228,7 @@ const SECTION_COLORS: Record<string, { bg: string; text: string }> = {
     'invitation-creator':     { bg: 'bg-pink-50',    text: 'text-pink-500' },
     'event-page-creator':     { bg: 'bg-purple-50',  text: 'text-purple-500' },
     'logo-creator':           { bg: 'bg-fuchsia-50', text: 'text-fuchsia-500' },
+    'create-invoice':         { bg: 'bg-emerald-50', text: 'text-emerald-600' },
     'life-decision-simulator':{ bg: 'bg-rose-50',    text: 'text-rose-500' },
     'financial-profiler':     { bg: 'bg-teal-50',    text: 'text-teal-500' },
     'compliance-engine':      { bg: 'bg-red-50',     text: 'text-red-500' },
@@ -389,7 +394,7 @@ export const ToolsSidebar: React.FC<ToolsSidebarProps> = ({
         return filteredSections.flatMap(section =>
             section.items.length > 0
                 ? section.items.map(item => ({ ...item, sectionId: section.id }))
-                : [{ id: section.id, label: section.label, icon: section.icon, sectionId: section.id }]
+                : [{ id: section.id, label: section.label, icon: section.icon, sectionId: section.id, externalUrl: section.externalUrl }]
         );
     }, [filteredSections]);
 
@@ -410,6 +415,11 @@ export const ToolsSidebar: React.FC<ToolsSidebarProps> = ({
     }, [searchQuery, allItems]);
 
     const handleSectionClick = (section: MenuSection) => {
+        if (section.externalUrl) {
+            window.open(section.externalUrl, '_blank', 'noopener,noreferrer');
+            onClose();
+            return;
+        }
         if (collapsed) {
             setCollapsed(false);
             setExpandedSections(new Set([section.id]));
@@ -495,12 +505,26 @@ export const ToolsSidebar: React.FC<ToolsSidebarProps> = ({
                             return (
                                 <button
                                     key={item.id}
-                                    onClick={() => { onSelectSection(item.sectionId); onSelectTool(item.id); setSearchQuery(''); onClose(); }}
+                                    onClick={() => {
+                                        if (item.externalUrl) {
+                                            window.open(item.externalUrl, '_blank', 'noopener,noreferrer');
+                                            setSearchQuery('');
+                                            onClose();
+                                            return;
+                                        }
+                                        onSelectSection(item.sectionId);
+                                        onSelectTool(item.id);
+                                        setSearchQuery('');
+                                        onClose();
+                                    }}
                                     className={`w-full flex items-center gap-2 px-3 py-1.5 text-xs transition-colors rounded-md text-left ${isActive ? 'bg-primary/10 text-primary font-semibold' : 'text-slate-600 hover:bg-slate-50'}`}
                                 >
                                     <Icon size={14} className={`shrink-0 ${isActive ? 'text-primary' : (SECTION_COLORS[item.sectionId]?.text || 'text-slate-400')}`} />
                                     <div className="flex flex-col min-w-0 flex-1">
-                                        <span className="truncate font-medium">{item.label}</span>
+                                        <span className="truncate font-medium flex items-center gap-1.5">
+                                            {item.label}
+                                            {item.externalUrl && <ExternalLink size={10} className="text-slate-400 shrink-0" />}
+                                        </span>
                                         <span className="text-[10px] text-slate-400 truncate leading-tight">
                                             {meta?.sectionLabel || item.sectionId}
                                         </span>
@@ -571,6 +595,12 @@ export const ToolsSidebar: React.FC<ToolsSidebarProps> = ({
                                         <ChevronDown
                                             size={14}
                                             className={`${isActiveSection ? 'text-white/70' : 'text-slate-400'} transition-transform duration-200 ${isExpanded ? 'rotate-0' : '-rotate-90'}`}
+                                        />
+                                    )}
+                                    {!collapsed && section.externalUrl && (
+                                        <ExternalLink
+                                            size={13}
+                                            className={`${isActiveSection ? 'text-white/80' : 'text-slate-400'} shrink-0`}
                                         />
                                     )}
                                 </button>

@@ -30,6 +30,7 @@ const STANDALONE = new Set([
   'invitation-creator',
   'event-page-creator',
   'logo-creator',
+  'create-invoice',
   'life-decision-simulator',
   'products'
 ]);
