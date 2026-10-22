@@ -3,13 +3,14 @@ import type { DashboardTool } from './dashboardData';
 import { useCustomTools } from '@/hooks/useCustomTools';
 
 interface SectionDashboardProps {
+    sectionId?: string;
     title: string;
     subtitle?: string;
     tools: DashboardTool[];
     onSelectTool: (tool: string) => void;
 }
 
-export const SectionDashboard: React.FC<SectionDashboardProps> = ({ title, subtitle, tools, onSelectTool }) => {
+export const SectionDashboard: React.FC<SectionDashboardProps> = ({ sectionId, title, subtitle, tools, onSelectTool }) => {
     const { hiddenIds } = useCustomTools();
     const visibleTools = tools.filter(t => !hiddenIds.includes(t.id));
 
@@ -23,17 +24,21 @@ export const SectionDashboard: React.FC<SectionDashboardProps> = ({ title, subti
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                 {visibleTools.map(tool => (
-                    <button
+                    <a
                         key={tool.id}
-                        onClick={() => onSelectTool(tool.id)}
-                        className="bg-white rounded-xl border border-slate-200 p-4 text-left hover:shadow-lg hover:border-primary/20 hover:-translate-y-1 transition-all group"
+                        href={sectionId ? `/${sectionId}/${tool.id}` : `/${tool.id}`}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            onSelectTool(tool.id);
+                        }}
+                        className="bg-white rounded-xl border border-slate-200 p-4 text-left hover:shadow-lg hover:border-primary/20 hover:-translate-y-1 transition-all group block no-underline"
                     >
                         <div className={`w-9 h-9 ${tool.color} text-white rounded-lg flex items-center justify-center mb-3 group-hover:scale-110 transition-transform`}>
                             <tool.icon size={18} />
                         </div>
                         <h3 className="font-bold text-slate-900 text-sm mb-0.5">{tool.title}</h3>
                         <p className="text-[11px] text-slate-500 leading-snug">{tool.desc}</p>
-                    </button>
+                    </a>
                 ))}
             </div>
         </div>

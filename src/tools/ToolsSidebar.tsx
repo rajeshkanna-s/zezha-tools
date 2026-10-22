@@ -583,11 +583,15 @@ export const ToolsSidebar: React.FC<ToolsSidebarProps> = ({
                                             const Icon = item.icon;
                                             const isLast = idx === section.items.length - 1;
                                             return (
-                                                <button
+                                                <a
+                                                    href={`/${section.id}/${item.id}`}
                                                     key={item.id}
                                                     data-sidebar-id={item.id}
-                                                    onClick={() => handleToolClick(section.id, item.id)}
-                                                    className={`w-full flex items-center gap-2 pl-4 pr-3 py-[7px] text-[11.5px] text-left transition-all duration-100 relative rounded-r-md ${isActive
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        handleToolClick(section.id, item.id);
+                                                    }}
+                                                    className={`w-full flex items-center gap-2 pl-4 pr-3 py-[7px] text-[11.5px] text-left transition-all duration-100 relative rounded-r-md no-underline ${isActive
                                                         ? 'text-white font-bold bg-gradient-to-r from-primary/90 to-indigo-500/80 shadow-sm shadow-primary/20'
                                                         : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50/80 font-medium'
                                                         } ${isLast ? 'mb-1' : ''}`}
@@ -596,7 +600,7 @@ export const ToolsSidebar: React.FC<ToolsSidebarProps> = ({
                                                     <span className={`absolute left-0 top-1/2 w-3 h-[2px] ${isActive ? 'bg-primary' : 'bg-slate-200/80'}`} />
                                                     <Icon size={12} className={`shrink-0 ${isActive ? 'text-white' : (SECTION_COLORS[section.id]?.text || 'text-slate-400')}`} />
                                                     <span className="truncate flex-1">{item.label}</span>
-                                                </button>
+                                                </a>
                                             );
                                         })}
                                     </div>

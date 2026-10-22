@@ -616,21 +616,21 @@ export const ToolsPortal: React.FC<ToolsPortalProps> = ({ onHome, onInvoice, onB
       case 'home':
         return <ToolsHome onSelectTool={handleSelectTool} onSelectSection={handleSelectSection} />;
       case 'convertors':
-        return <SectionDashboard title="Convertors & PDF Tools" subtitle="Fast, secure, browser-based document utilities" tools={CONVERTORS_TOOLS} onSelectTool={handleSelectTool} />;
+        return <SectionDashboard sectionId="convertors" title="Convertors & PDF Tools" subtitle="Fast, secure, browser-based document utilities" tools={CONVERTORS_TOOLS} onSelectTool={handleSelectTool} />;
       case 'business-tax':
-        return <SectionDashboard title="Business & Tax Calculators" subtitle="Accurate Indian tax estimation & business valuation" tools={BUSINESS_TAX_TOOLS} onSelectTool={handleSelectTool} />;
+        return <SectionDashboard sectionId="business-tax" title="Business & Tax Calculators" subtitle="Accurate Indian tax estimation & business valuation" tools={BUSINESS_TAX_TOOLS} onSelectTool={handleSelectTool} />;
       case 'loans-emi':
-        return <SectionDashboard title="Loans & EMI Calculators" subtitle="Smart debt planning, EMI & loan comparisons" tools={LOANS_EMI_TOOLS} onSelectTool={handleSelectTool} />;
+        return <SectionDashboard sectionId="loans-emi" title="Loans & EMI Calculators" subtitle="Smart debt planning, EMI & loan comparisons" tools={LOANS_EMI_TOOLS} onSelectTool={handleSelectTool} />;
       case 'investments':
-        return <SectionDashboard title="Investments & Wealth" subtitle="Live IBJA gold & silver rates, SIP, FD & RD calculators" tools={INVESTMENTS_TOOLS} onSelectTool={handleSelectTool} />;
+        return <SectionDashboard sectionId="investments" title="Investments & Wealth" subtitle="Live IBJA gold & silver rates, SIP, FD & RD calculators" tools={INVESTMENTS_TOOLS} onSelectTool={handleSelectTool} />;
       case 'utilities':
-        return <SectionDashboard title="Daily Utilities" subtitle="Universal unit converters, currency & productivity tools" tools={UTILITIES_TOOLS} onSelectTool={handleSelectTool} />;
+        return <SectionDashboard sectionId="utilities" title="Daily Utilities" subtitle="Universal unit converters, currency & productivity tools" tools={UTILITIES_TOOLS} onSelectTool={handleSelectTool} />;
       case 'dev-toolkit':
-        return <SectionDashboard title="Developer Toolkit" subtitle="Formatters, encoders, diff checkers & developer utilities" tools={DEV_TOOLKIT_TOOLS} onSelectTool={handleSelectTool} />;
+        return <SectionDashboard sectionId="dev-toolkit" title="Developer Toolkit" subtitle="Formatters, encoders, diff checkers & developer utilities" tools={DEV_TOOLKIT_TOOLS} onSelectTool={handleSelectTool} />;
       case 'raw-data':
         return <Suspense fallback={<div className="flex items-center justify-center h-full text-slate-400 text-sm">Loading Raw Data...</div>}><RawDataDashboard onSelectTool={handleSelectTool} /></Suspense>;
       case 'get-img-video':
-        return <SectionDashboard title="Image & Video Downloader" subtitle="Search and download high-resolution assets" tools={GET_IMG_VIDEO_TOOLS} onSelectTool={handleSelectTool} />;
+        return <SectionDashboard sectionId="get-img-video" title="Image & Video Downloader" subtitle="Search and download high-resolution assets" tools={GET_IMG_VIDEO_TOOLS} onSelectTool={handleSelectTool} />;
       case 'products':
         return <ProductsPage />;
       case 'govt-scheme-finder':
