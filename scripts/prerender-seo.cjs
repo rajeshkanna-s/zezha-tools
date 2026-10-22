@@ -168,6 +168,7 @@ for (const route of routes) {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     "name": h1,
+    "alternateName": `${h1} — ZEZHA Tools`,
     "url": fullUrl,
     "description": description,
     "applicationCategory": category,
@@ -177,6 +178,28 @@ for (const route of routes) {
       "@type": "Offer",
       "price": "0",
       "priceCurrency": "INR"
+    },
+    "provider": {
+      "@type": "Organization",
+      "@id": "https://zezha.in/#organization",
+      "name": "ZEZHA Technology Private Limited",
+      "alternateName": ["ZEZHA", "ZEZHA Tools"],
+      "url": "https://zezha.in",
+      "logo": "https://my--files.s3.us-east-1.amazonaws.com/Logo/ZEZHA-only-LOGO-PNG.png",
+      "sameAs": [
+        "https://zezhatools.com",
+        "https://zezha.in",
+        "https://zezhatalent.in",
+        "https://www.linkedin.com/company/zezha-technology",
+        "https://www.instagram.com/zezhatools",
+        "https://twitter.com/zezha_tech",
+        "https://github.com/zezha"
+      ]
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "ZEZHA Technology Private Limited",
+      "url": "https://zezha.in"
     },
     "keywords": keywords,
     "featureList": features
@@ -191,7 +214,7 @@ for (const route of routes) {
   const preRenderContent = `
     <div id="seo-static-container" style="max-width:960px;margin:32px auto;padding:24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#1e293b;line-height:1.6;">
       <nav style="font-size:12px;color:#64748b;margin-bottom:12px;">
-        <a href="/" style="color:#6366f1;text-decoration:none;">Zezha Tools</a> &gt; 
+        <a href="/" style="color:#6366f1;text-decoration:none;">ZEZHA Tools</a> &gt; 
         <a href="/${route.sectionId}" style="color:#6366f1;text-decoration:none;">${route.sectionLabel}</a> &gt; 
         <span style="color:#0f172a;font-weight:600;">${h1}</span>
       </nav>
@@ -203,7 +226,12 @@ for (const route of routes) {
           ${features.map(f => `<li style="margin-bottom:4px;">${escapeHtml(f)}</li>`).join('')}
         </ul>
       </div>
-      <p style="font-size:12px;color:#64748b;">Loading interactive client application... 100% private, client-side execution on Zezha Tools.</p>
+      <p style="font-size:12px;color:#64748b;">Loading interactive client application... 100% private, client-side execution on ZEZHA Tools.</p>
+      <footer style="margin-top:24px;padding-top:16px;border-top:1px solid #e2e8f0;font-size:12px;color:#64748b;">
+        A product of <a href="https://zezha.in" style="color:#6366f1;font-weight:600;text-decoration:none;">ZEZHA Technology Private Limited</a> • 
+        <a href="https://zezhatools.com" style="color:#6366f1;text-decoration:none;">ZEZHA Tools</a> • 
+        <a href="https://zezhatalent.in" style="color:#6366f1;text-decoration:none;">ZEZHA Talent</a>
+      </footer>
     </div>
   `;
 

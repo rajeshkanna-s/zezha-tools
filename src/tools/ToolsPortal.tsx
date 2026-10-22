@@ -505,6 +505,28 @@ export const ToolsPortal: React.FC<ToolsPortalProps> = ({ onHome, onInvoice, onB
           "price": "0",
           "priceCurrency": "INR"
         },
+        "provider": {
+          "@type": "Organization",
+          "@id": "https://zezha.in/#organization",
+          "name": "ZEZHA Technology Private Limited",
+          "alternateName": ["ZEZHA", "ZEZHA Tools"],
+          "url": "https://zezha.in",
+          "logo": "https://my--files.s3.us-east-1.amazonaws.com/Logo/ZEZHA-only-LOGO-PNG.png",
+          "sameAs": [
+            "https://zezhatools.com",
+            "https://zezha.in",
+            "https://zezhatalent.in",
+            "https://www.linkedin.com/company/zezha-technology",
+            "https://www.instagram.com/zezhatools",
+            "https://twitter.com/zezha_tech",
+            "https://github.com/zezha"
+          ]
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "ZEZHA Technology Private Limited",
+          "url": "https://zezha.in"
+        },
         "keywords": keywords,
         "featureList": toolMeta?.features || []
       };

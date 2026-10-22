@@ -22,7 +22,7 @@ import {
     Braces, CheckCircle2, ArrowLeftRight, FileCode2, MousePointer, Layers3,
     Copy, Binary, Link, Database, Table2, Type, Timer,
     Hash, ShieldAlert, Fingerprint, Shuffle, Globe, Palette, Terminal, Compass, Calculator, Apple,
-    MapPin, Map, Building, Car, Regex, Sparkles
+    MapPin, Map, Building, Car, Regex, Sparkles, ExternalLink
 } from 'lucide-react';
 import { useCustomTools } from '@/hooks/useCustomTools';
 import { useFavouriteTools } from '@/hooks/useFavouriteTools';
@@ -610,6 +610,25 @@ export const ToolsSidebar: React.FC<ToolsSidebarProps> = ({
                     })}
                 </nav>
             )}
+
+            {/* ── Brand Attribution Footer ── */}
+            {!collapsed && (
+                <div className="p-2.5 border-t border-slate-100 bg-slate-50/60 mt-auto shrink-0">
+                    <a
+                        href="https://zezha.in"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-between px-2.5 py-1.5 rounded-lg bg-white border border-slate-200/80 hover:border-primary/40 text-slate-700 hover:text-primary transition-all text-[11px] font-semibold group shadow-2xs"
+                    >
+                        <span className="flex items-center gap-1.5 truncate">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+                            <span className="truncate">by ZEZHA Technology</span>
+                        </span>
+                        <ExternalLink size={11} className="text-slate-400 group-hover:text-primary shrink-0 ml-1" />
+                    </a>
+                </div>
+            )}
+
             {/* ── Drag resize handle ── */}
             <div
                 onMouseDown={onDragStart}

@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Search, Sparkles, ArrowRight, Star, Zap, CreditCard, PiggyBank, Calendar, Percent, FileSpreadsheet, BarChart3, Receipt, Image } from 'lucide-react';
+import { Search, Sparkles, ArrowRight, Star, Zap, CreditCard, PiggyBank, Calendar, Percent, FileSpreadsheet, BarChart3, Receipt, Image, Globe, ExternalLink, ShieldCheck } from 'lucide-react';
 import { MENU_SECTIONS } from './ToolsSidebar';
 import { useCustomTools } from '@/hooks/useCustomTools';
 import { useFavouriteTools } from '@/hooks/useFavouriteTools';
@@ -302,6 +302,66 @@ export const ToolsHome: React.FC<ToolsHomeProps> = ({ onSelectTool, onSelectSect
           })}
         </div>
       )}
+
+      {/* ── Official ZEZHA Corporate Brand Footer ── */}
+      <footer className="mt-16 pt-10 pb-8 border-t border-slate-200/80 space-y-6">
+        <div className="bg-gradient-to-br from-slate-900 via-slate-900 to-indigo-950 text-white rounded-3xl p-6 md:p-8 shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="space-y-2 text-center md:text-left">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full text-xs font-semibold text-indigo-200 tracking-wide">
+              <ShieldCheck size={14} className="text-emerald-400" />
+              <span>Official ZEZHA Technology Ecosystem</span>
+            </div>
+            <h3 className="text-xl md:text-2xl font-black font-display tracking-tight text-white">
+              ZEZHA Technology Private Limited
+            </h3>
+            <p className="text-xs md:text-sm text-slate-300 max-w-xl">
+              Building purposeful digital products, SaaS suites, and client-side browser tools. Explore our growing family of platforms.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-3 shrink-0">
+            <a
+              href="https://zezha.in"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-white text-slate-900 text-xs font-bold hover:bg-slate-100 transition-colors shadow-sm"
+            >
+              <Globe size={14} className="text-primary" />
+              <span>ZEZHA.IN</span>
+              <ExternalLink size={12} className="text-slate-400" />
+            </a>
+            <a
+              href="https://zezhatalent.in"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition-colors border border-white/15"
+            >
+              <span>ZEZHA Talent</span>
+              <ExternalLink size={12} className="text-slate-400" />
+            </a>
+            <a
+              href="https://www.linkedin.com/company/zezha-technology"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-blue-600/30 hover:bg-blue-600/50 text-blue-100 text-xs font-bold transition-colors border border-blue-500/30"
+            >
+              <span>LinkedIn</span>
+              <ExternalLink size={12} className="text-blue-300" />
+            </a>
+          </div>
+        </div>
+
+        <div className="flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-2 px-2">
+          <p>© {new Date().getFullYear()} ZEZHA Technology Private Limited. All rights reserved.</p>
+          <div className="flex items-center gap-4 text-xs font-medium text-slate-500">
+            <span>Client-Side Privacy First</span>
+            <span>•</span>
+            <span>Zero Data Storage</span>
+            <span>•</span>
+            <span className="text-primary font-semibold">ZEZHA Tools</span>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
