@@ -101,6 +101,16 @@ export const PreciousMetalsCalculator: React.FC = () => {
   });
   const [copied, setCopied] = useState<boolean>(false);
 
+  // Real-time live clock and today's date (ticks every second)
+  const [currentDateTime, setCurrentDateTime] = useState<Date>(() => new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentDateTime(new Date());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
   // Active Tool Tab State
   const [activeTab, setActiveTab] = useState<'purchase' | 'purity_rates' | 'investment_roi' | 'gold_sip'>('purchase');
 
@@ -548,8 +558,26 @@ export const PreciousMetalsCalculator: React.FC = () => {
     };
   }, [sipMonthlyAmount, sipYears, sipExpectedGrowth, metal, liveRates]);
 
-  // Format Date for Display (Mandatory)
+  // Current Today's Date and Live Time for Display (Mandatory real-time today)
   const effectiveDate = useMemo(() => {
+    return currentDateTime.toLocaleDateString('en-IN', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    });
+  }, [currentDateTime]);
+
+  const effectiveTime = useMemo(() => {
+    return currentDateTime.toLocaleTimeString('en-IN', {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true,
+    });
+  }, [currentDateTime]);
+
+  // IBJA Benchmark Market Session Date (date of latest published market rate)
+  const benchmarkDate = useMemo(() => {
     const rawDate = metal === 'XAU' ? liveRates.goldDate : liveRates.silverDate;
     if (rawDate) {
       try {
@@ -560,12 +588,8 @@ export const PreciousMetalsCalculator: React.FC = () => {
       } catch (_) {}
       return rawDate;
     }
-    return lastFetchedDate || new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
-  }, [metal, liveRates.goldDate, liveRates.silverDate, lastFetchedDate]);
-
-  const effectiveTime = useMemo(() => {
-    return lastFetchedTime || new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
-  }, [lastFetchedTime]);
+    return '';
+  }, [metal, liveRates.goldDate, liveRates.silverDate]);
 
   // Copy rate summary
   const handleCopySummary = () => {
@@ -577,7 +601,7 @@ export const PreciousMetalsCalculator: React.FC = () => {
 22K Hallmark 916 (1 Gram): ₹${liveRates.rate22k.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
 22K Hallmark 916 (8 Grams Pavan): ₹${liveRates.rate22k_8g.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
 18K Gold (1 Gram): ₹${liveRates.rate18k.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
-Date: ${liveRates.goldDate || 'Today'}
+Date: ${effectiveDate} (${effectiveTime})${benchmarkDate ? ` [IBJA Market Session: ${benchmarkDate}]` : ''}
 Source: India Bullion and Jewellers Association (IBJA)`;
     } else {
       summary = `Official IBJA Silver Rates (India / Tamil Nadu Benchmark)
@@ -585,7 +609,7 @@ Silver 1 Gram: ₹${liveRates.silver1g.toLocaleString('en-IN', { minimumFraction
 Silver 8 Grams: ₹${liveRates.silver8g.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
 Silver 10 Grams Bar: ₹${liveRates.silver10g.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
 Silver 1 Kilogram (1000g): ₹${liveRates.silverKg.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
-Date: ${liveRates.silverDate || 'Today'}
+Date: ${effectiveDate} (${effectiveTime})${benchmarkDate ? ` [IBJA Market Session: ${benchmarkDate}]` : ''}
 Source: India Bullion and Jewellers Association (IBJA)`;
     }
 
@@ -968,7 +992,7 @@ Source: India Bullion and Jewellers Association (IBJA)`;
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: '#64748b' }}>
           <Award size={14} color="#d97706" />
-          <span>Rates benchmarked by IBJA for Indian retail jewellery</span>
+          <span>Rates benchmarked by IBJA for Indian retail jewellery{benchmarkDate ? ` (Market Session: ${benchmarkDate})` : ''}</span>
         </div>
       </div>
 
