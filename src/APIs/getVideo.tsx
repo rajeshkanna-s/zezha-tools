@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Search, Download, Loader2, Sparkles, AlertCircle,
-  ExternalLink, Play, X, ChevronDown, Clock, Info, Film
+  ExternalLink, Play, X, ChevronDown, Clock, Info, Film,
+  Volume2, VolumeX, RefreshCw
 } from "lucide-react";
 
 const PRESETS = [
@@ -19,6 +20,11 @@ const VideoSearchDownloader: React.FC = () => {
   const [error, setError] = useState("");
   const [activeDropdownId, setActiveDropdownId] = useState<number | null>(null);
   const [previewVideo, setPreviewVideo] = useState<any | null>(null);
+  const [selectedFile, setSelectedFile] = useState<any | null>(null);
+  const [isMuted, setIsMuted] = useState(true);
+  const [isBuffering, setIsBuffering] = useState(false);
+  const [videoError, setVideoError] = useState<string | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   // Close dropdowns on outside click
   useEffect(() => {
@@ -67,11 +73,27 @@ const VideoSearchDownloader: React.FC = () => {
     handleSearch(preset);
   };
 
-  const getPreviewFile = (video: any) => {
-    // Find the first mp4 link or just returned first video file link
-    if (!video || !video.video_files) return "";
-    const mp4File = video.video_files.find((f: any) => f.file_type === "video/mp4" || f.link.includes(".mp4"));
-    return mp4File ? mp4File.link : video.video_files[0]?.link || "";
+  const getBestPreviewFile = (video: any) => {
+    if (!video || !video.video_files || video.video_files.length === 0) return null;
+    const mp4Files = video.video_files.filter((f: any) => f.file_type === "video/mp4" || f.link?.includes(".mp4"));
+    const pool = mp4Files.length > 0 ? mp4Files : video.video_files;
+    // Prefer HD 720p or SD 540p for quick and smooth buffering, followed by 1080p
+    const preferred =
+      pool.find((f: any) => f.height === 720 || f.width === 720) ||
+      pool.find((f: any) => f.quality === "hd") ||
+      pool.find((f: any) => f.height === 540 || f.width === 540) ||
+      pool.find((f: any) => f.height === 1080 || f.width === 1080) ||
+      pool[0];
+    return preferred;
+  };
+
+  const handleOpenPreview = (video: any) => {
+    const best = getBestPreviewFile(video);
+    setSelectedFile(best);
+    setIsMuted(true);
+    setIsBuffering(true);
+    setVideoError(null);
+    setPreviewVideo(video);
   };
 
   return (
@@ -220,7 +242,7 @@ const VideoSearchDownloader: React.FC = () => {
               >
                 {/* Video Thumbnail with Hover Overlay */}
                 <div
-                  onClick={() => setPreviewVideo(video)}
+                  onClick={() => handleOpenPreview(video)}
                   className="aspect-video w-full overflow-hidden bg-slate-900 relative cursor-pointer group/thumb"
                 >
                   <img
@@ -351,10 +373,10 @@ const VideoSearchDownloader: React.FC = () => {
 
       {/* Video Preview Modal overlay */}
       {previewVideo && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-md animate-in fade-in duration-200">
           <div
             onClick={(e) => e.stopPropagation()}
-            className="bg-white rounded-3xl overflow-hidden shadow-2xl border border-slate-100 w-full max-w-3xl flex flex-col relative max-h-[90vh] animate-in zoom-in-95 duration-200"
+            className="bg-white rounded-3xl overflow-hidden shadow-2xl border border-slate-100 w-full max-w-3xl flex flex-col relative max-h-[92vh] animate-in zoom-in-95 duration-200"
           >
             {/* Header / Dismiss */}
             <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center shrink-0">
@@ -373,17 +395,121 @@ const VideoSearchDownloader: React.FC = () => {
             </div>
 
             {/* Video Player Area */}
-            <div className="bg-slate-950 aspect-video w-full flex items-center justify-center relative shrink-0">
+            <div className="bg-slate-950 aspect-video w-full max-h-[58vh] flex items-center justify-center relative shrink-0 overflow-hidden group/player">
+              {/* Blurred background poster for portrait/vertical reels */}
+              <div
+                className="absolute inset-0 opacity-20 bg-cover bg-center filter blur-xl scale-110 pointer-events-none"
+                style={{ backgroundImage: `url(${previewVideo.image})` }}
+              />
+
+              {/* Video Element */}
               <video
-                src={getPreviewFile(previewVideo)}
+                ref={videoRef}
+                key={selectedFile?.link || previewVideo.id}
+                src={selectedFile?.link}
+                poster={previewVideo.image}
                 controls
                 autoPlay
-                loop
-                className="w-full h-full object-contain"
+                muted={isMuted}
+                playsInline
+                preload="auto"
+                onLoadStart={() => setIsBuffering(true)}
+                onWaiting={() => setIsBuffering(true)}
+                onCanPlay={() => setIsBuffering(false)}
+                onPlaying={() => setIsBuffering(false)}
+                onError={() => {
+                  setIsBuffering(false);
+                  setVideoError("Unable to stream this video resolution in the browser. You can switch to another resolution below or open the direct stream.");
+                }}
+                className="w-full h-full object-contain relative z-10 max-h-[58vh]"
               />
+
+              {/* Sound Toggle (Crucial for browser autoplay compliance) */}
+              <button
+                type="button"
+                onClick={() => {
+                  const nextMuted = !isMuted;
+                  setIsMuted(nextMuted);
+                  if (videoRef.current) {
+                    videoRef.current.muted = nextMuted;
+                  }
+                }}
+                className="absolute top-3 right-3 z-20 px-3 py-1.5 rounded-full bg-black/70 hover:bg-black/90 backdrop-blur-md text-white text-xs font-semibold flex items-center gap-1.5 border border-white/20 shadow-lg transition-transform active:scale-95"
+                title={isMuted ? "Click to unmute" : "Click to mute"}
+              >
+                {isMuted ? (
+                  <>
+                    <VolumeX className="w-3.5 h-3.5 text-amber-400" />
+                    <span>Tap to Unmute</span>
+                  </>
+                ) : (
+                  <>
+                    <Volume2 className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>Audio Active</span>
+                  </>
+                )}
+              </button>
+
+              {/* Quality Badge */}
+              {selectedFile && (
+                <div className="absolute top-3 left-3 z-20 px-2.5 py-1 rounded-lg bg-black/60 backdrop-blur-md text-white text-[10px] font-bold tracking-wider uppercase border border-white/10 pointer-events-none flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  {selectedFile.quality || "HD"} • {selectedFile.width}x{selectedFile.height}
+                </div>
+              )}
+
+              {/* Buffering Indicator */}
+              {isBuffering && !videoError && (
+                <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/40 backdrop-blur-[2px] pointer-events-none">
+                  <Loader2 className="w-8 h-8 text-white animate-spin drop-shadow" />
+                  <span className="text-xs font-medium text-white/90 mt-2 bg-black/60 px-3 py-1 rounded-full">
+                    Loading video stream...
+                  </span>
+                </div>
+              )}
+
+              {/* Error Recovery */}
+              {videoError && (
+                <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-slate-950/95 p-6 text-center text-white space-y-3">
+                  <AlertCircle className="w-10 h-10 text-amber-400" />
+                  <div className="space-y-1">
+                    <h4 className="text-sm font-bold">Playback Stream Notice</h4>
+                    <p className="text-xs text-slate-300 max-w-md leading-relaxed">
+                      {videoError}
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
+                    <a
+                      href={selectedFile?.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold inline-flex items-center gap-1.5 transition-colors shadow-lg shadow-indigo-500/20"
+                    >
+                      <ExternalLink className="w-3.5 h-3.5" />
+                      Open Stream in New Tab
+                    </a>
+                    {previewVideo.video_files.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const currentIndex = previewVideo.video_files.findIndex((f: any) => f.id === selectedFile?.id);
+                          const nextFile = previewVideo.video_files[(currentIndex + 1) % previewVideo.video_files.length];
+                          setSelectedFile(nextFile);
+                          setVideoError(null);
+                          setIsBuffering(true);
+                        }}
+                        className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-bold transition-colors inline-flex items-center gap-1.5"
+                      >
+                        <RefreshCw className="w-3.5 h-3.5" />
+                        Try Alternate Quality
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
 
-            {/* Info / Quick Download in modal */}
+            {/* Info & Quality Selector */}
             <div className="p-6 overflow-y-auto space-y-4">
               <div className="flex justify-between items-start gap-4">
                 <div className="space-y-1">
@@ -406,25 +532,65 @@ const VideoSearchDownloader: React.FC = () => {
                 </a>
               </div>
 
+              {/* Quality Switcher & Downloader */}
               <div className="space-y-2 pt-3 border-t border-slate-100">
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
-                  Download Resolutions
-                </label>
+                <div className="flex items-center justify-between">
+                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                    Available Qualities (Click to Stream or Download)
+                  </label>
+                  <span className="text-[10px] text-slate-400">
+                    Active: <strong className="text-indigo-600 uppercase">{selectedFile?.quality || "Default"}</strong> ({selectedFile?.width}x{selectedFile?.height})
+                  </span>
+                </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                  {previewVideo.video_files.map((file: any) => (
-                    <a
-                      key={file.id}
-                      href={file.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-3 bg-slate-50 hover:bg-slate-100 hover:text-indigo-600 border border-slate-200 rounded-xl text-center transition-colors flex flex-col gap-1 decoration-transparent"
-                    >
-                      <span className="text-xs font-bold capitalize">{file.quality}</span>
-                      <span className="text-[10px] font-semibold text-slate-400">
-                        {file.width}x{file.height}
-                      </span>
-                    </a>
-                  ))}
+                  {previewVideo.video_files.map((file: any) => {
+                    const isSelected = selectedFile?.id === file.id;
+                    return (
+                      <div
+                        key={file.id}
+                        className={`p-3 rounded-xl border transition-all flex flex-col justify-between gap-2 ${
+                          isSelected
+                            ? "bg-indigo-50/70 border-indigo-400 shadow-sm"
+                            : "bg-slate-50/80 hover:bg-slate-100/80 border-slate-200"
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className={`text-xs font-bold capitalize ${isSelected ? "text-indigo-700" : "text-slate-700"}`}>
+                            {file.quality || "Standard"}
+                          </span>
+                          <span className="text-[10px] font-semibold text-slate-400">
+                            {file.width}x{file.height}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1.5 pt-1">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSelectedFile(file);
+                              setVideoError(null);
+                              setIsBuffering(true);
+                            }}
+                            className={`flex-1 py-1 px-2 rounded-lg text-[11px] font-bold transition-all text-center ${
+                              isSelected
+                                ? "bg-indigo-600 text-white shadow-sm"
+                                : "bg-white border border-slate-200 text-slate-700 hover:border-slate-300"
+                            }`}
+                          >
+                            {isSelected ? "Playing" : "Preview"}
+                          </button>
+                          <a
+                            href={file.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-1.5 rounded-lg bg-white border border-slate-200 text-slate-500 hover:text-indigo-600 hover:border-indigo-300 transition-colors"
+                            title="Download this file"
+                          >
+                            <Download className="w-3 h-3" />
+                          </a>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>
