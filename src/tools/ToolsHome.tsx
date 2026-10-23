@@ -89,24 +89,24 @@ export const ToolsHome: React.FC<ToolsHomeProps> = ({ onSelectTool, onSelectSect
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-8 animate-fade-in">
+    <div className="max-w-7xl mx-auto px-3 sm:px-6 py-4 sm:py-8 space-y-6 sm:space-y-8 animate-fade-in">
       {/* Premium Hero Banner */}
-      <div className="bg-gradient-to-r from-primary via-indigo-600 to-violet-600 rounded-3xl p-6 md:p-10 shadow-xl shadow-indigo-100/50 text-white relative overflow-hidden">
+      <div className="bg-gradient-to-r from-primary via-indigo-600 to-violet-600 rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-10 shadow-xl shadow-indigo-100/50 text-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:24px_24px]" />
-        <div className="relative z-10 space-y-4 max-w-3xl">
+        <div className="relative z-10 space-y-3 sm:space-y-4 max-w-3xl">
 
-          <h1 className="text-3xl md:text-5xl font-black font-display tracking-tight leading-none">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-black font-display tracking-tight leading-tight">
             Zezha Tools
           </h1>
           {/* Search Box in Hero */}
-          <div className="relative max-w-md pt-2">
-            <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+          <div className="relative max-w-md pt-1 sm:pt-2">
+            <Search size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
               type="text"
               placeholder="Search across all tools and utilities..."
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              className="w-full pl-11 pr-4 py-3 bg-white text-slate-900 border border-transparent rounded-2xl text-sm shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-white transition-all placeholder:text-slate-400 font-medium"
+              className="w-full pl-10 pr-4 py-2.5 sm:py-3 bg-white text-slate-900 border border-transparent rounded-xl sm:rounded-2xl text-sm shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-white transition-all placeholder:text-slate-400 font-medium"
             />
           </div>
         </div>
@@ -288,11 +288,17 @@ export const ToolsHome: React.FC<ToolsHomeProps> = ({ onSelectTool, onSelectSect
                         </h3>
                       </div>
                       <button
-                        onClick={() => handleNavigate(section.id, section.id)}
+                        onClick={() => {
+                          if ((section as any).externalUrl) {
+                            window.open((section as any).externalUrl, '_blank', 'noopener,noreferrer');
+                          } else {
+                            handleNavigate(section.id, section.id);
+                          }
+                        }}
                         className="mt-4 flex items-center justify-between w-full text-xs font-semibold text-primary hover:text-primary-dark pt-2 border-t border-slate-50"
                       >
-                        <span>Open Page</span>
-                        <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
+                        <span>{(section as any).externalUrl ? 'Launch App' : 'Open Page'}</span>
+                        {(section as any).externalUrl ? <ExternalLink size={12} /> : <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />}
                       </button>
                     </div>
                   </div>

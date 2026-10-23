@@ -642,32 +642,110 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   RESPONSIVE LAYOUT OVERRIDES (COLLAPSE INLINE GRIDS)
+   RESPONSIVE LAYOUT OVERRIDES (COLLAPSE INLINE GRIDS & MOBILE OPTIMIZATIONS)
    ═══════════════════════════════════════════════════════════════ */
 
 /* Enable table scrolling inside all tools */
-.calc-breakdown-table-wrap {
+.calc-breakdown-table-wrap,
+.calc-pnl-table-wrap {
   overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  scrollbar-width: thin;
 }
 
 @media (max-width: 640px) {
-  /* Override inline 2-column or 3-column input grids to collapse into single column */
-  .tool-container-wrap div[style*="grid-template-columns: 1fr 1fr"],
-  .tool-container-wrap div[style*="grid-template-columns:1fr 1fr"],
-  .tool-container-wrap div[style*="grid-template-columns: 1fr 1fr 1fr"],
-  .tool-container-wrap div[style*="grid-template-columns:1fr 1fr 1fr"],
-  .tool-container-wrap div[style*="grid-template-columns: 1fr 130px"],
-  .tool-container-wrap div[style*="grid-template-columns:1fr 130px"] {
+  .calc-wrapper {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 0 4px 24px !important;
+    box-sizing: border-box !important;
+  }
+
+  .calc-card {
+    padding: 14px 12px !important;
+    border-radius: 12px !important;
+  }
+
+  .calc-input-row,
+  .calc-input-row-2 {
     grid-template-columns: 1fr !important;
     gap: 8px !important;
   }
 
+  .calc-header {
+    margin-bottom: 10px !important;
+    gap: 10px !important;
+  }
+
+  .calc-header-title {
+    font-size: 16px !important;
+  }
+
+  .calc-header-desc {
+    font-size: 11px !important;
+  }
+
+  .calc-input,
+  .calc-select {
+    padding: 9px 10px !important;
+    font-size: 14px !important;
+    border-radius: 8px !important;
+  }
+
+  .calc-btn {
+    padding: 11px 16px !important;
+    font-size: 14px !important;
+    min-height: 44px !important;
+  }
+
+  .calc-result-item {
+    padding: 8px 10px !important;
+    font-size: 12px !important;
+  }
+
+  .calc-result-item span:last-child {
+    font-size: 13px !important;
+  }
+
+  /* Override inline 2-column or 3-column input grids to collapse into single column */
+  .tool-container-wrap div[style*="grid-template-columns: 1fr 1fr"],
+  .tool-container-wrap div[style*="grid-template-columns:1fr 1fr"],
+  .tool-container-wrap div[style*="gridTemplateColumns: '1fr 1fr'"],
+  .tool-container-wrap div[style*="grid-template-columns: 1fr 1fr 1fr"],
+  .tool-container-wrap div[style*="grid-template-columns:1fr 1fr 1fr"],
+  .tool-container-wrap div[style*="gridTemplateColumns: '1fr 1fr 1fr'"],
+  .tool-container-wrap div[style*="grid-template-columns: 1fr 130px"],
+  .tool-container-wrap div[style*="grid-template-columns:1fr 130px"],
+  .tool-container-wrap div[style*="gridTemplateColumns: '1fr 130px'"] {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
   /* Handle result cards with donut charts stacking nicely */
   .tool-container-wrap div[style*="grid-template-columns: 1fr 130px"] > div:last-child,
-  .tool-container-wrap div[style*="grid-template-columns:1fr 130px"] > div:last-child {
-    margin-top: 16px !important;
+  .tool-container-wrap div[style*="grid-template-columns:1fr 130px"] > div:last-child,
+  .tool-container-wrap div[style*="gridTemplateColumns: '1fr 130px'"] > div:last-child {
+    margin-top: 14px !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .calc-title {
+    font-size: 14px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .calc-card {
+    padding: 12px 10px !important;
+  }
+
+  /* Single column for result cards on small mobile */
+  .tool-container-wrap div[style*="grid-template-columns: 1fr 1fr 1fr"],
+  .tool-container-wrap div[style*="grid-template-columns:1fr 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+    gap: 6px !important;
   }
 }

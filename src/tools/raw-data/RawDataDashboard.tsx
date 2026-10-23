@@ -98,18 +98,18 @@ export const RawDataDashboard: React.FC<RawDataDashboardProps> = ({ onSelectTool
   const utCount = indianStatesCitiesData.filter(s => s.type === 'Union Territory').length;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-8 animate-fade-in bg-slate-50 min-h-screen">
+    <div className="max-w-7xl mx-auto px-3 sm:px-6 py-4 sm:py-8 space-y-6 sm:space-y-8 animate-fade-in bg-slate-50 min-h-screen">
       {/* Title */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-5">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4 border-b border-slate-200 pb-4 sm:pb-5">
         <div>
-          <div className="flex items-center gap-2 text-indigo-600 font-bold text-sm tracking-wider uppercase">
+          <div className="flex items-center gap-2 text-indigo-600 font-bold text-xs sm:text-sm tracking-wider uppercase">
             <Sparkles size={16} />
             <span>Interactive Database</span>
           </div>
-          <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight mt-1">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">
             Raw Data & Reference Lists Dashboard
           </h1>
-          <p className="text-slate-500 text-sm mt-1 max-w-2xl">
+          <p className="text-slate-500 text-xs sm:text-sm mt-1 max-w-2xl leading-relaxed">
             Explore verified datasets covering Indian geography, institutions, public finance, compliance limits, tax slabs, and interest rates.
           </p>
         </div>
@@ -124,22 +124,22 @@ export const RawDataDashboard: React.FC<RawDataDashboardProps> = ({ onSelectTool
             placeholder="Search datasets..."
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-2xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary shadow-sm"
+            className="w-full pl-10 pr-4 py-2 sm:py-2.5 bg-white border border-slate-200 rounded-xl sm:rounded-2xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary shadow-sm"
           />
         </div>
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2.5 sm:gap-4">
+        <div className="bg-white p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
           <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">States & UTs</span>
-          <span className="text-2xl font-black text-slate-900 mt-1">{indianStatesCitiesData.length}</span>
+          <span className="text-xl sm:text-2xl font-black text-slate-900 mt-1">{indianStatesCitiesData.length}</span>
           <span className="text-[9px] text-slate-500 mt-1 font-semibold">{stateCount} States | {utCount} UTs</span>
         </div>
 
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+        <div className="bg-white p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
           <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Major Cities</span>
-          <span className="text-2xl font-black text-slate-900 mt-1">{indianCitiesData.length}</span>
+          <span className="text-xl sm:text-2xl font-black text-slate-900 mt-1">{indianCitiesData.length}</span>
           <span className="text-[9px] text-slate-500 mt-1 font-semibold">Tiers 1, 2, and 3</span>
         </div>
 
@@ -271,12 +271,12 @@ export const RawDataDashboard: React.FC<RawDataDashboardProps> = ({ onSelectTool
       {/* Grid of Data Lists */}
       <div className="space-y-4">
         <h2 className="text-lg font-extrabold text-slate-900 tracking-tight">Available Datasets ({filteredTools.length})</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           {filteredTools.map(tool => (
             <button
               key={tool.id}
               onClick={() => onSelectTool(tool.id)}
-              className="bg-white rounded-2xl border border-slate-200 p-5 text-left hover:shadow-lg hover:border-indigo-500/20 hover:-translate-y-1 transition-all group flex flex-col justify-between min-h-[140px]"
+              className="bg-white rounded-xl sm:rounded-2xl border border-slate-200 p-4 sm:p-5 text-left hover:shadow-lg hover:border-indigo-500/20 hover:-translate-y-1 transition-all group flex flex-col justify-between min-h-[130px] sm:min-h-[140px]"
             >
               <div>
                 <div className={`w-10 h-10 ${tool.color} text-white rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform`}>

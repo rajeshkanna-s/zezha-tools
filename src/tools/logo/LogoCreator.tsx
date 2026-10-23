@@ -716,7 +716,7 @@ function RightPanel({
   if (!selectedLayer) {
     // Canvas settings
     return (
-      <div className="w-64 border-l border-slate-200 overflow-y-auto p-4 space-y-4">
+      <div className="hidden lg:block w-64 border-l border-slate-200 overflow-y-auto p-4 space-y-4">
         <div>
           <p className="text-xs font-semibold text-slate-700 mb-2">Canvas Size</p>
           <select
@@ -789,7 +789,7 @@ function RightPanel({
   const upd = (updates: Partial<AnyLayer>) => updateLayer(l.id, updates);
 
   return (
-    <div className="w-64 border-l border-slate-200 overflow-y-auto p-3 space-y-3">
+    <div className="hidden lg:block w-64 border-l border-slate-200 overflow-y-auto p-3 space-y-3">
       {/* Layer actions */}
       <div>
         <p className="text-xs font-semibold text-slate-700 mb-2 capitalize">{l.type} Properties</p>
@@ -1242,7 +1242,7 @@ export function LogoCreator() {
   return (
     <div className="flex flex-col h-full bg-white select-none">
       {/* Top Bar */}
-      <div className="h-12 border-b border-slate-200 bg-white flex items-center px-4 gap-2 flex-shrink-0">
+      <div className="h-12 border-b border-slate-200 bg-white flex items-center px-3 sm:px-4 gap-2 flex-shrink-0 overflow-x-auto scrollbar-none">
         <span className="font-bold text-primary text-sm">Logo Creator</span>
         <div className="h-4 w-px bg-slate-200 mx-1" />
 

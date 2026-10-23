@@ -408,7 +408,7 @@ export const ToolsPortal: React.FC<ToolsPortalProps> = ({ onHome, onInvoice, onB
   const { hiddenIds } = useCustomTools();
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' ? window.innerWidth < 768 : false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -732,8 +732,8 @@ export const ToolsPortal: React.FC<ToolsPortalProps> = ({ onHome, onInvoice, onB
       <div className="flex flex-col h-full">
         {/* Mobile Header Bar */}
         {isMobile && (
-          <header className="flex items-center justify-between px-4 py-3 bg-white border-b border-slate-200 shrink-0 sticky top-0 z-20 mobile-header-shadow">
-            <div className="flex items-center gap-2.5">
+          <header className="flex items-center justify-between px-3.5 py-2.5 bg-white/95 backdrop-blur-md border-b border-slate-200 shrink-0 sticky top-0 z-30 mobile-header-shadow">
+            <div className="flex items-center gap-2 min-w-0">
               {(activeTool || activeSection !== 'home') && (
                 <button
                   onClick={() => {
@@ -743,22 +743,22 @@ export const ToolsPortal: React.FC<ToolsPortalProps> = ({ onHome, onInvoice, onB
                       setActiveSection('home');
                     }
                   }}
-                  className="p-1.5 hover:bg-slate-100 rounded-lg text-slate-500 transition-colors"
+                  className="w-8 h-8 flex items-center justify-center hover:bg-slate-100 rounded-lg text-slate-600 transition-colors shrink-0"
                   aria-label="Go back"
                 >
                   <ArrowLeft size={18} />
                 </button>
               )}
-              <span className="font-extrabold text-sm bg-gradient-to-r from-primary via-indigo-600 to-indigo-800 bg-clip-text text-transparent">
+              <span className="font-extrabold text-sm bg-gradient-to-r from-primary via-indigo-600 to-indigo-800 bg-clip-text text-transparent truncate max-w-[200px] sm:max-w-[320px]">
                 {activeTool ? (MENU_SECTIONS.flatMap(s => s.items).find(i => i.id === activeTool)?.label || 'Tool') : 'Zezha Tools'}
               </span>
             </div>
             <button
               onClick={() => setSidebarOpen(true)}
-              className="p-1.5 hover:bg-slate-100 rounded-lg text-slate-500 transition-colors"
+              className="w-9 h-9 flex items-center justify-center hover:bg-slate-100 rounded-lg text-slate-600 transition-colors shrink-0"
               aria-label="Open menu"
             >
-              <Menu size={18} />
+              <Menu size={20} />
             </button>
           </header>
         )}

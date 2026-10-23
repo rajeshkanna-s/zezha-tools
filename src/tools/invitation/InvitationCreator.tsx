@@ -103,6 +103,7 @@ export const InvitationCreator: React.FC = () => {
     const [toastVisible, setToastVisible] = useState(false);
     const [downloading, setDownloading] = useState<string | null>(null);
     const [copiedLink, setCopiedLink] = useState(false);
+    const [mobileView, setMobileView] = useState<'edit' | 'preview'>('edit');
 
     const showToast = useCallback((msg: string) => {
         setToastMsg(msg);
@@ -310,10 +311,26 @@ export const InvitationCreator: React.FC = () => {
                 </div>
             </div>
 
+            {/* Mobile View Switcher */}
+            <div className="md:hidden flex border-b border-slate-200 bg-white/90 shrink-0">
+                <button
+                    onClick={() => setMobileView('edit')}
+                    className={`flex-1 py-2 text-xs font-bold text-center border-b-2 transition-all ${mobileView === 'edit' ? 'border-indigo-600 text-indigo-600 bg-indigo-50/50' : 'border-transparent text-slate-500'}`}
+                >
+                    ✏️ Edit Card
+                </button>
+                <button
+                    onClick={() => setMobileView('preview')}
+                    className={`flex-1 py-2 text-xs font-bold text-center border-b-2 transition-all ${mobileView === 'preview' ? 'border-indigo-600 text-indigo-600 bg-indigo-50/50' : 'border-transparent text-slate-500'}`}
+                >
+                    👁️ Preview & Export
+                </button>
+            </div>
+
             {/* ═══ Main content ═══ */}
             <div className="flex-1 flex overflow-hidden">
                 {/* ─── Left Panel ─── */}
-                <div className="w-[360px] shrink-0 bg-white/60 backdrop-blur-sm border-r border-slate-200/50 flex flex-col overflow-hidden">
+                <div className={`w-full md:w-[360px] shrink-0 bg-white/60 backdrop-blur-sm border-r border-slate-200/50 flex-col overflow-hidden ${mobileView === 'edit' ? 'flex' : 'hidden md:flex'}`}>
                     {/* Tabs */}
                     <div className="flex border-b border-slate-200/60 shrink-0 bg-white/50">
                         {[
@@ -723,7 +740,7 @@ export const InvitationCreator: React.FC = () => {
                 </div>
 
                 {/* ─── Right Panel — Preview ─── */}
-                <div className="flex-1 flex flex-col overflow-hidden bg-gradient-to-br from-slate-100/50 to-slate-200/30 min-h-[500px] min-w-[500px]">
+                <div className={`flex-1 flex flex-col overflow-hidden bg-gradient-to-br from-slate-100/50 to-slate-200/30 min-h-[360px] md:min-h-[500px] min-w-0 md:min-w-[500px] ${mobileView === 'preview' ? 'flex' : 'hidden md:flex'}`}>
                     {/* Preview toolbar */}
                     <div className="flex items-center justify-between px-4 py-2 bg-white/40 backdrop-blur-sm border-b border-slate-200/40 shrink-0">
                         <div className="flex items-center gap-2">
