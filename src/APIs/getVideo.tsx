@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import {
   Search, Download, Loader2, Sparkles, AlertCircle,
   ExternalLink, Play, X, ChevronDown, Clock, Info, Film,
@@ -34,6 +35,25 @@ const VideoSearchDownloader: React.FC = () => {
     window.addEventListener("click", handleOutsideClick);
     return () => window.removeEventListener("click", handleOutsideClick);
   }, []);
+
+  // Lock body scroll and close on Escape key when preview modal is open
+  useEffect(() => {
+    if (!previewVideo) return;
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setPreviewVideo(null);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [previewVideo]);
 
   const handleSearch = async (searchQuery = query) => {
     const q = searchQuery.trim();
@@ -371,15 +391,18 @@ const VideoSearchDownloader: React.FC = () => {
         </div>
       </div>
 
-      {/* Video Preview Modal overlay */}
-      {previewVideo && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-md animate-in fade-in duration-200">
+      {/* Video Preview Modal overlay rendered via Portal directly on document.body */}
+      {previewVideo && typeof document !== "undefined" && createPortal(
+        <div
+          onClick={() => setPreviewVideo(null)}
+          className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-md animate-in fade-in duration-200"
+        >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="bg-white rounded-3xl overflow-hidden shadow-2xl border border-slate-100 w-full max-w-3xl flex flex-col relative max-h-[92vh] animate-in zoom-in-95 duration-200"
+            className="bg-white rounded-3xl overflow-hidden shadow-2xl border border-slate-100 w-full max-w-3xl flex flex-col relative max-h-[90vh] my-auto animate-in zoom-in-95 duration-200"
           >
             {/* Header / Dismiss */}
-            <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center shrink-0">
+            <div className="px-4 py-3 sm:px-6 sm:py-4 border-b border-slate-100 flex justify-between items-center shrink-0">
               <div className="flex items-center gap-2">
                 <Film className="w-5 h-5 text-indigo-600" />
                 <h3 className="font-bold text-slate-800 text-sm md:text-base">
@@ -389,13 +412,14 @@ const VideoSearchDownloader: React.FC = () => {
               <button
                 onClick={() => setPreviewVideo(null)}
                 className="p-1.5 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-50 transition-colors"
+                aria-label="Close Preview"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {/* Video Player Area */}
-            <div className="bg-slate-950 aspect-video w-full max-h-[58vh] flex items-center justify-center relative shrink-0 overflow-hidden group/player">
+            <div className="bg-slate-950 aspect-video w-full max-h-[50vh] sm:max-h-[58vh] flex items-center justify-center relative shrink-0 overflow-hidden group/player">
               {/* Blurred background poster for portrait/vertical reels */}
               <div
                 className="absolute inset-0 opacity-20 bg-cover bg-center filter blur-xl scale-110 pointer-events-none"
@@ -421,7 +445,7 @@ const VideoSearchDownloader: React.FC = () => {
                   setIsBuffering(false);
                   setVideoError("Unable to stream this video resolution in the browser. You can switch to another resolution below or open the direct stream.");
                 }}
-                className="w-full h-full object-contain relative z-10 max-h-[58vh]"
+                className="w-full h-full object-contain relative z-10 max-h-[50vh] sm:max-h-[58vh]"
               />
 
               {/* Sound Toggle (Crucial for browser autoplay compliance) */}
@@ -510,7 +534,7 @@ const VideoSearchDownloader: React.FC = () => {
             </div>
 
             {/* Info & Quality Selector */}
-            <div className="p-6 overflow-y-auto space-y-4">
+            <div className="p-4 sm:p-6 overflow-y-auto space-y-4">
               <div className="flex justify-between items-start gap-4">
                 <div className="space-y-1">
                   <h4 className="font-bold text-slate-800 text-xs md:text-sm">
@@ -542,13 +566,13 @@ const VideoSearchDownloader: React.FC = () => {
                     Active: <strong className="text-indigo-600 uppercase">{selectedFile?.quality || "Default"}</strong> ({selectedFile?.width}x{selectedFile?.height})
                   </span>
                 </div>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3">
                   {previewVideo.video_files.map((file: any) => {
                     const isSelected = selectedFile?.id === file.id;
                     return (
                       <div
                         key={file.id}
-                        className={`p-3 rounded-xl border transition-all flex flex-col justify-between gap-2 ${
+                        className={`p-2.5 sm:p-3 rounded-xl border transition-all flex flex-col justify-between gap-2 ${
                           isSelected
                             ? "bg-indigo-50/70 border-indigo-400 shadow-sm"
                             : "bg-slate-50/80 hover:bg-slate-100/80 border-slate-200"
@@ -595,7 +619,8 @@ const VideoSearchDownloader: React.FC = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
