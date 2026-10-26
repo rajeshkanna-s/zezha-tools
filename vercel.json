@@ -1,4 +1,64 @@
 {
+  "redirects": [
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "tool",
+          "value": "(?<tool>[^&]+)"
+        },
+        {
+          "type": "query",
+          "key": "section",
+          "value": "(?<section>[^&]+)"
+        }
+      ],
+      "destination": "/:section/:tool",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "section",
+          "value": "(?<section>[^&]+)"
+        },
+        {
+          "type": "query",
+          "key": "tool",
+          "value": "(?<tool>[^&]+)"
+        }
+      ],
+      "destination": "/:section/:tool",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "section",
+          "value": "(?<section>[^&]+)"
+        }
+      ],
+      "destination": "/:section",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "tool",
+          "value": "(?<tool>[^&]+)"
+        }
+      ],
+      "destination": "/tools/:tool",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/(.*)",

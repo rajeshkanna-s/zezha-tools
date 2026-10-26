@@ -12,6 +12,36 @@
     <meta name="theme-color" content="#1e293b" />
     <link rel="canonical" href="https://zezhatools.com" />
 
+    <!-- Legacy URL Redirect: automatically redirects old ?tool=...&section=... query params to clean modern URLs -->
+    <script>
+      (function() {
+        try {
+          if (!window.location.search) return;
+          var p = new URLSearchParams(window.location.search);
+          var tool = p.get('tool');
+          var section = p.get('section');
+          if (tool || (section && section !== 'home')) {
+            var standalone = ['home', 'govt-scheme-finder', 'invitation-creator', 'event-page-creator', 'logo-creator', 'create-invoice', 'products', 'life-decision-simulator'];
+            var target = null;
+            if (tool) {
+              if (standalone.indexOf(tool) !== -1) {
+                target = '/' + tool;
+              } else if (section && section !== 'home') {
+                target = '/' + section + '/' + tool;
+              } else {
+                target = '/tools/' + tool;
+              }
+            } else if (section && section !== 'home') {
+              target = '/' + section;
+            }
+            if (target && (window.location.pathname === '/' || window.location.pathname === '')) {
+              window.location.replace(target);
+            }
+          }
+        } catch(e) {}
+      })();
+    </script>
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Zezha Tools" />
