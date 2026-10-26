@@ -28,6 +28,7 @@ const lines = [
   '/ tool=:tool section=:section /:section/:tool 301!',
   '/ section=:section tool=:tool /:section/:tool 301!',
   '/ section=:section /:section 301!',
+  '/ tool=:tool /tools/:tool 301!',
   '',
   '# 2. Legacy Flat URLs to Section-based Canonical URLs (resolves duplicate canonical validation)',
   ...toolRedirects,
