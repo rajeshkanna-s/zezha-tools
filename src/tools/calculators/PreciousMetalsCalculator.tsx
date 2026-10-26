@@ -562,11 +562,13 @@ export const PreciousMetalsCalculator: React.FC = () => {
     const totalMakingAndWastage = wastageValue + makingChargesValue;
 
     // 4. GST on Metal (3% on Net Metal Value)
-    const metalGstRate = parseFloat(gstOnGoldPercent) || 3;
+    const parsedMetalGst = parseFloat(gstOnGoldPercent);
+    const metalGstRate = isNaN(parsedMetalGst) ? 0 : Math.max(0, parsedMetalGst);
     const gstOnMetal = (metalValue * metalGstRate) / 100;
 
     // 5. GST on Making Charges & Wastage (5%)
-    const makingGstRate = parseFloat(gstOnMakingPercent) || 5;
+    const parsedMakingGst = parseFloat(gstOnMakingPercent);
+    const makingGstRate = isNaN(parsedMakingGst) ? 0 : Math.max(0, parsedMakingGst);
     const gstOnMaking = (totalMakingAndWastage * makingGstRate) / 100;
 
     // 6. BIS Hallmarking fee
@@ -1870,6 +1872,7 @@ Source: India Bullion and Jewellers Association (IBJA)`;
                     <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                       <input
                         type="number"
+                        min="0"
                         step="0.5"
                         value={gstOnGoldPercent}
                         onChange={e => setGstOnGoldPercent(e.target.value)}
@@ -1894,6 +1897,7 @@ Source: India Bullion and Jewellers Association (IBJA)`;
                     <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                       <input
                         type="number"
+                        min="0"
                         step="0.5"
                         value={gstOnMakingPercent}
                         onChange={e => setGstOnMakingPercent(e.target.value)}
@@ -1964,7 +1968,7 @@ Source: India Bullion and Jewellers Association (IBJA)`;
                     <Coins size={14} />
                   </div>
                   <div style={{ minWidth: 0, flex: 1 }}>
-                    <div style={{ fontSize: 12, fontWeight: 900, color: '#facc15', whiteSpace: 'nowrap' }}>{gstOnGoldPercent}% GST</div>
+                    <div style={{ fontSize: 12, fontWeight: 900, color: '#facc15', whiteSpace: 'nowrap' }}>{gstOnGoldPercent || 0}% GST</div>
                     <div style={{ fontSize: 9, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', lineHeight: 1.2 }}>ON {metal === 'XAU' ? 'GOLD' : 'SILVER'} VALUE</div>
                   </div>
                 </div>
@@ -1985,7 +1989,7 @@ Source: India Bullion and Jewellers Association (IBJA)`;
                     <Gem size={14} />
                   </div>
                   <div style={{ minWidth: 0, flex: 1 }}>
-                    <div style={{ fontSize: 12, fontWeight: 900, color: '#facc15', whiteSpace: 'nowrap' }}>{gstOnMakingPercent}% GST</div>
+                    <div style={{ fontSize: 12, fontWeight: 900, color: '#facc15', whiteSpace: 'nowrap' }}>{gstOnMakingPercent || 0}% GST</div>
                     <div style={{ fontSize: 9, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', lineHeight: 1.2 }}>ON MAKING CHARGES</div>
                   </div>
                 </div>
@@ -2078,11 +2082,11 @@ Source: India Bullion and Jewellers Association (IBJA)`;
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0, flex: 1 }}>
                     <div style={{ width: 24, height: 24, borderRadius: 5, background: 'rgba(234, 179, 8, 0.25)', color: '#facc15', fontSize: 10, fontWeight: 900, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                      {gstOnGoldPercent}%
+                      {gstOnGoldPercent || 0}%
                     </div>
                     <div style={{ minWidth: 0 }}>
                       <div style={{ fontWeight: 800, color: '#ffffff', fontSize: 12.5, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                        GST ON {metal === 'XAU' ? 'GOLD' : 'SILVER'} ({gstOnGoldPercent}%)
+                        GST ON {metal === 'XAU' ? 'GOLD' : 'SILVER'} ({gstOnGoldPercent || 0}%)
                       </div>
                       <div style={{ fontSize: 10.5, color: '#94a3b8', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                         of ₹{Math.round(purchaseCalculations.metalValue).toLocaleString('en-IN')}
@@ -2098,11 +2102,11 @@ Source: India Bullion and Jewellers Association (IBJA)`;
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0, flex: 1 }}>
                     <div style={{ width: 24, height: 24, borderRadius: 5, background: 'rgba(234, 179, 8, 0.25)', color: '#facc15', fontSize: 10, fontWeight: 900, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                      {gstOnMakingPercent}%
+                      {gstOnMakingPercent || 0}%
                     </div>
                     <div style={{ minWidth: 0 }}>
                       <div style={{ fontWeight: 800, color: '#ffffff', fontSize: 12.5, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                        GST ON MAKING ({gstOnMakingPercent}%)
+                        GST ON MAKING ({gstOnMakingPercent || 0}%)
                       </div>
                       <div style={{ fontSize: 10.5, color: '#94a3b8', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                         of ₹{Math.round(purchaseCalculations.totalMakingAndWastage).toLocaleString('en-IN')}
@@ -2171,8 +2175,8 @@ Rate: ₹{purchaseCalculations.effectiveGramRate.toFixed(2)}/g
 Net Metal Value: ₹${purchaseCalculations.metalValue.toFixed(2)}
 Making Charges (${makingChargePercent}%): ₹${purchaseCalculations.makingChargesValue.toFixed(2)}
 Wastage / VA (${wastagePercent}%): ₹${purchaseCalculations.wastageValue.toFixed(2)}
-GST on Metal (${gstOnGoldPercent}%): ₹${purchaseCalculations.gstOnMetal.toFixed(2)}
-GST on Making (${gstOnMakingPercent}%): ₹${purchaseCalculations.gstOnMaking.toFixed(2)}
+GST on Metal (${gstOnGoldPercent || 0}%): ₹${purchaseCalculations.gstOnMetal.toFixed(2)}
+GST on Making (${gstOnMakingPercent || 0}%): ₹${purchaseCalculations.gstOnMaking.toFixed(2)}
 BIS Hallmarking: ₹${purchaseCalculations.hallmarkFee.toFixed(2)}
 --------------------------------------
 TOTAL PAYABLE: ₹${purchaseCalculations.totalPayable.toFixed(2)}
