@@ -22,7 +22,7 @@ import {
     Braces, CheckCircle2, ArrowLeftRight, FileCode2, MousePointer, Layers3,
     Copy, Binary, Link, Database, Table2, Type, Timer,
     Hash, ShieldAlert, Fingerprint, Shuffle, Globe, Palette, Terminal, Compass, Calculator, Apple,
-    MapPin, Map, Building, Car, Regex, Sparkles, ExternalLink
+    MapPin, Map, Building, Car, Regex, Sparkles, ExternalLink, Brain
 } from 'lucide-react';
 import { useCustomTools } from '@/hooks/useCustomTools';
 import { useFavouriteTools } from '@/hooks/useFavouriteTools';
@@ -40,6 +40,9 @@ export interface MenuSection {
 export const MENU_SECTIONS: MenuSection[] = [
     {
         id: 'home', label: 'Home', icon: Home, items: [],
+    },
+    {
+        id: 'learn-ai', label: 'Learn AI', icon: Brain, items: [], externalUrl: 'https://zezhatalent.in/',
     },
     {
         id: 'convertors', label: 'Convertors', icon: Wrench,
@@ -215,6 +218,7 @@ export const MENU_SECTIONS: MenuSection[] = [
 /* ── Per-section icon colors (bg + text) ── */
 const SECTION_COLORS: Record<string, { bg: string; text: string }> = {
     'home':                   { bg: 'bg-indigo-50',  text: 'text-indigo-600' },
+    'learn-ai':               { bg: 'bg-violet-50',  text: 'text-violet-600' },
     'get-img-video':          { bg: 'bg-pink-50',    text: 'text-pink-600' },
     'products':               { bg: 'bg-emerald-50', text: 'text-emerald-600' },
     'convertors':             { bg: 'bg-blue-50',    text: 'text-blue-600' },
@@ -575,35 +579,69 @@ export const ToolsSidebar: React.FC<ToolsSidebarProps> = ({
                         return (
                             <div key={section.id} className="mb-0.5">
                                 {/* ── Main Menu Item ── */}
-                                <button
-                                    data-sidebar-id={section.id}
-                                    onClick={() => handleSectionClick(section)}
-                                    title={collapsed ? section.label : undefined}
-                                    className={`w-full flex items-center ${collapsed ? 'justify-center px-0 py-2' : 'justify-between px-3 py-2.5'} text-[13px] font-bold tracking-tight transition-all duration-150 rounded-r-lg ${isActiveSection
-                                        ? 'bg-gradient-to-r from-primary via-primary to-indigo-500 text-white border-l-[4px] border-primary-dark shadow-md shadow-primary/25'
-                                        : 'text-slate-800 hover:bg-slate-50 border-l-[4px] border-transparent'
-                                        }`}
-                                >
-                                    <div className={`flex items-center ${collapsed ? '' : 'gap-2.5'}`}>
-                                        <div className={`flex items-center justify-center w-7 h-7 rounded-lg ${isActiveSection ? 'bg-white/20' : (SECTION_COLORS[section.id]?.bg || 'bg-slate-100')
-                                            }`}>
-                                            <SectionIcon size={15} className={isActiveSection ? 'text-white' : (SECTION_COLORS[section.id]?.text || 'text-slate-500')} />
+                                {section.externalUrl ? (
+                                    <a
+                                        href={section.externalUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        onClick={onClose}
+                                        data-sidebar-id={section.id}
+                                        title={collapsed ? section.label : undefined}
+                                        className={`w-full flex items-center ${collapsed ? 'justify-center px-0 py-2' : 'justify-between px-3 py-2.5'} text-[13px] font-bold tracking-tight transition-all duration-150 rounded-r-lg text-slate-800 hover:bg-slate-50 border-l-[4px] border-transparent no-underline group`}
+                                    >
+                                        <div className={`flex items-center ${collapsed ? '' : 'gap-2.5'}`}>
+                                            <div className={`flex items-center justify-center w-7 h-7 rounded-lg ${SECTION_COLORS[section.id]?.bg || 'bg-slate-100'} group-hover:scale-105 transition-transform`}>
+                                                <SectionIcon size={15} className={SECTION_COLORS[section.id]?.text || 'text-slate-500'} />
+                                            </div>
+                                            {!collapsed && (
+                                                <div className="flex items-center gap-1.5">
+                                                    <span className="whitespace-nowrap">{section.label}</span>
+                                                    {section.id === 'learn-ai' && (
+                                                        <span className="px-1.5 py-0.5 text-[9px] font-extrabold uppercase rounded bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-xs">
+                                                            AI
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            )}
                                         </div>
-                                        {!collapsed && <span className="whitespace-nowrap">{section.label}</span>}
-                                    </div>
-                                    {!collapsed && section.items.length > 0 && (
-                                        <ChevronDown
-                                            size={14}
-                                            className={`${isActiveSection ? 'text-white/70' : 'text-slate-400'} transition-transform duration-200 ${isExpanded ? 'rotate-0' : '-rotate-90'}`}
-                                        />
-                                    )}
-                                    {!collapsed && section.externalUrl && (
-                                        <ExternalLink
-                                            size={13}
-                                            className={`${isActiveSection ? 'text-white/80' : 'text-slate-400'} shrink-0`}
-                                        />
-                                    )}
-                                </button>
+                                        {!collapsed && (
+                                            <ExternalLink
+                                                size={13}
+                                                className="text-slate-400 group-hover:text-primary transition-colors shrink-0"
+                                            />
+                                        )}
+                                    </a>
+                                ) : (
+                                    <button
+                                        data-sidebar-id={section.id}
+                                        onClick={() => handleSectionClick(section)}
+                                        title={collapsed ? section.label : undefined}
+                                        className={`w-full flex items-center ${collapsed ? 'justify-center px-0 py-2' : 'justify-between px-3 py-2.5'} text-[13px] font-bold tracking-tight transition-all duration-150 rounded-r-lg ${isActiveSection
+                                            ? 'bg-gradient-to-r from-primary via-primary to-indigo-500 text-white border-l-[4px] border-primary-dark shadow-md shadow-primary/25'
+                                            : 'text-slate-800 hover:bg-slate-50 border-l-[4px] border-transparent'
+                                            }`}
+                                    >
+                                        <div className={`flex items-center ${collapsed ? '' : 'gap-2.5'}`}>
+                                            <div className={`flex items-center justify-center w-7 h-7 rounded-lg ${isActiveSection ? 'bg-white/20' : (SECTION_COLORS[section.id]?.bg || 'bg-slate-100')
+                                                }`}>
+                                                <SectionIcon size={15} className={isActiveSection ? 'text-white' : (SECTION_COLORS[section.id]?.text || 'text-slate-500')} />
+                                            </div>
+                                            {!collapsed && <span className="whitespace-nowrap">{section.label}</span>}
+                                        </div>
+                                        {!collapsed && section.items.length > 0 && (
+                                            <ChevronDown
+                                                size={14}
+                                                className={`${isActiveSection ? 'text-white/70' : 'text-slate-400'} transition-transform duration-200 ${isExpanded ? 'rotate-0' : '-rotate-90'}`}
+                                            />
+                                        )}
+                                        {!collapsed && section.externalUrl && (
+                                            <ExternalLink
+                                                size={13}
+                                                className={`${isActiveSection ? 'text-white/80' : 'text-slate-400'} shrink-0`}
+                                            />
+                                        )}
+                                    </button>
+                                )}
 
                                 {/* ── Sub Menu Items ── */}
                                 {isExpanded && section.items.length > 0 && (

@@ -44,6 +44,7 @@ const HIGH_PRIORITY_TOOLS = new Set([
 
 // Standalone pages
 const STANDALONE_SECTIONS = new Set([
+  'learn-ai',
   'govt-scheme-finder',
   'invitation-creator',
   'event-page-creator',

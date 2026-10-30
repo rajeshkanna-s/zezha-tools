@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, Suspense } from 'react';
-import { Menu, ArrowLeft, LayoutGrid, Image as ImageIcon, Video, ArrowUpRight, Receipt, ExternalLink } from 'lucide-react';
+import { Menu, ArrowLeft, LayoutGrid, Image as ImageIcon, Video, ArrowUpRight, Receipt, ExternalLink, Brain } from 'lucide-react';
 import { ToolsLayout } from './ToolsLayout';
 import { ToolsSidebar, MENU_SECTIONS } from './ToolsSidebar';
 import { useCustomTools } from '@/hooks/useCustomTools';
@@ -35,20 +35,20 @@ const VideoSearchDownloader = React.lazy(() => import('../APIs/getVideo'));
 import { GovtSchemeFinder } from './govt-schemes/GovtSchemeFinder';
 import { ProductsPage } from './ProductsPage';
 
-// Convertors
-import { ImageToPdf } from './ImageToPdf';
-import { CompressPdf } from './CompressPdf';
-import { CompressImage } from './CompressImage';
-import { MergePdf } from './MergePdf';
-import { PdfToImage } from './PdfToImage';
-import { WordToPdf } from './WordToPdf';
-import { ImageToText } from './ImageToText';
-import { SplitPdf } from './SplitPdf';
-import { OrganizePdf } from './OrganizePdf';
-import { HtmlToPdf } from './HtmlToPdf';
-import { CropPdf } from './CropPdf';
-import { DeletePdfPages } from './DeletePdfPages';
-import { EditPdf } from './EditPdf';
+// Convertors (Lazy Loaded)
+const ImageToPdf = React.lazy(() => import('./ImageToPdf').then(m => ({ default: m.ImageToPdf })));
+const CompressPdf = React.lazy(() => import('./CompressPdf').then(m => ({ default: m.CompressPdf })));
+const CompressImage = React.lazy(() => import('./CompressImage').then(m => ({ default: m.CompressImage })));
+const MergePdf = React.lazy(() => import('./MergePdf').then(m => ({ default: m.MergePdf })));
+const PdfToImage = React.lazy(() => import('./PdfToImage').then(m => ({ default: m.PdfToImage })));
+const WordToPdf = React.lazy(() => import('./WordToPdf').then(m => ({ default: m.WordToPdf })));
+const ImageToText = React.lazy(() => import('./ImageToText').then(m => ({ default: m.ImageToText })));
+const SplitPdf = React.lazy(() => import('./SplitPdf').then(m => ({ default: m.SplitPdf })));
+const OrganizePdf = React.lazy(() => import('./OrganizePdf').then(m => ({ default: m.OrganizePdf })));
+const HtmlToPdf = React.lazy(() => import('./HtmlToPdf').then(m => ({ default: m.HtmlToPdf })));
+const CropPdf = React.lazy(() => import('./CropPdf').then(m => ({ default: m.CropPdf })));
+const DeletePdfPages = React.lazy(() => import('./DeletePdfPages').then(m => ({ default: m.DeletePdfPages })));
+const EditPdf = React.lazy(() => import('./EditPdf').then(m => ({ default: m.EditPdf })));
 
 // Calculators - Kept Sections (Business & Tax, Loans & EMI, Investments, Utilities)
 import { CurrencyCalculator } from './calculators/CurrencyCalculator';
@@ -80,69 +80,69 @@ import { StandardCalculator } from './calculators/StandardCalculator';
 // Global Settings & Profile
 import { GlobalSettings } from './settings/GlobalSettings';
 
-// Developer Toolkit
-import { JsonFormatter } from './dev-toolkit/JsonFormatter';
-import { JsonMinifier } from './dev-toolkit/JsonMinifier';
-import { JsonValidator } from './dev-toolkit/JsonValidator';
-import { JsonComparator } from './dev-toolkit/JsonComparator';
-import { JsonToCsv } from './dev-toolkit/JsonToCsv';
-import { JsonToXml } from './dev-toolkit/JsonToXml';
-import { JsonPathFinder } from './dev-toolkit/JsonPathFinder';
-import { JsonFlattener } from './dev-toolkit/JsonFlattener';
-import { TextDiffChecker } from './dev-toolkit/TextDiffChecker';
-import { CodeDiffChecker } from './dev-toolkit/CodeDiffChecker';
-import { FileContentComparator } from './dev-toolkit/FileContentComparator';
-import { DuplicateLineFinder } from './dev-toolkit/DuplicateLineFinder';
-import { WordFrequencyCounter } from './dev-toolkit/WordFrequencyCounter';
-import { Base64Tool } from './dev-toolkit/Base64Tool';
-import { JwtDecoder } from './dev-toolkit/JwtDecoder';
-import { UrlEncoderDecoder } from './dev-toolkit/UrlEncoderDecoder';
-import { ImageToBase64Tool } from './dev-toolkit/ImageToBase64Tool';
-import { SqlFormatter } from './dev-toolkit/SqlFormatter';
-import { CsvToJson } from './dev-toolkit/CsvToJson';
-import { StringCaseConverter } from './dev-toolkit/StringCaseConverter';
-import { UnixTimestampConverter } from './dev-toolkit/UnixTimestampConverter';
-import { HashGenerator } from './dev-toolkit/HashGenerator';
-import { PasswordStrengthChecker } from './dev-toolkit/PasswordStrengthChecker';
-import { UuidGenerator } from './dev-toolkit/UuidGenerator';
-import { RandomTokenGenerator } from './dev-toolkit/RandomTokenGenerator';
-import { SslCertChecker } from './dev-toolkit/SslCertChecker';
-import { ColorConverter } from './dev-toolkit/ColorConverter';
-import { RegexTester } from './dev-toolkit/RegexTester';
-import { CronExpressionBuilder } from './dev-toolkit/CronExpressionBuilder';
-import { CodeSyntaxChecker } from './dev-toolkit/CodeSyntaxChecker';
+// Developer Toolkit (Lazy Loaded)
+const JsonFormatter = React.lazy(() => import('./dev-toolkit/JsonFormatter').then(m => ({ default: m.JsonFormatter })));
+const JsonMinifier = React.lazy(() => import('./dev-toolkit/JsonMinifier').then(m => ({ default: m.JsonMinifier })));
+const JsonValidator = React.lazy(() => import('./dev-toolkit/JsonValidator').then(m => ({ default: m.JsonValidator })));
+const JsonComparator = React.lazy(() => import('./dev-toolkit/JsonComparator').then(m => ({ default: m.JsonComparator })));
+const JsonToCsv = React.lazy(() => import('./dev-toolkit/JsonToCsv').then(m => ({ default: m.JsonToCsv })));
+const JsonToXml = React.lazy(() => import('./dev-toolkit/JsonToXml').then(m => ({ default: m.JsonToXml })));
+const JsonPathFinder = React.lazy(() => import('./dev-toolkit/JsonPathFinder').then(m => ({ default: m.JsonPathFinder })));
+const JsonFlattener = React.lazy(() => import('./dev-toolkit/JsonFlattener').then(m => ({ default: m.JsonFlattener })));
+const TextDiffChecker = React.lazy(() => import('./dev-toolkit/TextDiffChecker').then(m => ({ default: m.TextDiffChecker })));
+const CodeDiffChecker = React.lazy(() => import('./dev-toolkit/CodeDiffChecker').then(m => ({ default: m.CodeDiffChecker })));
+const FileContentComparator = React.lazy(() => import('./dev-toolkit/FileContentComparator').then(m => ({ default: m.FileContentComparator })));
+const DuplicateLineFinder = React.lazy(() => import('./dev-toolkit/DuplicateLineFinder').then(m => ({ default: m.DuplicateLineFinder })));
+const WordFrequencyCounter = React.lazy(() => import('./dev-toolkit/WordFrequencyCounter').then(m => ({ default: m.WordFrequencyCounter })));
+const Base64Tool = React.lazy(() => import('./dev-toolkit/Base64Tool').then(m => ({ default: m.Base64Tool })));
+const JwtDecoder = React.lazy(() => import('./dev-toolkit/JwtDecoder').then(m => ({ default: m.JwtDecoder })));
+const UrlEncoderDecoder = React.lazy(() => import('./dev-toolkit/UrlEncoderDecoder').then(m => ({ default: m.UrlEncoderDecoder })));
+const ImageToBase64Tool = React.lazy(() => import('./dev-toolkit/ImageToBase64Tool').then(m => ({ default: m.ImageToBase64Tool })));
+const SqlFormatter = React.lazy(() => import('./dev-toolkit/SqlFormatter').then(m => ({ default: m.SqlFormatter })));
+const CsvToJson = React.lazy(() => import('./dev-toolkit/CsvToJson').then(m => ({ default: m.CsvToJson })));
+const StringCaseConverter = React.lazy(() => import('./dev-toolkit/StringCaseConverter').then(m => ({ default: m.StringCaseConverter })));
+const UnixTimestampConverter = React.lazy(() => import('./dev-toolkit/UnixTimestampConverter').then(m => ({ default: m.UnixTimestampConverter })));
+const HashGenerator = React.lazy(() => import('./dev-toolkit/HashGenerator').then(m => ({ default: m.HashGenerator })));
+const PasswordStrengthChecker = React.lazy(() => import('./dev-toolkit/PasswordStrengthChecker').then(m => ({ default: m.PasswordStrengthChecker })));
+const UuidGenerator = React.lazy(() => import('./dev-toolkit/UuidGenerator').then(m => ({ default: m.UuidGenerator })));
+const RandomTokenGenerator = React.lazy(() => import('./dev-toolkit/RandomTokenGenerator').then(m => ({ default: m.RandomTokenGenerator })));
+const SslCertChecker = React.lazy(() => import('./dev-toolkit/SslCertChecker').then(m => ({ default: m.SslCertChecker })));
+const ColorConverter = React.lazy(() => import('./dev-toolkit/ColorConverter').then(m => ({ default: m.ColorConverter })));
+const RegexTester = React.lazy(() => import('./dev-toolkit/RegexTester').then(m => ({ default: m.RegexTester })));
+const CronExpressionBuilder = React.lazy(() => import('./dev-toolkit/CronExpressionBuilder').then(m => ({ default: m.CronExpressionBuilder })));
+const CodeSyntaxChecker = React.lazy(() => import('./dev-toolkit/CodeSyntaxChecker').then(m => ({ default: m.CodeSyntaxChecker })));
 
-// Raw Data
-import { RawDataIndianStates } from './raw-data/RawDataIndianStates';
-import { RawDataIndianCities } from './raw-data/RawDataIndianCities';
-import { RawDataIndianColleges } from './raw-data/RawDataIndianColleges';
-import { RawDataPinCodes } from './raw-data/RawDataPinCodes';
-import { RawDataDistricts } from './raw-data/RawDataDistricts';
-import { RawDataParliament } from './raw-data/RawDataParliament';
-import { RawDataHolidays } from './raw-data/RawDataHolidays';
-import { RawDataBanks } from './raw-data/RawDataBanks';
-import { RawDataGSTCodes } from './raw-data/RawDataGSTCodes';
-import { RawDataTaxSlabs } from './raw-data/RawDataTaxSlabs';
-import { RawDataStockMarket } from './raw-data/RawDataStockMarket';
-import { RawDataIndianCars } from './raw-data/RawDataIndianCars';
-import { RawDataTdsRates } from './raw-data/RawDataTdsRates';
-import { RawDataProfTax } from './raw-data/RawDataProfTax';
-import { RawDataMinWages } from './raw-data/RawDataMinWages';
-import { RawDataDepreciation } from './raw-data/RawDataDepreciation';
-import { RawDataRbiRates } from './raw-data/RawDataRbiRates';
-import { RawDataGstRates } from './raw-data/RawDataGstRates';
-import { RawDataSection80 } from './raw-data/RawDataSection80';
-import { RawDataCii } from './raw-data/RawDataCii';
-import { RawDataItrForms } from './raw-data/RawDataItrForms';
-import { RawDataComplianceDates } from './raw-data/RawDataComplianceDates';
-import { RawDataInterestPenalty } from './raw-data/RawDataInterestPenalty';
-import { RawDataAuditLimits } from './raw-data/RawDataAuditLimits';
-import { RawDataEpfRates } from './raw-data/RawDataEpfRates';
-import { RawDataLeaveRules } from './raw-data/RawDataLeaveRules';
-import { RawDataGratuityRules } from './raw-data/RawDataGratuityRules';
-import { RawDataBankFdRates } from './raw-data/RawDataBankFdRates';
-import { RawDataStatutoryDueDates } from './raw-data/RawDataStatutoryDueDates';
-import { RawDataDashboard } from './raw-data/RawDataDashboard';
+// Raw Data (Lazy Loaded)
+const RawDataDashboard = React.lazy(() => import('./raw-data/RawDataDashboard').then(m => ({ default: m.RawDataDashboard })));
+const RawDataIndianStates = React.lazy(() => import('./raw-data/RawDataIndianStates').then(m => ({ default: m.RawDataIndianStates })));
+const RawDataIndianCities = React.lazy(() => import('./raw-data/RawDataIndianCities').then(m => ({ default: m.RawDataIndianCities })));
+const RawDataIndianColleges = React.lazy(() => import('./raw-data/RawDataIndianColleges').then(m => ({ default: m.RawDataIndianColleges })));
+const RawDataPinCodes = React.lazy(() => import('./raw-data/RawDataPinCodes').then(m => ({ default: m.RawDataPinCodes })));
+const RawDataDistricts = React.lazy(() => import('./raw-data/RawDataDistricts').then(m => ({ default: m.RawDataDistricts })));
+const RawDataParliament = React.lazy(() => import('./raw-data/RawDataParliament').then(m => ({ default: m.RawDataParliament })));
+const RawDataHolidays = React.lazy(() => import('./raw-data/RawDataHolidays').then(m => ({ default: m.RawDataHolidays })));
+const RawDataBanks = React.lazy(() => import('./raw-data/RawDataBanks').then(m => ({ default: m.RawDataBanks })));
+const RawDataGSTCodes = React.lazy(() => import('./raw-data/RawDataGSTCodes').then(m => ({ default: m.RawDataGSTCodes })));
+const RawDataTaxSlabs = React.lazy(() => import('./raw-data/RawDataTaxSlabs').then(m => ({ default: m.RawDataTaxSlabs })));
+const RawDataStockMarket = React.lazy(() => import('./raw-data/RawDataStockMarket').then(m => ({ default: m.RawDataStockMarket })));
+const RawDataIndianCars = React.lazy(() => import('./raw-data/RawDataIndianCars').then(m => ({ default: m.RawDataIndianCars })));
+const RawDataTdsRates = React.lazy(() => import('./raw-data/RawDataTdsRates').then(m => ({ default: m.RawDataTdsRates })));
+const RawDataProfTax = React.lazy(() => import('./raw-data/RawDataProfTax').then(m => ({ default: m.RawDataProfTax })));
+const RawDataMinWages = React.lazy(() => import('./raw-data/RawDataMinWages').then(m => ({ default: m.RawDataMinWages })));
+const RawDataDepreciation = React.lazy(() => import('./raw-data/RawDataDepreciation').then(m => ({ default: m.RawDataDepreciation })));
+const RawDataRbiRates = React.lazy(() => import('./raw-data/RawDataRbiRates').then(m => ({ default: m.RawDataRbiRates })));
+const RawDataGstRates = React.lazy(() => import('./raw-data/RawDataGstRates').then(m => ({ default: m.RawDataGstRates })));
+const RawDataSection80 = React.lazy(() => import('./raw-data/RawDataSection80').then(m => ({ default: m.RawDataSection80 })));
+const RawDataCii = React.lazy(() => import('./raw-data/RawDataCii').then(m => ({ default: m.RawDataCii })));
+const RawDataItrForms = React.lazy(() => import('./raw-data/RawDataItrForms').then(m => ({ default: m.RawDataItrForms })));
+const RawDataComplianceDates = React.lazy(() => import('./raw-data/RawDataComplianceDates').then(m => ({ default: m.RawDataComplianceDates })));
+const RawDataInterestPenalty = React.lazy(() => import('./raw-data/RawDataInterestPenalty').then(m => ({ default: m.RawDataInterestPenalty })));
+const RawDataAuditLimits = React.lazy(() => import('./raw-data/RawDataAuditLimits').then(m => ({ default: m.RawDataAuditLimits })));
+const RawDataEpfRates = React.lazy(() => import('./raw-data/RawDataEpfRates').then(m => ({ default: m.RawDataEpfRates })));
+const RawDataLeaveRules = React.lazy(() => import('./raw-data/RawDataLeaveRules').then(m => ({ default: m.RawDataLeaveRules })));
+const RawDataGratuityRules = React.lazy(() => import('./raw-data/RawDataGratuityRules').then(m => ({ default: m.RawDataGratuityRules })));
+const RawDataBankFdRates = React.lazy(() => import('./raw-data/RawDataBankFdRates').then(m => ({ default: m.RawDataBankFdRates })));
+const RawDataStatutoryDueDates = React.lazy(() => import('./raw-data/RawDataStatutoryDueDates').then(m => ({ default: m.RawDataStatutoryDueDates })));
 
 interface ToolsPortalProps {
   onHome?: () => void;
@@ -165,7 +165,7 @@ interface ToolsPortalProps {
   onDefaultDomainConsumed?: () => void;
 }
 
-export const TOOL_COMPONENTS: Record<string, React.FC<any>> = {
+export const TOOL_COMPONENTS: Record<string, React.ComponentType<any>> = {
   // Get Img/Video
   'image-downloader': ImageSearchDownloader,
   'video-downloader': VideoSearchDownloader,
@@ -331,7 +331,7 @@ function parseCurrentRoute(): { sectionId: string; toolId: string | null } {
   const pathname = window.location.pathname.replace(/^\/+|\/+$/g, '');
   const segments = pathname ? pathname.split('/') : [];
 
-  const standaloneSections = ['home', 'govt-scheme-finder', 'invitation-creator', 'event-page-creator', 'logo-creator', 'create-invoice', 'products', 'life-decision-simulator'];
+  const standaloneSections = ['home', 'learn-ai', 'govt-scheme-finder', 'invitation-creator', 'event-page-creator', 'logo-creator', 'create-invoice', 'products', 'life-decision-simulator'];
 
   // 1. Two segments: e.g. /investments/precious-metals-calculator or /tools/precious-metals-calculator
   if (segments.length >= 2) {
@@ -364,7 +364,7 @@ function parseCurrentRoute(): { sectionId: string; toolId: string | null } {
     }
 
     if (TOOL_COMPONENTS[slug]) {
-      const sectionInfo = TOOL_TO_SECTION[slug];
+      const sectionInfo = (TOOL_TO_SECTION as Record<string, { sectionId: string; sectionLabel: string }>)[slug];
       return { sectionId: sectionInfo?.sectionId || 'utilities', toolId: slug };
     }
   }
@@ -386,7 +386,7 @@ function parseCurrentRoute(): { sectionId: string; toolId: string | null } {
 
 // Compute the clean target URL pathname
 function getTargetUrl(sectionId: string, toolId: string | null): string {
-  const standaloneSections = ['home', 'govt-scheme-finder', 'invitation-creator', 'event-page-creator', 'logo-creator', 'create-invoice', 'products', 'life-decision-simulator'];
+  const standaloneSections = ['home', 'learn-ai', 'govt-scheme-finder', 'invitation-creator', 'event-page-creator', 'logo-creator', 'create-invoice', 'products', 'life-decision-simulator'];
   if (toolId) {
     if (standaloneSections.includes(toolId)) {
       return `/${toolId}`;
@@ -684,6 +684,29 @@ export const ToolsPortal: React.FC<ToolsPortalProps> = ({ onHome, onInvoice, onB
               <Suspense fallback={<div className="flex items-center justify-center h-full text-slate-400 text-sm">Loading Logo Creator...</div>}>
                 <LogoCreatorPage />
               </Suspense>
+            </div>
+          </div>
+        );
+      case 'learn-ai':
+        return (
+          <div className="flex flex-col items-center justify-center h-full p-8 text-center bg-slate-50/50">
+            <div className="max-w-md w-full bg-white rounded-2xl border border-slate-200/80 p-8 shadow-sm flex flex-col items-center">
+              <div className="w-16 h-16 rounded-2xl bg-violet-50 text-violet-600 flex items-center justify-center mb-4 border border-violet-100">
+                <Brain size={32} />
+              </div>
+              <h2 className="text-xl font-bold text-slate-900 mb-2">Learn AI — ZEZHA Talent</h2>
+              <p className="text-sm text-slate-500 mb-6 leading-relaxed">
+                Master modern Artificial Intelligence, Generative AI, and Machine Learning with hands-on learning programs and real-world projects.
+              </p>
+              <a
+                href="https://zezhatalent.in/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-semibold text-sm transition-all shadow-md shadow-violet-600/20 active:scale-95 no-underline"
+              >
+                <span>Go to Zezha Talent</span>
+                <ExternalLink size={16} />
+              </a>
             </div>
           </div>
         );
