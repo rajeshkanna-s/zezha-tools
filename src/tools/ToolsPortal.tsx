@@ -258,6 +258,9 @@ export const TOOL_COMPONENTS: Record<string, React.ComponentType<any>> = {
   'dev-token-generator': RandomTokenGenerator,
   'dev-ssl-checker': SslCertChecker,
   'dev-color-converter': ColorConverter,
+  'dev-regex-tester': RegexTester,
+  'dev-cron-builder': CronExpressionBuilder,
+  'dev-code-checker': CodeSyntaxChecker,
   // Raw Data
   'indian-states-cities': RawDataIndianStates,
   'indian-cities': RawDataIndianCities,

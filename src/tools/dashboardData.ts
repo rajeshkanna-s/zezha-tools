@@ -11,7 +11,7 @@ import {
     MousePointer, Layers3, Code2, Copy,
     Binary, Link, Image,
     Database, Table2, Type, Timer,
-    Hash, ShieldAlert, Fingerprint, Shuffle, Globe, Palette, AlertTriangle,
+    Hash, ShieldAlert, Fingerprint, Shuffle, Globe, Palette, AlertTriangle, Regex,
     MapPin, Map, Building, Car,
     Gift, Clock, Heart, CalendarCheck, GraduationCap,
     Calculator, KeyRound, ClipboardCheck, GitCompare,
@@ -119,6 +119,9 @@ export const DEV_TOOLKIT_TOOLS: DashboardTool[] = [
     { id: 'dev-token-generator', icon: Shuffle, title: 'Token Generator', desc: 'Generate random tokens & API keys', color: 'bg-teal-600' },
     { id: 'dev-ssl-checker', icon: Globe, title: 'SSL Certificate Checker', desc: 'Check SSL cert details for any domain', color: 'bg-green-700' },
     { id: 'dev-color-converter', icon: Palette, title: 'Color Converter', desc: 'Convert between HEX, RGB, HSL color codes', color: 'bg-fuchsia-500' },
+    { id: 'dev-regex-tester', icon: Regex, title: 'Regex Tester', desc: 'Test, validate & debug regex patterns with live match highlighting', color: 'bg-emerald-600' },
+    { id: 'dev-cron-builder', icon: Clock, title: 'Cron Builder', desc: 'Visual cron expression generator & schedule explainer', color: 'bg-indigo-600' },
+    { id: 'dev-code-checker', icon: CheckCircle2, title: 'Code Syntax Checker', desc: 'Check syntax errors & linting for JS, TS, Python, HTML & JSON', color: 'bg-teal-600' },
 ];
 
 export const RAW_DATA_TOOLS: DashboardTool[] = [
