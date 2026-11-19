@@ -1,17 +1,33 @@
 {
   "name": "zezha-tools",
-  "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "100+ free privacy-first, client-side web utilities, PDF tools, financial calculators, developer toolkit, and reference datasets.",
+  "license": "MIT",
+  "homepage": "https://zezhatools.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rajeshkanna-s/zezha-tools.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rajeshkanna-s/zezha-tools/issues"
+  },
+  "keywords": [
+    "web-utilities",
+    "pdf-tools",
+    "developer-tools",
+    "calculators",
+    "react",
+    "typescript",
+    "vite",
+    "open-source"
+  ],
   "type": "module",
   "scripts": {
     "start": "vite",
     "dev": "vite",
     "build": "node scripts/generate-sitemap.cjs && node scripts/generate-redirects.cjs && vite build && node scripts/prerender-seo.cjs",
     "serve": "vite preview",
-    "debug-login": "ts-node -r dotenv/config --files src/scripts/dailyLogin.ts",
-    "daily-login": "ts-node -r dotenv/config src/scripts/dailyLogin.ts",
-    "testChrome-login": "ts-node --project tsconfig.cjs.json src/scripts/testChrome.ts",
-    "schedule-login": "node -e \"require('child_process').exec('npm run daily-login')\""
+    "lint": "eslint ."
   },
   "dependencies": {
     "@duckdb/duckdb-wasm": "^1.33.1-dev57.0",
